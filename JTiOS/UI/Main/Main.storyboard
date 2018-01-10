@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="TkF-Gm-Abf">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Main View Controller-->
+        <scene sceneID="rZx-KV-NP3">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" id="TkF-Gm-Abf" customClass="MainViewController" customModule="JTiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="BAn-UR-c0I"/>
+                        <viewControllerLayoutGuide type="bottom" id="E0k-Vi-HzR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4Uj-Y2-WzQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ybG-xF-g6l" customClass="AGSMapView">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="627"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gvl-Pf-Bxr">
+                                <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="jBk-qT-ay4"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ybG-xF-g6l" firstAttribute="top" secondItem="4Uj-Y2-WzQ" secondAttribute="top" id="91H-v9-iBf"/>
+                            <constraint firstAttribute="trailing" secondItem="ybG-xF-g6l" secondAttribute="trailing" id="Fqv-1G-aub"/>
+                            <constraint firstItem="E0k-Vi-HzR" firstAttribute="top" secondItem="gvl-Pf-Bxr" secondAttribute="bottom" id="PVh-vU-INI"/>
+                            <constraint firstItem="gvl-Pf-Bxr" firstAttribute="leading" secondItem="4Uj-Y2-WzQ" secondAttribute="leading" id="PgG-3L-PH4"/>
+                            <constraint firstItem="ybG-xF-g6l" firstAttribute="leading" secondItem="4Uj-Y2-WzQ" secondAttribute="leading" id="YrR-cN-0mR"/>
+                            <constraint firstItem="gvl-Pf-Bxr" firstAttribute="top" secondItem="ybG-xF-g6l" secondAttribute="bottom" id="j65-5D-UMb"/>
+                            <constraint firstAttribute="trailing" secondItem="gvl-Pf-Bxr" secondAttribute="trailing" id="vT0-9M-Txd"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="bottomTabbar" destination="gvl-Pf-Bxr" id="63a-tY-jz2"/>
+                        <outlet property="mapView" destination="ybG-xF-g6l" id="kPw-DB-rsJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aC7-HH-Gsk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-679" y="144"/>
+        </scene>
+    </scenes>
+</document>

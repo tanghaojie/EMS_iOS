@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Cee-31-AgB">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Picker View Controller-->
+        <scene sceneID="7My-kP-n94">
+            <objects>
+                <viewController storyboardIdentifier="JTPickerStoryboard" modalPresentationStyle="overCurrentContext" id="Cee-31-AgB" customClass="JTPickerViewController" customModule="JTiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="H32-Lq-735"/>
+                        <viewControllerLayoutGuide type="bottom" id="oh1-6i-4Ee"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Mdw-LK-nek">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dvv-bi-rwe">
+                                <rect key="frame" x="0.0" y="437" width="375" height="230"/>
+                                <subviews>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zga-wK-Zpz">
+                                        <rect key="frame" x="0.0" y="40" width="375" height="190"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </pickerView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fOh-Aq-YGj">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HyC-tO-d75">
+                                                <rect key="frame" x="306" y="0.0" width="41" height="40"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                <state key="normal" title="确定"/>
+                                                <connections>
+                                                    <action selector="confirmTouchUpInside:" destination="Cee-31-AgB" eventType="touchUpInside" id="BoP-4P-DM1"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8iC-gz-eOD">
+                                                <rect key="frame" x="28" y="0.0" width="41" height="40"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                <state key="normal" title="取消"/>
+                                                <connections>
+                                                    <action selector="cancelTouchUpInside:" destination="Cee-31-AgB" eventType="touchUpInside" id="BOo-dQ-zK8"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="HyC-tO-d75" secondAttribute="bottom" id="B0h-1K-r6c"/>
+                                            <constraint firstAttribute="height" constant="40" id="CGr-YT-Ie7"/>
+                                            <constraint firstItem="8iC-gz-eOD" firstAttribute="top" secondItem="fOh-Aq-YGj" secondAttribute="top" id="XG2-UG-Cdq"/>
+                                            <constraint firstItem="HyC-tO-d75" firstAttribute="top" secondItem="fOh-Aq-YGj" secondAttribute="top" id="aAW-vM-RbA"/>
+                                            <constraint firstItem="8iC-gz-eOD" firstAttribute="leading" secondItem="fOh-Aq-YGj" secondAttribute="leading" constant="28" id="acf-Lf-Ljy"/>
+                                            <constraint firstAttribute="trailing" secondItem="HyC-tO-d75" secondAttribute="trailing" constant="28" id="jdU-kJ-fs0"/>
+                                            <constraint firstAttribute="bottom" secondItem="8iC-gz-eOD" secondAttribute="bottom" id="nqK-Y3-YtV"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="fOh-Aq-YGj" firstAttribute="leading" secondItem="Dvv-bi-rwe" secondAttribute="leading" id="Lf1-Mc-uva"/>
+                                    <constraint firstAttribute="trailing" secondItem="fOh-Aq-YGj" secondAttribute="trailing" id="VYj-E1-VoQ"/>
+                                    <constraint firstAttribute="bottom" secondItem="zga-wK-Zpz" secondAttribute="bottom" id="YCw-TY-TDs"/>
+                                    <constraint firstAttribute="trailing" secondItem="zga-wK-Zpz" secondAttribute="trailing" id="YLk-HJ-pap"/>
+                                    <constraint firstItem="zga-wK-Zpz" firstAttribute="leading" secondItem="Dvv-bi-rwe" secondAttribute="leading" id="e6h-ye-9cd"/>
+                                    <constraint firstItem="fOh-Aq-YGj" firstAttribute="top" secondItem="Dvv-bi-rwe" secondAttribute="top" id="fb2-Ay-85v"/>
+                                    <constraint firstItem="zga-wK-Zpz" firstAttribute="top" secondItem="fOh-Aq-YGj" secondAttribute="bottom" id="gA8-ta-CjA"/>
+                                    <constraint firstAttribute="height" constant="230" id="xkC-ri-9mH"/>
+                                </constraints>
+                            </view>
+                            <view alpha="0.80000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7lc-Xa-zQe">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="437"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Dvv-bi-rwe" firstAttribute="leading" secondItem="Mdw-LK-nek" secondAttribute="leading" id="2D2-0y-pMr"/>
+                            <constraint firstItem="Dvv-bi-rwe" firstAttribute="top" secondItem="7lc-Xa-zQe" secondAttribute="bottom" id="3km-fc-ZQC"/>
+                            <constraint firstAttribute="trailing" secondItem="Dvv-bi-rwe" secondAttribute="trailing" id="Bqm-fw-zQd"/>
+                            <constraint firstItem="7lc-Xa-zQe" firstAttribute="leading" secondItem="Mdw-LK-nek" secondAttribute="leading" id="Eox-b4-0Fq"/>
+                            <constraint firstItem="7lc-Xa-zQe" firstAttribute="top" secondItem="Mdw-LK-nek" secondAttribute="top" id="W4Q-XH-IDY"/>
+                            <constraint firstAttribute="bottom" secondItem="Dvv-bi-rwe" secondAttribute="bottom" id="ir8-f7-yUl"/>
+                            <constraint firstAttribute="trailing" secondItem="7lc-Xa-zQe" secondAttribute="trailing" id="rBa-qz-4hJ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="pickView" destination="zga-wK-Zpz" id="gW9-9G-Xkd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cAj-9m-QtM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-630" y="37"/>
+        </scene>
+    </scenes>
+</document>
