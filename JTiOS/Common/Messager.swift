@@ -14,6 +14,7 @@ class Messager {
     let logining = "正在登录"
     let notOpen = "暂未开放"
     let loginFailed = "登录失败"
+    let notLogin = "未登录"
     let error = "错误"
     let failedHttpResponseStatusCode = "Failed http response status code."
     let wrongResponseData = "Wrong response data."
@@ -25,4 +26,7 @@ class Messager {
     let cannotGetLocationInfo = "无法获得位置信息"
     let createEventFailed = "上报事件失败"
     let eventCreating = "事件上报中"
+    let tryAgain = "请重试"
+    let taskDealCreating = "任务处理上报中"
+    let createTaskDealFailed = "任务处理上报失败"
 }

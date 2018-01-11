@@ -29,6 +29,7 @@ class WarningDetailEndedViewController: UIViewController {
     @IBOutlet weak var endTime: UILabel!
     @IBOutlet weak var bottomView: UIView!
     private var vm: WarningDetailEndedVM?
+    private let navigationBarTitle = "预警详情"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,7 @@ class WarningDetailEndedViewController: UIViewController {
 extension WarningDetailEndedViewController {
     private func setupUI() {
         setupBackButton()
+        setupTitle(title: navigationBarTitle)
         
         setupScrollViewHeight()
     }

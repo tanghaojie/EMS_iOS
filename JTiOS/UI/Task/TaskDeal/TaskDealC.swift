@@ -1,30 +1,19 @@
 //
-//  WarningReportC.swift
+//  TaskDealC.swift
 //  JTiOS
 //
-//  Created by JT on 2017/12/27.
-//  Copyright © 2017年 JT. All rights reserved.
+//  Created by JT on 2018/1/11.
+//  Copyright © 2018年 JT. All rights reserved.
 //
-
-class WarningReportC {
-    
-    private func checkCreateEvent(vm: WarningReportVM) -> (Bool, String?) {
-        if vm.name == nil || vm.name == "" {
-            return (false, Messager.shareInstance.pleaseInputEventName)
-        }
-        if vm.type == nil {
-            return (false, Messager.shareInstance.pleaseSelectEventType)
-        }
-        if vm.level == nil {
-            return (false, Messager.shareInstance.pleaseSelectEventLevel)
-        }
-        if vm.location == nil {
-            return (false, Messager.shareInstance.cannotGetLocationInfo)
-        }
+class TaskDealC {
+    private func checkCreateEvent(vm: TaskDealVM) -> (Bool, String?) {
+//        if vm.address == nil || vm.address == "" {
+//            return (false, Messager.shareInstance.pleaseInputEventName)
+//        }
         return (true, nil)
     }
     
-    func createEvent(vm: WarningReportVM, handler: ((Bool, String?, Int?) -> Void)? = nil) {
+    func createProcessExecute(vm: TaskDealVM, tid: Int, handler: ((Bool, String?, Int?) -> Void)? = nil) {
         let r: (pass: Bool, msg: String?) = checkCreateEvent(vm: vm)
         if !r.pass {
             if let h = handler {
@@ -32,18 +21,24 @@ class WarningReportC {
             }
             return
         }
-        let jsonCreateEvent = RequestJson_CreateEvent()
-        jsonCreateEvent.createuid = global_SystemUser?.id
-        jsonCreateEvent.eventname = vm.name
-        jsonCreateEvent.typecode = vm.type?.code
-        jsonCreateEvent.levelcode = vm.level?.code
-        let str = vm.location?.JTGeometryString
-        jsonCreateEvent.geometry = str
-        jsonCreateEvent.address = vm.address
-        jsonCreateEvent.sbtime = vm.date
-        jsonCreateEvent.remark = vm.detail
-        jsonCreateEvent.vt = 0
-        ServiceManager.shareInstance.provider.request(.createEvent(json: jsonCreateEvent)) {
+        if tid <= 0 {
+            if let h = handler {
+                h(false, Messager.shareInstance.error + " " + Messager.shareInstance.tryAgain, nil)
+            }
+            return
+        }
+        guard let uid = global_SystemUser?.id else {
+            if let h = handler {
+                h(false, Messager.shareInstance.notLogin, nil)
+            }
+            return
+        }
+        let requestJson = RequestJson_CreateProcessExecute(tid: tid, opuid: uid, startTime: Date())
+        requestJson.address = vm.address
+        requestJson.content = vm.content
+        requestJson.summary = vm.summary
+        requestJson.starttime = Date()
+        ServiceManager.shareInstance.provider.request(.createProcessExecute(json: requestJson)) {
             result in
             switch result {
             case let .success(moyaResponse):
@@ -62,7 +57,7 @@ class WarningReportC {
                     }
                     return
                 }
-                let res = ResponseJson_CreateEvent(JSONString: jsonStr)
+                let res = ResponseJson_CreateProcessExecute(JSONString: jsonStr)
                 guard let r = res else {
                     if let h = handler {
                         h(false, Messager.shareInstance.unableParseJsonString2JsonObject, nil)

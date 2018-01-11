@@ -18,6 +18,7 @@ class WarningListViewController: UIViewController {
     
     private var cellVM: [WarningListTableViewCellVM] = [WarningListTableViewCellVM]()
     private let c = WarningListC()
+    private let navigationBarTitle = "预警"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +34,7 @@ extension WarningListViewController {
     
     fileprivate func setupUI() {
         setupBackButton()
-        setupTitle()
+        setupTitle(title: navigationBarTitle)
         setupTableView()
         setupRefreshHeader()
         setupRefreshFooter()
@@ -87,9 +88,6 @@ extension WarningListViewController {
         if self.tableView.mj_footer.state != .noMoreData {
             self.tableView.mj_footer.endRefreshing()
         }
-    }
-    private func setupTitle() {
-        navigationItem.title = "预警"
     }
 }
 

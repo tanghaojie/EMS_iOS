@@ -108,7 +108,7 @@ extension MainViewController {
 extension MainViewController {
     
     private func logout() {
-        systemUser = nil
+        global_SystemUser = nil
         Data.shareInstance.ClearData_Login()
     }
     

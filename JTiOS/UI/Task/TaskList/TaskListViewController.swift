@@ -18,6 +18,7 @@ class TaskListViewController: UIViewController {
     
     private var cellVM: [TaskListTableViewCellVM] = [TaskListTableViewCellVM]()
     private let c = TaskListC()
+    private let navigationBarTitle = "任务"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +34,7 @@ extension TaskListViewController {
     
     fileprivate func setupUI() {
         setupBackButton()
-        setupTitle()
+        setupTitle(title: navigationBarTitle)
         setupTableView()
         setupRefreshHeader()
         setupRefreshFooter()
@@ -87,9 +88,6 @@ extension TaskListViewController {
         if self.tableView.mj_footer.state != .noMoreData {
             self.tableView.mj_footer.endRefreshing()
         }
-    }
-    private func setupTitle() {
-        navigationItem.title = "任务"
     }
 }
 
@@ -158,7 +156,7 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
         let data = vm.data
         if let id = data?.id {
             let list = TaskDetailListViewController(id: id)
-            self.navigationController?.pushViewController(list, animated: true)
+            navigationController?.pushViewController(list, animated: true)
         }
     }
 }

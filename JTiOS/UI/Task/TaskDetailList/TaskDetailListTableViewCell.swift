@@ -369,7 +369,7 @@ extension TaskDetailListTableViewCell {
         let height2 = NSLayoutConstraint(item: l2, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: TaskDetailListTableViewCell.content1Label2MinHeight)
         l2.addConstraint(height2)
         
-        content1Label2?.text = "asdfsafdsfsadfsdfadfas"
+        //content1Label2?.text = "asdfsafdsfsadfsdfadfas"
     }
     private func setupContent2Label1Label2() {
         guard let c2 = content2 else { return }
@@ -401,7 +401,7 @@ extension TaskDetailListTableViewCell {
         let height2 = NSLayoutConstraint(item: l2, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: TaskDetailListTableViewCell.content2Label2MinHeight)
         l2.addConstraint(height2)
         
-        content2Label2?.text = "asdfsafdsfsadfsdfadfasdfsdafsdfasdfsfs"
+        //content2Label2?.text = "asdfsafdsfsadfsdfadfasdfsdafsdfasdfsfs"
     }
     private func setupContent3Label1Label2() {
         guard let c3 = content3 else { return }
@@ -433,7 +433,7 @@ extension TaskDetailListTableViewCell {
         let height2 = NSLayoutConstraint(item: l2, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: TaskDetailListTableViewCell.content3Label2MinHeight)
         l2.addConstraint(height2)
         
-        content3Label2?.text = "asdfsafdsfsadfsdfadfasdfsdafsdfasdfsfs"
+        //content3Label2?.text = "asdfsafdsfsadfsdfadfasdfsdafsdfasdfsfs"
     }
     private func setupContent4Label1Label2() {
         guard let c4 = content4 else { return }
@@ -465,7 +465,7 @@ extension TaskDetailListTableViewCell {
         let height2 = NSLayoutConstraint(item: l2, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: TaskDetailListTableViewCell.content4Label2MinHeight)
         l2.addConstraint(height2)
         
-        content4Label2?.text = "a123123sdfsfs"
+        //content4Label2?.text = "a123123sdfsfs"
     }
     private func setupContent5Label1Label2() {
         guard let c5 = content5 else { return }
@@ -497,7 +497,7 @@ extension TaskDetailListTableViewCell {
         let height2 = NSLayoutConstraint(item: l2, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: TaskDetailListTableViewCell.content5Label2MinHeight)
         l2.addConstraint(height2)
         
-        content5Label2?.text = "a123123sdfsfs"
+        //content5Label2?.text = "a123123sdfsfs"
     }
     
     private func setupBottom() {

@@ -18,6 +18,7 @@ class TaskDetailListViewController: UIViewController {
     private var cellVM: [TaskDetailListTableViewCellVM] = [TaskDetailListTableViewCellVM]()
     private let c = TaskDetailListC()
     private let taskId: Int
+    private let navigationBarTitle: String = "任务详情"
     
     init(id: Int) {
         taskId = id
@@ -40,11 +41,12 @@ class TaskDetailListViewController: UIViewController {
 }
 extension TaskDetailListViewController {
     
-    fileprivate func setupUI() {
+    private func setupUI() {
         setupBackButton()
-        setupTitle()
+        setupTitle(title: navigationBarTitle)
         setupTableView()
         setupRefreshHeader()
+        setupRightBarButton()
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -85,8 +87,10 @@ extension TaskDetailListViewController {
     private func endRefreshing() {
         self.tableView.mj_header.endRefreshing()
     }
-    private func setupTitle() {
-        navigationItem.title = "任务详情"
+    private func setupRightBarButton() {
+        let img = UIImage(named: "addTaskDeal")?.withRenderingMode(.alwaysOriginal)
+        let rightBtn = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(rightBarButtonClicked))
+        navigationItem.rightBarButtonItem = rightBtn
     }
 }
 extension TaskDetailListViewController {
@@ -113,6 +117,15 @@ extension TaskDetailListViewController {
     @objc private func headerRefresh() {
         renew()
         loadData()
+    }
+    
+    @objc private func rightBarButtonClicked() {
+        let sb = UIStoryboard(name: "TaskDeal", bundle: nil)
+        let vc = sb.instantiateViewController(withIdentifier: "TaskDeal")
+        if let v = vc as? TaskDealViewController {
+            v.setTaskId(taskId: taskId)
+            navigationController?.pushViewController(v, animated: true)
+        }
     }
 }
 extension TaskDetailListViewController: UITableViewDelegate, UITableViewDataSource {

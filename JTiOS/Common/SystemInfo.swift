@@ -12,5 +12,4 @@ class SystemInfo {
     
     let ScreenWidth = UIScreen.main.bounds.width
     let ScrennHeight = UIScreen.main.bounds.height
-    
 }

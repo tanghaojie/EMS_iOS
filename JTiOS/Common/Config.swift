@@ -12,7 +12,7 @@ class Config {
     static let EventTypeName = "EventType"
     static let EventLevelName = "EventLevel"
     static func getConfig(successHandler: (([Object_GetGroupConfig])->Void)? = nil) {
-        guard let u = systemUser, let uid = u.id else { return }
+        guard let u = global_SystemUser, let uid = u.id else { return }
         let jsonGetGroupConfig = RequestJson_GetGroupConfig()
         jsonGetGroupConfig.id = uid
         ServiceManager.shareInstance.provider.request( .getGroupConfig(json: jsonGetGroupConfig)) {
@@ -27,8 +27,8 @@ class Config {
                 let res = ResponseJson_GetGroupConfig(JSONString: jsonStr)
                 guard let r = res else { return }
                 if 0 != r.status { return }
-                systemAllConfig = r.data
-                if let h = successHandler, let c = systemAllConfig { h(c) }
+                global_SystemAllConfig = r.data
+                if let h = successHandler, let c = global_SystemAllConfig { h(c) }
             case .failure(_): break
             }
         }
@@ -36,7 +36,7 @@ class Config {
     
     init(typename: String) {
         self.typename = typename
-        guard let c = systemAllConfig else {
+        guard let c = global_SystemAllConfig else {
             Config.getConfig()
             return
         }

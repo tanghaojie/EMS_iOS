@@ -6,7 +6,6 @@
 //  Copyright © 2017年 JT. All rights reserved.
 //
 import MBProgressHUD
-
 extension UIColor{
     convenience init(red : CGFloat, green : CGFloat, blue : CGFloat){
         self.init(red: red/255, green: green/255, blue: blue/255, alpha: 1)
@@ -18,9 +17,10 @@ extension String {
     }
     var toJTFormateDate: Date? {
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        dateFormatter.locale = Locale(identifier: "zh_CN")
-        dateFormatter.dateFormat = dateTimeFormate
+        //dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        //dateFormatter.locale = Locale(identifier: "zh_CN")
+        dateFormatter.locale = Locale.current
+        dateFormatter.dateFormat = global_DateTimeFormate
         return dateFormatter.date(from: self)
     }
 }
@@ -32,9 +32,9 @@ extension Date {
 extension DateFormatter {
     static var JTDateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        dateFormatter.locale = Locale(identifier: "zh_CN")
-        dateFormatter.dateFormat = dateTimeFormate
+        //dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.locale = Locale.current
+        dateFormatter.dateFormat = global_DateTimeFormate
         return dateFormatter
     }()
 }
@@ -75,7 +75,6 @@ extension UIViewController {
             }
         }
     }
-    
     internal func JTTemp_NotOpen() {
         let HUD = MBProgressHUD.showAdded(to: view, animated: true)
         HUD.bezelView.color = UIColor(red: 220, green: 220, blue: 220)
@@ -85,14 +84,32 @@ extension UIViewController {
         HUD.mode = .text
         HUD.hide(animated: true, afterDelay: 1)
     }
+    internal func showProgressHUD(msg: String = "") -> MBProgressHUD {
+        let view: UIView
+        if let navi = self.navigationController {
+            view = navi.view
+        } else {
+            view = self.view
+        }
+        let HUD = MBProgressHUD.showAdded(to: view, animated: true)
+        HUD.bezelView.color = UIColor.clear
+        HUD.label.text = msg
+        HUD.backgroundView.style = .blur
+        HUD.removeFromSuperViewOnHide = false
+        HUD.minShowTime = 1
+        HUD.show(animated: true)
+        return HUD
+    }
+    internal func setupTitle(title: String) {
+        navigationItem.title = title
+    }
 }
-let dateTimeFormate = "yyyy-MM-dd HH:mm:ss"
 enum HttpMethod: String {
     case GET = "GET"
     case POST = "POST"
 }
-
-var systemUser: Object_LoginResponseUser?
-var systemAllConfig: [Object_GetGroupConfig]?
+let global_DateTimeFormate = "yyyy-MM-dd HH:mm:ss"
+var global_SystemUser: Object_LoginResponseUser?
+var global_SystemAllConfig: [Object_GetGroupConfig]?
 
 

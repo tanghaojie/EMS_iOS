@@ -24,6 +24,7 @@ class WarningDetailWaitTodoViewController: UIViewController {
     @IBOutlet weak var startTime: UILabel!
     @IBOutlet weak var bottomView: UIView!
     private var vm: WarningDetailWaitTodoVM?
+    private let navigationBarTitle = "预警详情"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +38,7 @@ class WarningDetailWaitTodoViewController: UIViewController {
 extension WarningDetailWaitTodoViewController {
     private func setupUI() {
         setupBackButton()
+        setupTitle(title: navigationBarTitle)
         
         setupScrollViewHeight()
     }

@@ -20,7 +20,7 @@ class LoginC {
     }()
     
     func hadLoggedin() -> Bool {
-        if let sysUser = systemUser, let online = sysUser.online, online {
+        if let sysUser = global_SystemUser, let online = sysUser.online, online {
             return true
         }
         return false
@@ -47,7 +47,7 @@ class LoginC {
     }
     
     func login(loginVM: LoginVM, saveLoginInfo: Bool = true) -> (Bool, String?) {
-        systemUser = nil
+        global_SystemUser = nil
         var result:(success: Bool, msg: String?) = (true,nil)
         if loginVM == admin { return result }
         let jsonLogin = RequestJson_Login()
@@ -76,7 +76,7 @@ class LoginC {
                 if let u = ResponseJson_Login(JSONString: s) {
                     if 0 == u.status {
                         if let l = u.data {
-                            systemUser = l
+                            global_SystemUser = l
                             if saveLoginInfo {
                                 saveInfo(loginVM: loginVM)
                             }

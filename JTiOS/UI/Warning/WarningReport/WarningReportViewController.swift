@@ -76,7 +76,7 @@ class WarningReportViewController: UIViewController {
         }
     }
     @IBAction func locationTouchUpInside(_ sender: Any) {
-        
+        JTTemp_NotOpen()
     }
     @IBAction func nowTouchUpInside(_ sender: Any) {
         datePicker.maximumDate = Date()
@@ -84,7 +84,7 @@ class WarningReportViewController: UIViewController {
     }
     @IBAction func commitTouchUpInside(_ sender: Any) {
         get()
-        let HUD = showProgressHUD()
+        let HUD = showProgressHUD(msg: Messager.shareInstance.eventCreating)
         c.createEvent(vm: vm) { [weak self] (success, msg, id) in
             HUD.hide(animated: true)
             if success {
@@ -112,22 +112,6 @@ extension WarningReportViewController {
     }
     private func setupDatePicker() {
         datePicker.maximumDate = Date()
-    }
-    private func showProgressHUD() -> MBProgressHUD {
-        let view: UIView
-        if let navi = self.navigationController {
-            view = navi.view
-        } else {
-            view = self.view
-        }
-        let HUD = MBProgressHUD.showAdded(to: view, animated: true)
-        HUD.bezelView.color = UIColor.clear
-        HUD.label.text = Messager.shareInstance.eventCreating
-        HUD.backgroundView.style = .blur
-        HUD.removeFromSuperViewOnHide = false
-        HUD.minShowTime = 1
-        HUD.show(animated: true)
-        return HUD
     }
 }
 extension WarningReportViewController {

@@ -24,4 +24,6 @@ class APIUrl {
     static var queryEventInfoFullUrl: String { get { return APIUrl.baseUrl + "/" + APIUrl.queryEventInfo } }
     
     static let queryProcessList = "api/process/QueryProcessList"
+    
+    static let createProcessExecute = "api/process/CreateProcessExecute"
 }

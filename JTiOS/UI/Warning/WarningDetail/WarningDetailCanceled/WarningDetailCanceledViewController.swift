@@ -24,6 +24,7 @@ class WarningDetailCanceledViewController: UIViewController {
     @IBOutlet weak var cancelTime: UILabel!
     @IBOutlet weak var bottomView: UIView!
     private var vm: WarningDetailCanceledVM?
+    private let navigationBarTitle = "预警详情"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +38,7 @@ class WarningDetailCanceledViewController: UIViewController {
 extension WarningDetailCanceledViewController {
     private func setupUI() {
         setupBackButton()
+        setupTitle(title: navigationBarTitle)
         
         setupScrollViewHeight()
     }
