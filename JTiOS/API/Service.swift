@@ -16,6 +16,7 @@ enum Service {
     case queryEventInfo(json: RequestJson_QueryEventInfo)
     case queryProcessList(json: RequestJson_QueryProcessList)
     case createProcessExecute(json: RequestJson_CreateProcessExecute)
+    case loginState
 }
 extension Service: TargetType {
     var baseURL: URL { return URL(string: APIUrl.baseUrl)! }
@@ -37,11 +38,13 @@ extension Service: TargetType {
             return APIUrl.queryProcessList
         case .createProcessExecute:
             return APIUrl.createProcessExecute
+        case .loginState:
+            return APIUrl.loginState
         }
     }
     var method: Moya.Method {
         switch self {
-        case .login, .queryEventList, .getGroupConfig, .createEvent, .queryTaskList, .queryEventInfo, .queryProcessList, .createProcessExecute :
+        case .login, .queryEventList, .getGroupConfig, .createEvent, .queryTaskList, .queryEventInfo, .queryProcessList, .createProcessExecute, .loginState :
             return .post
         }
     }
@@ -63,6 +66,8 @@ extension Service: TargetType {
             return Task.requestData((json.toJSONString()?.utf8Encoded)!)
         case .createProcessExecute(let json):
             return Task.requestData((json.toJSONString()?.utf8Encoded)!)
+        case .loginState:
+            return Task.requestPlain
         }
     }
     var sampleData: Foundation.Data {
@@ -83,6 +88,8 @@ extension Service: TargetType {
             return (json.toJSONString()?.utf8Encoded)!
         case .createProcessExecute(let json):
             return (json.toJSONString()?.utf8Encoded)!
+        case .loginState:
+            return "sdf".utf8Encoded
         }
     }
     var headers: [String: String]? {

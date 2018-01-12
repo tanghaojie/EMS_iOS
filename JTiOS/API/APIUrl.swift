@@ -12,6 +12,8 @@ class APIUrl {
     static let login = "api/user/Login"
     static var loginFullUrl: String { get { return APIUrl.baseUrl + "/" + APIUrl.login } }
     
+    static let loginState = "api/user/LoginState"
+    
     static let queryEventList = "api/event/QueryEventList"
     
     static let getGroupConfig = "api/config/GetGroupConfig"

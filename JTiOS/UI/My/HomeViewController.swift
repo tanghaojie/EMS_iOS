@@ -1,18 +1,22 @@
 //
-//  MyHomeViewController.swift
-//  MyFramework
+//  HomeViewController.swift
+//  JTiOS
 //
-//  Created by JT on 2017/6/12.
-//  Copyright © 2017年 JT. All rights reserved.
+//  Created by JT on 2018/1/12.
+//  Copyright © 2018年 JT. All rights reserved.
 //
 
 import UIKit
 
-class HomeViewController: UINavigationController {
-    
+class HomeViewController: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.pushViewController(MyViewController(), animated: true)
+        setup()
     }
-
+}
+extension HomeViewController {
+    private func setup() {
+        setupBackButton()
+    }
 }

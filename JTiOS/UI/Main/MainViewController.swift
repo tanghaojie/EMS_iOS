@@ -61,7 +61,7 @@ extension MainViewController {
         let config3 = JTTabbar.Config()
         config3.text = "我的"
         config3.titleColor = UIColor(red: 6, green: 111, blue: 165)
-        config3.tap = checkLogin
+        config3.tap = showMy
         
         let x = [config1, config2, config3]
         let tabbar = JTTabbar(config: x, width: Int(bottomTabbar.frame.width), height: Int(bottomTabbar.frame.height))
@@ -107,11 +107,6 @@ extension MainViewController {
 
 extension MainViewController {
     
-    private func logout() {
-        global_SystemUser = nil
-        Data.shareInstance.ClearData_Login()
-    }
-    
     private func showWarningReport() {
         let sb = UIStoryboard(name: "WarningReport", bundle: nil)
         let vc = sb.instantiateViewController(withIdentifier: "WarningReportNavigationController")
@@ -128,15 +123,21 @@ extension MainViewController {
         JTCheckLoginPresent(vc: vc)
     }
     
+    private func showMy() {
+        let sb = UIStoryboard(name: "Home", bundle: nil)
+        let vc = sb.instantiateViewController(withIdentifier: "HomeNavigationController")
+        present(vc, animated: true, completion: nil)
+    }
+    
 }
 extension MainViewController: AGSMapViewLayerDelegate {
     
     func mapViewDidLoad(_ mapView: AGSMapView!) {
         let map = mapView.mapLayers[0] as! AGSTiledLayer
         let envelop = map.initialEnvelope
-        self.mapView.zoom(to: envelop, animated: false)
-        self.mapView.locationDisplay.startDataSource()
-        self.mapView.locationDisplay.autoPanMode = .default
+        mapView.zoom(to: envelop, animated: false)
+        mapView.locationDisplay.startDataSource()
+        mapView.locationDisplay.autoPanMode = .default
     }
     
     private func addLayer() {

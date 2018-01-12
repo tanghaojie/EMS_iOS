@@ -65,13 +65,21 @@ class LoginViewController: UIViewController {
 extension LoginViewController {
     private func setupUI() {
         setupBackButton()
+        setMemoriedData()
     }
-
+    private func setMemoriedData() {
+        guard let d = Data.shareInstance.GetData_Login() else { return }
+        set(username: d.username, password: d.password)
+    }
 }
 
 extension LoginViewController {
-    private func get(){
-        self.vm.username = self.username.text
-        self.vm.password = self.password.text
+    private func get() {
+        vm.username = username.text
+        vm.password = password.text
+    }
+    private func set(username: String?, password: String?) {
+        self.username.text = username
+        self.password.text = password
     }
 }
