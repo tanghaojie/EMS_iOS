@@ -65,10 +65,13 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srM-cz-7Cq">
-                                                        <rect key="frame" x="8" y="40.5" width="273" height="0.0"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="唐浩桀" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srM-cz-7Cq">
+                                                        <rect key="frame" x="8" y="24.5" width="273" height="31"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="31" id="0rJ-9C-Adx"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                        <color key="textColor" red="0.31976996527777779" green="0.35923936631944442" blue="0.3261990017361111" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
@@ -123,9 +126,13 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="lU9-uf-uMq"/>
                                                         </constraints>
+                                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                                         <state key="normal" title="登录">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="loginTouchUpInside:" destination="QXY-CN-KjL" eventType="touchUpInside" id="FmE-KT-jw1"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ekz-PE-Id5">
                                                         <rect key="frame" x="8" y="46" width="343" height="30"/>
@@ -136,6 +143,9 @@
                                                         <state key="normal" title="退出">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="logoutTouchUpInside:" destination="QXY-CN-KjL" eventType="touchUpInside" id="BE1-aD-bsm"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.86274509803921573" green="0.86274509803921573" blue="0.86274509803921573" alpha="1" colorSpace="calibratedRGB"/>
@@ -183,6 +193,17 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="我的" id="MCd-iv-0MM"/>
+                    <connections>
+                        <outlet property="clearCache" destination="n8Q-dD-GR1" id="hpd-5f-TSA"/>
+                        <outlet property="clearCacheActivityIndicator" destination="O6U-v6-wLm" id="DmM-qY-Fdj"/>
+                        <outlet property="headProtrait" destination="aPH-AU-pwM" id="RZc-Ap-M1S"/>
+                        <outlet property="login" destination="Ew7-LI-O3O" id="72M-8Q-OV5"/>
+                        <outlet property="loginHeight" destination="lU9-uf-uMq" id="O07-ch-OPU"/>
+                        <outlet property="logout" destination="Ekz-PE-Id5" id="2SX-ni-eYG"/>
+                        <outlet property="logoutHeight" destination="FQI-cd-2xv" id="g5r-tB-Yao"/>
+                        <outlet property="name" destination="srM-cz-7Cq" id="Vkk-fc-I1B"/>
+                        <outlet property="scrollView" destination="cGM-mO-BFO" id="7P2-YV-drT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CDT-HU-jhP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

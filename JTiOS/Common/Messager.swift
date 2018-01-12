@@ -16,6 +16,8 @@ class Messager {
     let loginFailed = "登录失败"
     let notLogin = "未登录"
     let error = "错误"
+    let logouting = "正在退出"
+    let logoutFailed = "退出失败"
     let failedHttpResponseStatusCode = "Failed http response status code."
     let wrongResponseData = "Wrong response data."
     let unableParseData2String = "Unable parse [Data] to [String]."
