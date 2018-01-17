@@ -15,6 +15,7 @@ class LoginViewController: UIViewController {
     private let c = LoginC()
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var password: UITextField!
+    public var loginSuccessHandler: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +46,9 @@ class LoginViewController: UIViewController {
                 HUD.hide(animated: true)
                 if let r = result {
                     if(r.success) {
+                        if let h = self?.loginSuccessHandler {
+                            h()
+                        }
                         if let navi = self?.navigationController {
                             navi.dismiss(animated: true, completion: nil)
                         } else {

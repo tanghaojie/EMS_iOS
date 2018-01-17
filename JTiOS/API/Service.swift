@@ -18,6 +18,9 @@ enum Service {
     case createProcessExecute(json: RequestJson_CreateProcessExecute)
     case loginState
     case logout(json: RequestJson_Logout)
+    case queryFile(json: RequestJson_QueryFile)
+    case fileDownload(object: RequestObject_FileDownload)
+    case file(object: RequestObject_File)
 }
 extension Service: TargetType {
     var baseURL: URL { return URL(string: APIUrl.baseUrl)! }
@@ -43,12 +46,20 @@ extension Service: TargetType {
             return APIUrl.loginState
         case .logout:
             return APIUrl.logout
+        case .queryFile:
+            return APIUrl.queryFile
+        case .fileDownload(let object):
+            return APIUrl.file + "/" + String(describing: object.typenum) + "/" + String(describing: object.frid)
+        case .file(let object):
+            return APIUrl.file + "/" + String(describing: object.typenum) + "/" + String(describing: object.frid)
         }
     }
     var method: Moya.Method {
         switch self {
-        case .login, .queryEventList, .getGroupConfig, .createEvent, .queryTaskList, .queryEventInfo, .queryProcessList, .createProcessExecute, .loginState, .logout :
+    case .login, .queryEventList, .getGroupConfig, .createEvent, .queryTaskList, .queryEventInfo, .queryProcessList, .createProcessExecute, .loginState, .logout, .queryFile :
             return .post
+        case .fileDownload, .file:
+            return .get
         }
     }
     var task: Task {
@@ -73,8 +84,15 @@ extension Service: TargetType {
             return Task.requestPlain
         case .logout(let json):
             return Task.requestData((json.toJSONString()?.utf8Encoded)!)
+        case .queryFile(let json):
+            return Task.requestData((json.toJSONString()?.utf8Encoded)!)
+        case .fileDownload(let object):
+            return Task.downloadParameters(parameters: ["filename": object.prefix.rawValue + object.filename], encoding: URLEncoding.queryString, destination: object.destination)
+        case .file(let object):
+            return Task.requestParameters(parameters: ["filename": object.prefix.rawValue + object.filename], encoding: URLEncoding.queryString)
         }
     }
+    
     var sampleData: Foundation.Data {
         switch self {
         case .login(let json):
@@ -94,12 +112,19 @@ extension Service: TargetType {
         case .createProcessExecute(let json):
             return (json.toJSONString()?.utf8Encoded)!
         case .loginState:
-            return "sdf".utf8Encoded
+            return "nil".utf8Encoded
         case .logout(let json):
             return (json.toJSONString()?.utf8Encoded)!
+        case .queryFile(let json):
+            return (json.toJSONString()?.utf8Encoded)!
+        case .fileDownload:
+            return "nil".utf8Encoded
+        case .file:
+            return "nil".utf8Encoded
         }
     }
     var headers: [String: String]? {
         return ["Content-type": "application/json"]
     }
+    
 }

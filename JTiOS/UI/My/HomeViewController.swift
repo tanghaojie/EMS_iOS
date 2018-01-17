@@ -8,6 +8,7 @@
 
 import UIKit
 import MJRefresh
+import MBProgressHUD
 class HomeViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -21,9 +22,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var logoutHeight: NSLayoutConstraint!
     
     private let c = HomeC()
-    
-    private var x = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -32,8 +31,18 @@ class HomeViewController: UIViewController {
     
     @IBAction func loginTouchUpInside(_ sender: Any) {
         let sb = UIStoryboard(name: "Login", bundle: nil)
-        let vc = sb.instantiateViewController(withIdentifier: "LoginNavigationController")
-        present(vc, animated: true, completion: nil)
+        if let vc = sb.instantiateViewController(withIdentifier: "LoginNavigationController") as? LoginNavigationController {
+            if vc.viewControllers.count > 0 {
+                if let v = vc.viewControllers[0] as? LoginViewController {
+                    v.loginSuccessHandler = { [weak self] in
+                        if let s = self {
+                            s.scrollView.mj_header.beginRefreshing()
+                        }
+                    }
+                }
+            }
+            present(vc, animated: true, completion: nil)
+        }
     }
     @IBAction func logoutTouchUpInside(_ sender: Any) {
         let HUD = showProgressHUD(msg: Messager.shareInstance.logouting)
@@ -52,11 +61,17 @@ class HomeViewController: UIViewController {
 }
 extension HomeViewController {
     private func setup() {
-        setupBackButton()
-        setupClearCache()
         loginButtonHide()
         logoutButtonHide()
+        setupBackButton()
+        setupClearCache()
         setupRefreshHeader()
+        setupHeadPortraitTapGestureRecognizer()
+    }
+    private func setupHeadPortraitTapGestureRecognizer() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(setHeadPortraitAction))
+        tapGestureRecognizer.cancelsTouchesInView = false
+        headProtrait.addGestureRecognizer(tapGestureRecognizer)
     }
     private func setupClearCache() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(clearCacheAction))
@@ -103,7 +118,7 @@ extension HomeViewController {
     private func setName(name: String? = nil) {
         self.name.text = name
     }
-    private func setHeadProtrait() {
+    private func setDefaultHeadProtrait() {
         headProtrait.image = UIImage(named: "defaultHead")
     }
 }
@@ -112,10 +127,29 @@ extension HomeViewController {
     private func checkLoginState() {
         c.loginState() { [weak self] (hadLogin: Bool, msg: String?) in
             self?.logInOutButtonUI(isLogin: hadLogin)
+            self?.setName(name: global_SystemUser?.realname)
             if hadLogin {
-                self?.setName(name: global_SystemUser?.realname)
+                self?.c.getHeadPortrait() {
+                    success, data, msg in
+                    if success {
+                        guard let d = data, let img = UIImage(data: d)  else {
+                            self?.setDefaultHeadProtrait()
+                            return
+                        }
+                        self?.headProtrait.image = img
+                    } else {
+                        guard let s = self else { return }
+                        let HUD = MBProgressHUD.showAdded(to: s.view, animated: true)
+                        HUD.bezelView.color = UIColor(red: 220, green: 220, blue: 220)
+                        HUD.label.text = Messager.shareInstance.networkError + (msg ?? "")
+                        HUD.backgroundView.style = .solidColor
+                        HUD.removeFromSuperViewOnHide = true
+                        HUD.mode = .text
+                        HUD.hide(animated: true, afterDelay: 1)
+                    }
+                }
             } else {
-                
+                self?.setDefaultHeadProtrait()
             }
         }
         scrollView.mj_header.endRefreshing()
@@ -133,5 +167,49 @@ extension HomeViewController {
         JTTemp_NotOpen()
         clearCacheActivityIndicator.stopAnimating()
     }
+    @objc private func setHeadPortraitAction() {
+        showImagePicker()
+    }
+    
     
 }
+
+extension HomeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    private func showImagePicker(){
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        let actionAlbum = UIAlertAction(title: Messager.shareInstance.album, style: .default){ [weak self] (action) -> Void in
+            picker.sourceType = .savedPhotosAlbum
+            self?.navigationController?.present(picker, animated: true, completion: nil)
+        }
+        let actionCamera = UIAlertAction(title: Messager.shareInstance.camera, style: .default){ [weak self] (action) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                picker.sourceType = .camera
+                self?.navigationController?.present(picker, animated: true, completion: nil)
+            } else {
+                if let xself = self {
+                    Alert.shareInstance.AlertWithUIAlertAction(view: xself, title: Messager.shareInstance.warning, message: Messager.shareInstance.cannotUserCamera, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                }
+            }
+        }
+        let actionCancel = UIAlertAction(title: Messager.shareInstance.cancel, style: .cancel, handler: nil)
+        let actionController = UIAlertController(title: Messager.shareInstance.selectHeadPortrait, message: Messager.shareInstance.takePhotoOrSelectFromAlbum, preferredStyle: .actionSheet)
+        actionController.addAction(actionAlbum)
+        actionController.addAction(actionCamera)
+        actionController.addAction(actionCancel)
+        self.navigationController?.present(actionController, animated: true, completion: nil)
+    }
+    
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+}
+

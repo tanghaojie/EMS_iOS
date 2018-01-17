@@ -11,7 +11,7 @@ import Moya
 class ServiceManager {
     static let shareInstance = ServiceManager()
     private init() {}
-    
+
     let provider = MoyaProvider<Service>(manager: DefaultAlamofireManager.sharedManager)
     let provider_2s = MoyaProvider<Service>(manager: DefaultAlamofireManager_2.sharedManager)
     

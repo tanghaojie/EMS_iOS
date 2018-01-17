@@ -108,6 +108,17 @@ enum HttpMethod: String {
     case GET = "GET"
     case POST = "POST"
 }
+enum FileTypenum: Int {
+    case HeadPortrait = 1
+    case Event = 2
+    case Task = 3
+    case Deal = 4
+}
+enum ImagePrefix: String {
+    case Origin = ""
+    case Minimum = "m"
+    case HeadProtrait = "l"
+}
 let global_DateTimeFormate = "yyyy-MM-dd HH:mm:ss"
 var global_SystemUser: Object_LoginResponseUser?
 var global_SystemAllConfig: [Object_GetGroupConfig]?

@@ -59,7 +59,7 @@ class Data {
     
     private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        let url = FileManage.shareInstance.applicationDocumentsDirectory.appendingPathComponent(coreDataSqliteName)
+        let url = FileManage.shareInstance.documentFile.appendingPathComponent(coreDataSqliteName)
         do {
             try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
         } catch {

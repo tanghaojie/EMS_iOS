@@ -7,6 +7,7 @@
 //
 
 class APIUrl {
+    
     static var baseUrl = "http://39.104.66.207:10064/emsweb"
     
     static let login = "api/user/Login"
@@ -30,4 +31,9 @@ class APIUrl {
     static let queryProcessList = "api/process/QueryProcessList"
     
     static let createProcessExecute = "api/process/CreateProcessExecute"
+    
+    static let queryFile = "api/file/QueryFile"
+    
+    static let file = "api/file"
+    
 }

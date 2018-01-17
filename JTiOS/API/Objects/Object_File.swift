@@ -7,6 +7,7 @@
 //
 import ObjectMapper
 class Object_File: Mappable {
+    var id: Int?
     var frid: Int?
     var typenum: Int?
     var oldfilename: String?
@@ -16,6 +17,7 @@ class Object_File: Mappable {
     var createtime: String?
     required init?(map: Map) {}
     func mapping(map: Map) {
+        id    <- map["id"]
         frid    <- map["frid"]
         typenum    <- map["typenum"]
         oldfilename    <- map["oldfilename"]
@@ -25,3 +27,4 @@ class Object_File: Mappable {
         createtime    <- map["createtime"]
     }
 }
+

@@ -11,12 +11,20 @@ class Messager {
     private init() {}
     
     let ok = "确定"
+    let warning = "警告"
+    let cancel = "取消"
+    
     let logining = "正在登录"
     let notOpen = "暂未开放"
     let loginFailed = "登录失败"
     let notLogin = "未登录"
     let error = "错误"
+    let album = "相册"
+    let camera = "拍照"
+    let cannotUserCamera = "照相机无法使用"
+    
     let logouting = "正在退出"
+    let networkError = "网络异常"
     let logoutFailed = "退出失败"
     let failedHttpResponseStatusCode = "Failed http response status code."
     let wrongResponseData = "Wrong response data."
@@ -31,4 +39,6 @@ class Messager {
     let tryAgain = "请重试"
     let taskDealCreating = "任务处理上报中"
     let createTaskDealFailed = "任务处理上报失败"
+    let selectHeadPortrait = "选择头像"
+    let takePhotoOrSelectFromAlbum = "拍照或从相册选择"
 }
