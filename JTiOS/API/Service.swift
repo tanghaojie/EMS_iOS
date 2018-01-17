@@ -21,6 +21,7 @@ enum Service {
     case queryFile(json: RequestJson_QueryFile)
     case fileDownload(object: RequestObject_FileDownload)
     case file(object: RequestObject_File)
+    case fileUpload(object: RequestObject_FileUpload)
 }
 extension Service: TargetType {
     var baseURL: URL { return URL(string: APIUrl.baseUrl)! }
@@ -52,11 +53,13 @@ extension Service: TargetType {
             return APIUrl.file + "/" + String(describing: object.typenum) + "/" + String(describing: object.frid)
         case .file(let object):
             return APIUrl.file + "/" + String(describing: object.typenum) + "/" + String(describing: object.frid)
+        case .fileUpload:
+            return APIUrl.fileUpload
         }
     }
     var method: Moya.Method {
         switch self {
-    case .login, .queryEventList, .getGroupConfig, .createEvent, .queryTaskList, .queryEventInfo, .queryProcessList, .createProcessExecute, .loginState, .logout, .queryFile :
+    case .login, .queryEventList, .getGroupConfig, .createEvent, .queryTaskList, .queryEventInfo, .queryProcessList, .createProcessExecute, .loginState, .logout, .queryFile, .fileUpload :
             return .post
         case .fileDownload, .file:
             return .get
@@ -90,6 +93,14 @@ extension Service: TargetType {
             return Task.downloadParameters(parameters: ["filename": object.prefix.rawValue + object.filename], encoding: URLEncoding.queryString, destination: object.destination)
         case .file(let object):
             return Task.requestParameters(parameters: ["filename": object.prefix.rawValue + object.filename], encoding: URLEncoding.queryString)
+        case .fileUpload(let object):
+            var multipartDatas = [MultipartFormData]()
+            for file in object.files {
+                let data = MultipartFormData(provider: .data(file.data), name: file.name, fileName: file.fileName, mimeType: file.mimeType)
+                multipartDatas.append(data)
+            }
+            let urlParameters: [String : Any] = ["frid": object.frid, "typenum": object.typenum, "actualtime": object.actualtime]
+            return Task.uploadCompositeMultipart(multipartDatas, urlParameters: urlParameters)
         }
     }
     
@@ -120,6 +131,8 @@ extension Service: TargetType {
         case .fileDownload:
             return "nil".utf8Encoded
         case .file:
+            return "nil".utf8Encoded
+        case .fileUpload:
             return "nil".utf8Encoded
         }
     }

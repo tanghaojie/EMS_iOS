@@ -36,4 +36,6 @@ class APIUrl {
     
     static let file = "api/file"
     
+    static let fileUpload = "api/file/UploadFile"
+    
 }

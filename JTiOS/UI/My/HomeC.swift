@@ -115,7 +115,7 @@ class HomeC {
         if let filename = global_SystemUser?.portraiturl {
             if let id = global_SystemUser?.id {
                 let request = RequestObject_File(typenum: FileTypenum.HeadPortrait.rawValue, frid: id, filename: filename, prefix: ImagePrefix.Origin)
-                Image.shareInstance.getImage(requestObject: request) {
+                WebFile.shareInstance.getFile(requestObject: request) {
                     success, data, msg in
                     if let h = handler {
                         h(success, data, msg)

@@ -5,7 +5,6 @@
 //  Created by JT on 2018/1/16.
 //  Copyright © 2018年 JT. All rights reserved.
 //
-import Alamofire
 class RequestObject_File {
     var typenum: Int
     var frid: Int
