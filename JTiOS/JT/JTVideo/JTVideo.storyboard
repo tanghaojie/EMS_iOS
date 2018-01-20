@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1VP-Gx-eBH">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Video View Controller-->
+        <scene sceneID="rK8-Pr-Jfm">
+            <objects>
+                <viewController storyboardIdentifier="JTVideo" id="1VP-Gx-eBH" customClass="JTVideoViewController" customModule="JTiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1rQ-Hd-Bfp"/>
+                        <viewControllerLayoutGuide type="bottom" id="7yk-qi-F7y"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Wps-un-4qb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rnK-1j-zfd">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xcB-O1-iFe">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="659"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vIB-wB-wu0">
+                                                <rect key="frame" x="142.5" y="589" width="90" height="40"/>
+                                                <color key="backgroundColor" red="0.62036462397783421" green="0.73905518969489825" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="rTU-SV-7wb"/>
+                                                    <constraint firstAttribute="width" constant="90" id="syl-m6-RUW"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="10"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                        <integer key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="controlTouchUpInside:" destination="1VP-Gx-eBH" eventType="touchUpInside" id="zNa-Ci-3dP"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8s8-54-dhW">
+                                                <rect key="frame" x="262.5" y="591.5" width="60" height="35"/>
+                                                <color key="backgroundColor" red="1" green="0.85147151747753935" blue="0.5573133928829177" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="35" id="TfF-UL-8qd"/>
+                                                    <constraint firstAttribute="width" constant="60" id="Z0C-ym-Htb"/>
+                                                </constraints>
+                                                <state key="normal" title="保存"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="15"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                        <integer key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="saveTouchUpInside:" destination="1VP-Gx-eBH" eventType="touchUpInside" id="mMZ-eM-LXn"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aWt-yN-iKs">
+                                                <rect key="frame" x="52.5" y="591.5" width="60" height="35"/>
+                                                <color key="backgroundColor" red="0.37133384277402925" green="1" blue="0.32510803318892023" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="35" id="Zfa-Gd-vuq"/>
+                                                    <constraint firstAttribute="width" constant="60" id="ia4-Sx-1da"/>
+                                                </constraints>
+                                                <state key="normal" title="返回"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="15"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                        <integer key="value" value="2"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="backTouchUpInside:" destination="1VP-Gx-eBH" eventType="touchUpInside" id="lUh-a9-Rcb"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="vIB-wB-wu0" firstAttribute="leading" secondItem="aWt-yN-iKs" secondAttribute="trailing" constant="30" id="20I-kp-P15"/>
+                                            <constraint firstItem="8s8-54-dhW" firstAttribute="centerY" secondItem="vIB-wB-wu0" secondAttribute="centerY" id="BJS-jq-rS5"/>
+                                            <constraint firstItem="vIB-wB-wu0" firstAttribute="centerX" secondItem="xcB-O1-iFe" secondAttribute="centerX" id="ZwS-8P-dVg"/>
+                                            <constraint firstItem="vIB-wB-wu0" firstAttribute="centerY" secondItem="aWt-yN-iKs" secondAttribute="centerY" id="rQk-iw-5bx"/>
+                                            <constraint firstItem="8s8-54-dhW" firstAttribute="leading" secondItem="vIB-wB-wu0" secondAttribute="trailing" constant="30" id="syl-Ob-hGg"/>
+                                            <constraint firstAttribute="bottom" secondItem="vIB-wB-wu0" secondAttribute="bottom" constant="30" id="xrj-xK-LWf"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ut4-Rr-Dh5">
+                                        <rect key="frame" x="0.0" y="659" width="375" height="8"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="8" id="GxV-pG-mZJ"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="xcB-O1-iFe" secondAttribute="trailing" id="0G0-YF-lM0"/>
+                                    <constraint firstItem="ut4-Rr-Dh5" firstAttribute="top" secondItem="xcB-O1-iFe" secondAttribute="bottom" id="CdG-d2-aMv"/>
+                                    <constraint firstItem="xcB-O1-iFe" firstAttribute="top" secondItem="rnK-1j-zfd" secondAttribute="top" id="HX1-eA-hDl"/>
+                                    <constraint firstItem="xcB-O1-iFe" firstAttribute="leading" secondItem="rnK-1j-zfd" secondAttribute="leading" id="J9K-sV-bal"/>
+                                    <constraint firstAttribute="bottom" secondItem="ut4-Rr-Dh5" secondAttribute="bottom" id="NKH-Ua-90R"/>
+                                    <constraint firstAttribute="trailing" secondItem="ut4-Rr-Dh5" secondAttribute="trailing" id="ci3-z0-23f"/>
+                                    <constraint firstItem="ut4-Rr-Dh5" firstAttribute="leading" secondItem="rnK-1j-zfd" secondAttribute="leading" id="znm-vT-WsI"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rnK-1j-zfd" firstAttribute="leading" secondItem="Wps-un-4qb" secondAttribute="leading" id="Rsu-qS-6hk"/>
+                            <constraint firstAttribute="bottom" secondItem="rnK-1j-zfd" secondAttribute="bottom" id="Z8k-KS-eJY"/>
+                            <constraint firstItem="rnK-1j-zfd" firstAttribute="top" secondItem="Wps-un-4qb" secondAttribute="top" id="ZwA-bd-7Pe"/>
+                            <constraint firstAttribute="trailing" secondItem="rnK-1j-zfd" secondAttribute="trailing" id="lhV-5m-H8b"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="back" destination="aWt-yN-iKs" id="9HD-C7-WOM"/>
+                        <outlet property="control" destination="vIB-wB-wu0" id="jb5-gu-fzh"/>
+                        <outlet property="progress" destination="ut4-Rr-Dh5" id="7yC-Cn-D4E"/>
+                        <outlet property="save" destination="8s8-54-dhW" id="ykH-kw-pSL"/>
+                        <outlet property="video" destination="xcB-O1-iFe" id="IhU-JS-Szc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gFS-16-tTN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-279.19999999999999" y="178.56071964017991"/>
+        </scene>
+    </scenes>
+</document>

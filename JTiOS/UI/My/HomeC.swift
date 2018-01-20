@@ -112,17 +112,42 @@ class HomeC {
     }
     
     func getHeadPortrait(handler: ((Bool, Foundation.Data?, String?) -> Void)? = nil) {
-        if let filename = global_SystemUser?.portraiturl {
-            if let id = global_SystemUser?.id {
-                let request = RequestObject_File(typenum: FileTypenum.HeadPortrait.rawValue, frid: id, filename: filename, prefix: ImagePrefix.Origin)
-                WebFile.shareInstance.getFile(requestObject: request) {
-                    success, data, msg in
-                    if let h = handler {
-                        h(success, data, msg)
-                    }
-                }
+        guard let filename = global_SystemUser?.portraiturl, let id = global_SystemUser?.id else {
+            if let h = handler {
+                h(false, nil, Messager.shareInstance.notLogin)
+            }
+            return
+        }
+        let request = RequestObject_File(typenum: FileTypenum.HeadPortrait, frid: id, filename: filename, prefix: ImagePrefix.HeadProtrait)
+        WebFile.shareInstance.getFile(requestObject: request) {
+            success, data, msg in
+            if let h = handler {
+                h(success, data, msg)
             }
         }
+    }
+    func uploadHeadPortrait(image: UIImage, handler: ((Bool, String?) -> Void)? = nil) {
+        guard let id = global_SystemUser?.id else {
+            if let h = handler {
+                h(false, Messager.shareInstance.notLogin)
+            }
+            return
+        }
+        let data: Foundation.Data
+        let fileExtension: String
+        let mime: String
+        if UIImageJPEGRepresentation(image, 1.0) != nil {
+            data = UIImageJPEGRepresentation(image, 1.0)!
+            fileExtension = ".jpg"
+            mime = "image/jpg"
+        } else {
+            data = UIImagePNGRepresentation(image)!
+            fileExtension = ".png"
+            mime = "image/png"
+        }
+        let file = Object_FileUpload(data: data, name: "file", fileName: "file" + fileExtension, mimeType: mime)
+        let request = RequestObject_FileUpload(typenum: FileTypenum.HeadPortrait, frid: id, actualtime: Date(), files: [file])
+        WebFile.shareInstance.uploadFile(requestObject: request, handler: handler)
     }
     
     

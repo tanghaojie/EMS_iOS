@@ -301,7 +301,9 @@
                         <outlet property="levelButton" destination="346-Z5-WLT" id="C1I-xv-Dt1"/>
                         <outlet property="locationButton" destination="fmT-zP-AbA" id="nSl-M0-D40"/>
                         <outlet property="nameTextField" destination="oUa-lw-Jta" id="9DX-JY-7T7"/>
+                        <outlet property="scrollViewHeight" destination="n4c-pk-kF3" id="VLZ-ZG-gUl"/>
                         <outlet property="selectView" destination="0wo-iI-qcE" id="gUq-cb-y2m"/>
+                        <outlet property="selectViewHeight" destination="XXc-xX-IXe" id="Mfg-Fl-LPy"/>
                         <outlet property="typeButton" destination="QRV-8a-M6y" id="8pk-yH-Dn2"/>
                     </connections>
                 </viewController>

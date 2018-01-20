@@ -7,13 +7,13 @@
 //
 import Alamofire
 class RequestObject_FileDownload {
-    var typenum: Int
+    var typenum: FileTypenum
     var frid: Int
     var filename: String
     var destination: DownloadRequest.DownloadFileDestination
     var prefix: ImagePrefix
     
-    init(typenum: Int, frid: Int, filename: String, prefix: ImagePrefix, destination: @escaping DownloadRequest.DownloadFileDestination) {
+    init(typenum: FileTypenum, frid: Int, filename: String, prefix: ImagePrefix, destination: @escaping DownloadRequest.DownloadFileDestination) {
         self.typenum = typenum
         self.frid = frid
         self.filename = filename

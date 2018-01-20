@@ -6,11 +6,11 @@
 //  Copyright © 2018年 JT. All rights reserved.
 //
 class RequestObject_FileUpload {
-    var typenum: Int
+    var typenum: FileTypenum
     var frid: Int
     var actualtime: Date
     var files: [Object_FileUpload]
-    init(typenum: Int, frid: Int, actualtime: Date, files: [Object_FileUpload]) {
+    init(typenum: FileTypenum, frid: Int, actualtime: Date, files: [Object_FileUpload]) {
         self.typenum = typenum
         self.frid = frid
         self.actualtime = actualtime

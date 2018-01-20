@@ -21,7 +21,11 @@ class Messager {
     let error = "错误"
     let album = "相册"
     let camera = "拍照"
-    let cannotUserCamera = "照相机无法使用"
+    let cannotUseCamera = "摄像头无法使用"
+    let cannotUseMicrophone = "麦克风无法使用"
+    let uploading = "上传中"
+    
+    let uploadFailed = "上传失败"
     
     let logouting = "正在退出"
     let networkError = "网络异常"

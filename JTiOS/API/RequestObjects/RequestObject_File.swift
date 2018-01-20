@@ -6,12 +6,12 @@
 //  Copyright © 2018年 JT. All rights reserved.
 //
 class RequestObject_File {
-    var typenum: Int
+    var typenum: FileTypenum
     var frid: Int
     var filename: String
     var prefix: ImagePrefix
     
-    init(typenum: Int, frid: Int, filename: String, prefix: ImagePrefix) {
+    init(typenum: FileTypenum, frid: Int, filename: String, prefix: ImagePrefix) {
         self.typenum = typenum
         self.frid = frid
         self.filename = filename

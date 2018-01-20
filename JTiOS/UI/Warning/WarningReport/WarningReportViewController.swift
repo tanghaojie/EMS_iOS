@@ -19,13 +19,28 @@ class WarningReportViewController: UIViewController {
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var detailTextView: UITextView!
     @IBOutlet weak var selectView: UIView!
+    @IBOutlet weak var selectViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewHeight: NSLayoutConstraint!
     
     private let vm = WarningReportVM()
     private let c = WarningReportC()
     
+    
+    let pvPicker = JTPictureAndVideoPicker()
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+
+        scrollViewHeight.constant = 5800
+        pvPicker.backgroundColor = .red
+        selectView.addSubview(pvPicker)
+        let left = NSLayoutConstraint(item: pvPicker, attribute: .left, relatedBy: .equal, toItem: selectView, attribute: .left, multiplier: 1, constant: 0)
+        let right = NSLayoutConstraint(item: pvPicker, attribute: .right, relatedBy: .equal, toItem: selectView, attribute: .right, multiplier: 1, constant: 0)
+        let topContraint = NSLayoutConstraint(item: pvPicker, attribute: .top, relatedBy: .equal, toItem: selectView, attribute: .top, multiplier: 1, constant: 0)
+        selectView.addConstraints([left, right, topContraint])
+        let h = NSLayoutConstraint(item: selectView, attribute: .height, relatedBy: .equal, toItem: pvPicker, attribute: .height, multiplier: 1, constant: 0)
+        selectView.removeConstraint(selectViewHeight)
+        selectView.addConstraint(h)
     }
     @IBAction func typeTouchUpInside(_ sender: Any) {
         let sb = UIStoryboard(name: "JTPickerStoryboard", bundle: nil)
@@ -134,3 +149,5 @@ extension WarningReportViewController {
         self.vm.detail = detailTextView.text
     }
 }
+
+

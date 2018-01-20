@@ -50,16 +50,16 @@ extension Service: TargetType {
         case .queryFile:
             return APIUrl.queryFile
         case .fileDownload(let object):
-            return APIUrl.file + "/" + String(describing: object.typenum) + "/" + String(describing: object.frid)
+            return APIUrl.file + "/" + String(describing: object.typenum.rawValue) + "/" + String(describing: object.frid)
         case .file(let object):
-            return APIUrl.file + "/" + String(describing: object.typenum) + "/" + String(describing: object.frid)
+            return APIUrl.file + "/" + String(describing: object.typenum.rawValue) + "/" + String(describing: object.frid)
         case .fileUpload:
             return APIUrl.fileUpload
         }
     }
     var method: Moya.Method {
         switch self {
-    case .login, .queryEventList, .getGroupConfig, .createEvent, .queryTaskList, .queryEventInfo, .queryProcessList, .createProcessExecute, .loginState, .logout, .queryFile, .fileUpload :
+        case .login, .queryEventList, .getGroupConfig, .createEvent, .queryTaskList, .queryEventInfo, .queryProcessList, .createProcessExecute, .loginState, .logout, .queryFile, .fileUpload :
             return .post
         case .fileDownload, .file:
             return .get
@@ -99,7 +99,7 @@ extension Service: TargetType {
                 let data = MultipartFormData(provider: .data(file.data), name: file.name, fileName: file.fileName, mimeType: file.mimeType)
                 multipartDatas.append(data)
             }
-            let urlParameters: [String : Any] = ["frid": object.frid, "typenum": object.typenum, "actualtime": object.actualtime]
+            let urlParameters: [String : Any] = ["frid": object.frid, "typenum": object.typenum.rawValue, "actualtime": object.actualtime]
             return Task.uploadCompositeMultipart(multipartDatas, urlParameters: urlParameters)
         }
     }

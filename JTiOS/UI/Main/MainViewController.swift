@@ -111,6 +111,10 @@ extension MainViewController {
         let sb = UIStoryboard(name: "WarningReport", bundle: nil)
         let vc = sb.instantiateViewController(withIdentifier: "WarningReportNavigationController")
         JTCheckLoginPresent(vc: vc)
+        
+//        let sb = UIStoryboard(name: "JTVideo", bundle: nil)
+//        let vc = sb.instantiateViewController(withIdentifier: "JTVideo")
+//        self.present(vc, animated: true, completion: nil)
     }
     
     private func showWarning() {

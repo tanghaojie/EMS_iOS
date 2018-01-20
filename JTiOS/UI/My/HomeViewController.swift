@@ -189,7 +189,7 @@ extension HomeViewController: UIImagePickerControllerDelegate, UINavigationContr
                 self?.navigationController?.present(picker, animated: true, completion: nil)
             } else {
                 if let xself = self {
-                    Alert.shareInstance.AlertWithUIAlertAction(view: xself, title: Messager.shareInstance.warning, message: Messager.shareInstance.cannotUserCamera, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                    Alert.shareInstance.AlertWithUIAlertAction(view: xself, title: Messager.shareInstance.warning, message: Messager.shareInstance.cannotUseCamera, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
                 }
             }
         }
@@ -202,9 +202,30 @@ extension HomeViewController: UIImagePickerControllerDelegate, UINavigationContr
     }
     
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        
         picker.dismiss(animated: true, completion: nil)
+        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            return
+        }
+        let HUD = MBProgressHUD.showAdded(to: view, animated: true)
+        HUD.bezelView.color = UIColor.clear
+        HUD.label.text = Messager.shareInstance.uploading
+        HUD.backgroundView.style = .blur
+        HUD.removeFromSuperViewOnHide = true
+        HUD.minShowTime = 1
+        HUD.show(animated: true)
+        c.uploadHeadPortrait(image: image) {
+            [weak self] success, msg in
+            DispatchQueue.main.async {
+                HUD.hide(animated: true)
+                if success {
+                    self?.headProtrait.image = image
+                } else {
+                    if let s = self {
+                        Alert.shareInstance.AlertWithUIAlertAction(view: s, title: Messager.shareInstance.uploadFailed, message: msg, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                    }
+                }
+            }
+        }
     }
     
     internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
