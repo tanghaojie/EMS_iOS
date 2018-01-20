@@ -14,4 +14,5 @@ class WarningReportVM {
     var address: String?
     var date: Date?
     var detail: String?
+    var pictureAndVideos: [AnyObject]?
 }

@@ -21,27 +21,17 @@ class WarningReportViewController: UIViewController {
     @IBOutlet weak var selectView: UIView!
     @IBOutlet weak var selectViewHeight: NSLayoutConstraint!
     @IBOutlet weak var scrollViewHeight: NSLayoutConstraint!
+
+    var jtMediaPicker: JTMediaPicker?
     
     private let vm = WarningReportVM()
     private let c = WarningReportC()
-    
-    
-    let pvPicker = JTPictureAndVideoPicker()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-
-        scrollViewHeight.constant = 5800
-        pvPicker.backgroundColor = .red
-        selectView.addSubview(pvPicker)
-        let left = NSLayoutConstraint(item: pvPicker, attribute: .left, relatedBy: .equal, toItem: selectView, attribute: .left, multiplier: 1, constant: 0)
-        let right = NSLayoutConstraint(item: pvPicker, attribute: .right, relatedBy: .equal, toItem: selectView, attribute: .right, multiplier: 1, constant: 0)
-        let topContraint = NSLayoutConstraint(item: pvPicker, attribute: .top, relatedBy: .equal, toItem: selectView, attribute: .top, multiplier: 1, constant: 0)
-        selectView.addConstraints([left, right, topContraint])
-        let h = NSLayoutConstraint(item: selectView, attribute: .height, relatedBy: .equal, toItem: pvPicker, attribute: .height, multiplier: 1, constant: 0)
-        selectView.removeConstraint(selectViewHeight)
-        selectView.addConstraint(h)
     }
+    
     @IBAction func typeTouchUpInside(_ sender: Any) {
         let sb = UIStoryboard(name: "JTPickerStoryboard", bundle: nil)
         let vc = sb.instantiateViewController(withIdentifier: "JTPickerStoryboard")
@@ -119,6 +109,41 @@ extension WarningReportViewController {
         setupDatePicker()
         setupBackButton()
         setupTextViewBorader()
+        setupJTMediaPicker()
+    }
+    private func setupJTMediaPicker() {
+        jtMediaPicker = JTMediaPicker(
+            maxCount: 9,
+            numberOfLine: 3,
+            addAction: { [weak self] in
+                self?.showPictureAndVideoPicker()
+            },
+            tapAction: nil,
+            deleteAction: { [weak self] index in
+                let actionController = UIAlertController(title: Messager.shareInstance.warning, message: Messager.shareInstance.ifDelete, preferredStyle: .alert)
+                let actionDel = UIAlertAction(title: Messager.shareInstance.delete, style: .default){ action in
+                    guard let jt = self?.jtMediaPicker else { return }
+                    jt.removeData(at: index)
+                }
+                let actionCancel = UIAlertAction(title: Messager.shareInstance.cancel, style: .cancel, handler: nil)
+                actionController.addAction(actionDel)
+                actionController.addAction(actionCancel)
+                var vc: UIViewController? = self?.navigationController
+                if vc == nil { vc = self }
+                vc?.present(actionController, animated: true, completion: nil)
+        })
+        guard let jt = jtMediaPicker else { return }
+        
+        //jt.backgroundColor = .red
+        jt.translatesAutoresizingMaskIntoConstraints = false
+        selectView.addSubview(jt)
+        
+        let left = NSLayoutConstraint(item: jt, attribute: .left, relatedBy: .equal, toItem: selectView, attribute: .left, multiplier: 1, constant: 0)
+        let right = NSLayoutConstraint(item: jt, attribute: .right, relatedBy: .equal, toItem: selectView, attribute: .right, multiplier: 1, constant: 0)
+        let topContraint = NSLayoutConstraint(item: jt, attribute: .top, relatedBy: .equal, toItem: selectView, attribute: .top, multiplier: 1, constant: 0)
+        let h = NSLayoutConstraint(item: selectView, attribute: .height, relatedBy: .equal, toItem: jt, attribute: .height, multiplier: 1, constant: 0)
+        selectView.removeConstraint(selectViewHeight)
+        selectView.addConstraints([left, right, topContraint, h])
     }
     private func setupTextViewBorader() {
         detailTextView.layer.cornerRadius = 5
@@ -147,7 +172,60 @@ extension WarningReportViewController {
         self.vm.address = addressTextField.text
         self.vm.date = datePicker.date.addingTimeInterval(TimeInterval(TimeZone.current.secondsFromGMT()))
         self.vm.detail = detailTextView.text
+        //self.vm.pictureAndVideos = jtPictureAndVideoPicker?.getData()
     }
+}
+extension WarningReportViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    private func showPictureAndVideoPicker(){
+        var vc: UIViewController? = self.navigationController
+        if vc == nil { vc = self }
+        let actionAlbum = UIAlertAction(title: Messager.shareInstance.album, style: .default){ [weak self] (action) -> Void in
+            let picker = UIImagePickerController()
+            picker.delegate = self
+            picker.sourceType = .savedPhotosAlbum
+            guard let viewController = vc else { return }
+            viewController.present(picker, animated: true, completion: nil)
+        }
+        let actionCamera = UIAlertAction(title: Messager.shareInstance.camera, style: .default){ [weak self] (action) -> Void in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                let picker = UIImagePickerController()
+                picker.delegate = self
+                picker.sourceType = .camera
+                guard let viewController = vc else { return }
+                viewController.present(picker, animated: true, completion: nil)
+            } else {
+                guard let xself = self else { return }
+                Alert.shareInstance.AlertWithUIAlertAction(view: xself, title: Messager.shareInstance.warning, message: Messager.shareInstance.cannotUseCamera, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+            }
+        }
+        let actionVideo = UIAlertAction(title: Messager.shareInstance.video, style: .default){ action in
+            let sb = UIStoryboard(name: "JTVideo", bundle: nil)
+            let jtvideo = sb.instantiateViewController(withIdentifier: "JTVideo")
+            guard let viewController = vc else { return }
+            viewController.present(jtvideo, animated: true, completion: nil)
+        }
+        let actionCancel = UIAlertAction(title: Messager.shareInstance.cancel, style: .cancel, handler: nil)
+        let actionController = UIAlertController(title: Messager.shareInstance.selectType, message: Messager.shareInstance.takePhotoOrSelectFromAlbum, preferredStyle: .actionSheet)
+        actionController.addAction(actionAlbum)
+        actionController.addAction(actionCamera)
+        actionController.addAction(actionVideo)
+        actionController.addAction(actionCancel)
+        guard let viewController = vc else { return }
+        viewController.present(actionController, animated: true, completion: nil)
+    }
+    
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
+        guard let jt = jtMediaPicker else { return }
+        jt.addData(anyObject: image)
+    }
+    
+    internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
 }
 
 

@@ -21,9 +21,13 @@ class Messager {
     let error = "错误"
     let album = "相册"
     let camera = "拍照"
+    let video = "视频"
+    let delete = "删除"
     let cannotUseCamera = "摄像头无法使用"
     let cannotUseMicrophone = "麦克风无法使用"
     let uploading = "上传中"
+    
+    let ifDelete = "是否删除"
     
     let uploadFailed = "上传失败"
     
@@ -43,6 +47,7 @@ class Messager {
     let tryAgain = "请重试"
     let taskDealCreating = "任务处理上报中"
     let createTaskDealFailed = "任务处理上报失败"
+    let selectType = "选择类型"
     let selectHeadPortrait = "选择头像"
     let takePhotoOrSelectFromAlbum = "拍照或从相册选择"
 }

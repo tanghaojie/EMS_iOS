@@ -15,13 +15,20 @@ class JTPictureAndVideoPicker: UIView {
     private var data: [AnyObject] = [AnyObject]()
     private let spaceSize: CGFloat = 8
     private let columnCount: Int = 4
+    private let addButtonImage = UIImage(named: "add2")
+    private let addButtonAccessibilityIdentifier = "de_add_image_iden"
+    private var addAction: (() -> Void)?
+    private var deleteAction: ((Int) -> Void)?
+    private var max = 12
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
     }
-    convenience init() {
+    convenience init(addAction: (() -> Void)? = nil, deleteAction: ((Int) -> Void)? = nil) {
         self.init(frame: CGRect.zero)
+        self.addAction = addAction
+        self.deleteAction = deleteAction
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -30,14 +37,16 @@ class JTPictureAndVideoPicker: UIView {
 }
 extension JTPictureAndVideoPicker {
     private func setupUI() {
-        setupJTPictureAndVideoPicker()
-        
         data = [AnyObject]()
-        data.append("0" as AnyObject)
-        data.append("1" as AnyObject)
-        data.append("2" as AnyObject)
-        
+        setupJTPictureAndVideoPicker()
+        setupAddImageButton()
+
         reload()
+    }
+    private func setupAddImageButton() {
+        guard let btn = addButtonImage else { return }
+        btn.accessibilityIdentifier = addButtonAccessibilityIdentifier
+        data.insert(btn, at: 0)
     }
     private func setupJTPictureAndVideoPicker() {
         translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +55,26 @@ extension JTPictureAndVideoPicker {
     }
 }
 extension JTPictureAndVideoPicker {
+    public func addData(anyObject: AnyObject) {
+        if getDataCount() >= max {
+            data.removeFirst()
+        }
+        data.append(anyObject)
+        reload()
+    }
+    public func removeData(at index: Int) {
+        data.remove(at: index)
+        reload()
+    }
+    public func getData() -> [AnyObject] {
+        return data
+    }
+}
+extension JTPictureAndVideoPicker {
     private func reload() {
+        if getDataCount() < max {
+            setupAddImageButton()
+        }
         removeAll()
         initDataViews()
         initSubViews()
@@ -154,26 +182,34 @@ extension JTPictureAndVideoPicker {
                     let yy = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: spaceSize)
                     self.addConstraint(yy)
                 }
-                view.backgroundColor = .green
-                
                 let usageIndex = dataCount - count + index
                 guard usageIndex >= 0 else {
                     view.isHidden = true
                     continue
                 }
+                if getDataCount() <= max && usageIndex == 0 { view.accessibilityIdentifier = addButtonAccessibilityIdentifier }
                 
-                let d = data[usageIndex]
-                let l = UILabel()
-                l.text = d as? String
-                l.translatesAutoresizingMaskIntoConstraints = false
-                view.addSubview(l)
-                    
-                let left = NSLayoutConstraint(item: l, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1, constant: 0)
-                let right = NSLayoutConstraint(item: l, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1, constant: 0)
-                let top = NSLayoutConstraint(item: l, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0)
-                let bottom = NSLayoutConstraint(item: l, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
-                view.addConstraints([left, right, top, bottom])
+                view.tag = usageIndex
+                subviewAddTapGestureRecognizer(view: view)
+                addLongPressGestureRecognizer(view: view)
+                let anyObject = data[usageIndex]
+                showData(view: view, anyObject: anyObject)
+                
+                view.backgroundColor = .green
             }
+        }
+    }
+    private func showData(view: UIView, anyObject: AnyObject) {
+        if let image = anyObject as? UIImage {
+            let imageView = UIImageView(image: image)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(imageView)
+            
+            let left = NSLayoutConstraint(item: imageView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1, constant: 0)
+            let right = NSLayoutConstraint(item: imageView, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1, constant: 0)
+            let top = NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0)
+            let bottom = NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
+            view.addConstraints([left, right, top, bottom])
         }
     }
     private func initDataViews() {
@@ -195,6 +231,38 @@ extension JTPictureAndVideoPicker {
     private func removeAll() {
         while (subviews.count > 0) {
             subviews.last?.removeFromSuperview()
+        }
+    }
+}
+extension JTPictureAndVideoPicker {
+    private func subviewAddTapGestureRecognizer(view: UIView) {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(taped))
+        tap.numberOfTapsRequired = 1
+        view.addGestureRecognizer(tap)
+    }
+    @objc private func taped(t: UITapGestureRecognizer) {
+        let view = t.view
+        guard let v = view else { return }
+        let identifier = v.accessibilityIdentifier
+        guard addButtonAccessibilityIdentifier == identifier else { return }
+        guard let action = addAction else { return }
+        action()
+    }
+    private func addLongPressGestureRecognizer(view: UIView) {
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
+        longPress.minimumPressDuration = 0.8
+        view.addGestureRecognizer(longPress)
+    }
+    @objc private func longPressed(longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
+            let view = longPressGestureRecognizer.view
+            guard let v = view else { return }
+            let identifier = v.accessibilityIdentifier
+            if addButtonAccessibilityIdentifier == identifier { return }
+            let tag = v.tag
+            guard tag >= 0 && tag < getDataCount() else { return }
+            guard let action = deleteAction else { return }
+            action(tag)
         }
     }
 }

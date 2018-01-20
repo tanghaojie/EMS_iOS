@@ -43,6 +43,7 @@ class WarningReportC {
         jsonCreateEvent.sbtime = vm.date
         jsonCreateEvent.remark = vm.detail
         jsonCreateEvent.vt = 0
+        
         ServiceManager.shareInstance.provider.request(.createEvent(json: jsonCreateEvent)) {
             result in
             switch result {
@@ -77,6 +78,9 @@ class WarningReportC {
                 }
                 if let h = handler {
                     h(true, nil, r.data?.id)
+                    guard let multiMedia = vm.pictureAndVideos else { return }
+                    guard multiMedia.count > 0 else { return }
+                    
                 }
             case let .failure(error):
                 if let h = handler {
