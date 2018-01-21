@@ -134,7 +134,6 @@ extension WarningReportViewController {
         })
         guard let jt = jtMediaPicker else { return }
         
-        //jt.backgroundColor = .red
         jt.translatesAutoresizingMaskIntoConstraints = false
         selectView.addSubview(jt)
         
@@ -170,9 +169,9 @@ extension WarningReportViewController {
             }
         }
         self.vm.address = addressTextField.text
-        self.vm.date = datePicker.date.addingTimeInterval(TimeInterval(TimeZone.current.secondsFromGMT()))
+        self.vm.date = datePicker.date
         self.vm.detail = detailTextView.text
-        //self.vm.pictureAndVideos = jtPictureAndVideoPicker?.getData()
+        self.vm.pictureAndVideos = jtMediaPicker?.getData()
     }
 }
 extension WarningReportViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

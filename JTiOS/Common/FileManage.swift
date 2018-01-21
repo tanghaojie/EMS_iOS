@@ -22,6 +22,35 @@ class FileManage {
         let x = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
         return x ?? ""
     }()
+    
+    func saveFile(url: URL, data: Foundation.Data) -> Bool {
+        let dir = url.deletingLastPathComponent()
+        createDirectory(url: dir)
+        do {
+            try data.write(to: url)
+            return true
+        }
+        catch { return false }
+    }
+    
+    func createDirectory(path: String) {
+        var isDir = ObjCBool(true)
+        if !FileManager.default.fileExists(atPath: path, isDirectory: &isDir) {
+            try! FileManager.default.createDirectory(
+                atPath: path,
+                withIntermediateDirectories: true,
+                attributes: nil)
+        }
+    }
+    func createDirectory(url: URL){
+        var isDir = ObjCBool(true)
+        if !FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir) {
+            try! FileManager.default.createDirectory(
+                at: url,
+                withIntermediateDirectories: true,
+                attributes: nil)
+        }
+    }
 
     func cacheDirectoryDownloadDestination(subPaths: [String]?) -> DownloadRequest.DownloadFileDestination {
         var path = cacheDir
