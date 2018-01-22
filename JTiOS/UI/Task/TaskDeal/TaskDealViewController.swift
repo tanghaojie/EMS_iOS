@@ -36,7 +36,7 @@ class TaskDealViewController: UIViewController {
             HUD.hide(animated: true)
             if !success {
                 guard let s = self else { return }
-                Alert.shareInstance.AlertWithUIAlertAction(view: s, title: Messager.shareInstance.createTaskDealFailed, message: msg, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                Alert.shareInstance.AlertWithUIAlertAction(viewController: s, title: Messager.shareInstance.createTaskDealFailed, message: msg, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
                 return
             }
             self?.backButtonAction()

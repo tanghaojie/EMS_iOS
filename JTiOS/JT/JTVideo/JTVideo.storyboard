@@ -25,15 +25,19 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xcB-O1-iFe">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="659"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="664"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vIB-wB-wu0">
-                                                <rect key="frame" x="142.5" y="589" width="90" height="40"/>
-                                                <color key="backgroundColor" red="0.62036462397783421" green="0.73905518969489825" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <rect key="frame" x="142.5" y="594" width="90" height="40"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="rTU-SV-7wb"/>
                                                     <constraint firstAttribute="width" constant="90" id="syl-m6-RUW"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
+                                                <state key="normal">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                         <integer key="value" value="10"/>
@@ -51,13 +55,16 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8s8-54-dhW">
-                                                <rect key="frame" x="262.5" y="591.5" width="60" height="35"/>
-                                                <color key="backgroundColor" red="1" green="0.85147151747753935" blue="0.5573133928829177" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <rect key="frame" x="262.5" y="596.5" width="70" height="35"/>
+                                                <color key="backgroundColor" red="0.61568627450980395" green="0.62745098039215685" blue="0.60392156862745094" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="35" id="TfF-UL-8qd"/>
-                                                    <constraint firstAttribute="width" constant="60" id="Z0C-ym-Htb"/>
+                                                    <constraint firstAttribute="width" constant="70" id="Z0C-ym-Htb"/>
                                                 </constraints>
-                                                <state key="normal" title="保存"/>
+                                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="18"/>
+                                                <state key="normal" title="保存">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                         <integer key="value" value="15"/>
@@ -75,13 +82,16 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aWt-yN-iKs">
-                                                <rect key="frame" x="52.5" y="591.5" width="60" height="35"/>
-                                                <color key="backgroundColor" red="0.37133384277402925" green="1" blue="0.32510803318892023" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <rect key="frame" x="42.5" y="596.5" width="70" height="35"/>
+                                                <color key="backgroundColor" red="0.61568627450980395" green="0.62745098039215685" blue="0.60392156862745094" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="35" id="Zfa-Gd-vuq"/>
-                                                    <constraint firstAttribute="width" constant="60" id="ia4-Sx-1da"/>
+                                                    <constraint firstAttribute="width" constant="70" id="ia4-Sx-1da"/>
                                                 </constraints>
-                                                <state key="normal" title="返回"/>
+                                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="18"/>
+                                                <state key="normal" title="返回">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                         <integer key="value" value="15"/>
@@ -110,10 +120,22 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ut4-Rr-Dh5">
-                                        <rect key="frame" x="0.0" y="659" width="375" height="8"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <rect key="frame" x="0.0" y="664" width="375" height="3"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2om-7p-WDb">
+                                                <rect key="frame" x="0.0" y="0.0" width="1" height="3"/>
+                                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="3" id="bQK-Xr-yHO"/>
+                                                    <constraint firstAttribute="width" constant="1" id="dI9-8H-Dhr"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="8" id="GxV-pG-mZJ"/>
+                                            <constraint firstItem="2om-7p-WDb" firstAttribute="top" secondItem="ut4-Rr-Dh5" secondAttribute="top" id="EzM-Rt-1D3"/>
+                                            <constraint firstAttribute="height" constant="3" id="GxV-pG-mZJ"/>
+                                            <constraint firstItem="2om-7p-WDb" firstAttribute="leading" secondItem="ut4-Rr-Dh5" secondAttribute="leading" id="af1-ky-dk7"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -140,7 +162,9 @@
                     <connections>
                         <outlet property="back" destination="aWt-yN-iKs" id="9HD-C7-WOM"/>
                         <outlet property="control" destination="vIB-wB-wu0" id="jb5-gu-fzh"/>
-                        <outlet property="progress" destination="ut4-Rr-Dh5" id="7yC-Cn-D4E"/>
+                        <outlet property="fullProgress" destination="ut4-Rr-Dh5" id="nm5-0D-1do"/>
+                        <outlet property="progress" destination="2om-7p-WDb" id="ch7-Ep-xjW"/>
+                        <outlet property="progressWidthConstraint" destination="dI9-8H-Dhr" id="RkZ-so-ry4"/>
                         <outlet property="save" destination="8s8-54-dhW" id="ykH-kw-pSL"/>
                         <outlet property="video" destination="xcB-O1-iFe" id="IhU-JS-Szc"/>
                     </connections>

@@ -22,6 +22,13 @@ class FileManage {
         let x = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first
         return x ?? ""
     }()
+    lazy var tmpDir: String = {
+        var x = NSTemporaryDirectory()
+        if "/" == x.last {
+            x.removeLast()
+        }
+        return x
+    }()
     
     func saveFile(url: URL, data: Foundation.Data) -> Bool {
         let dir = url.deletingLastPathComponent()

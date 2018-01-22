@@ -10,11 +10,11 @@ class Alert {
     static let shareInstance = Alert()
     private init() {}
     
-    public func AlertWithUIAlertAction(view: UIViewController, title: String, message: String?, uiAlertAction:  [UIAlertAction], preferredStyle: UIAlertControllerStyle = .alert, completion: (() -> Swift.Void)? = nil){
+    public func AlertWithUIAlertAction(viewController: UIViewController, title: String, message: String?, uiAlertAction:  [UIAlertAction], preferredStyle: UIAlertControllerStyle = .alert, completion: (() -> Swift.Void)? = nil){
         let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         for aa in uiAlertAction {
             alert.addAction(aa)
         }
-        view.present(alert, animated: true, completion: completion)
+        viewController.present(alert, animated: true, completion: completion)
     }
 }

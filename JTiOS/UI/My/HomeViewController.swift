@@ -50,7 +50,7 @@ class HomeViewController: UIViewController {
             HUD.hide(animated: true)
             if !success {
                 if let s = self {
-                 Alert.shareInstance.AlertWithUIAlertAction(view: s, title: Messager.shareInstance.logoutFailed, message: msg, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                 Alert.shareInstance.AlertWithUIAlertAction(viewController: s, title: Messager.shareInstance.logoutFailed, message: msg, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
                 }
                 return
             }
@@ -189,7 +189,7 @@ extension HomeViewController: UIImagePickerControllerDelegate, UINavigationContr
                 self?.navigationController?.present(picker, animated: true, completion: nil)
             } else {
                 if let xself = self {
-                    Alert.shareInstance.AlertWithUIAlertAction(view: xself, title: Messager.shareInstance.warning, message: Messager.shareInstance.cannotUseCamera, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                    Alert.shareInstance.AlertWithUIAlertAction(viewController: xself, title: Messager.shareInstance.warning, message: Messager.shareInstance.cannotUseCamera, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
                 }
             }
         }
@@ -221,7 +221,7 @@ extension HomeViewController: UIImagePickerControllerDelegate, UINavigationContr
                     self?.headProtrait.image = image
                 } else {
                     if let s = self {
-                        Alert.shareInstance.AlertWithUIAlertAction(view: s, title: Messager.shareInstance.uploadFailed, message: msg, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                        Alert.shareInstance.AlertWithUIAlertAction(viewController: s, title: Messager.shareInstance.uploadFailed, message: msg, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
                     }
                 }
             }

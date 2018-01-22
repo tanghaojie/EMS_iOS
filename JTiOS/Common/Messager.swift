@@ -27,6 +27,10 @@ class Messager {
     let cannotUseMicrophone = "麦克风无法使用"
     let uploading = "上传中"
     
+    let pleaseTakeVideo = "请录制视频"
+    let videoFinish = "录制完成"
+    let videoFailed = "录制失败"
+    
     let ifDelete = "是否删除"
     
     let uploadFailed = "上传失败"

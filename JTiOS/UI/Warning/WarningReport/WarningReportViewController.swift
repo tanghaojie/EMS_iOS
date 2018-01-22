@@ -97,7 +97,7 @@ class WarningReportViewController: UIViewController {
                 return
             }
             if let s = self {
-                Alert.shareInstance.AlertWithUIAlertAction(view: s, title: Messager.shareInstance.createEventFailed, message: msg, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                Alert.shareInstance.AlertWithUIAlertAction(viewController: s, title: Messager.shareInstance.createEventFailed, message: msg, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
             }
         }
         
@@ -195,14 +195,16 @@ extension WarningReportViewController: UIImagePickerControllerDelegate, UINaviga
                 viewController.present(picker, animated: true, completion: nil)
             } else {
                 guard let xself = self else { return }
-                Alert.shareInstance.AlertWithUIAlertAction(view: xself, title: Messager.shareInstance.warning, message: Messager.shareInstance.cannotUseCamera, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                Alert.shareInstance.AlertWithUIAlertAction(viewController: xself, title: Messager.shareInstance.warning, message: Messager.shareInstance.cannotUseCamera, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
             }
         }
         let actionVideo = UIAlertAction(title: Messager.shareInstance.video, style: .default){ action in
             let sb = UIStoryboard(name: "JTVideo", bundle: nil)
-            let jtvideo = sb.instantiateViewController(withIdentifier: "JTVideo")
+            let jtvideo = sb.instantiateViewController(withIdentifier: "JTVideo") as? JTVideoViewController
+            guard let video = jtvideo else { return }
             guard let viewController = vc else { return }
-            viewController.present(jtvideo, animated: true, completion: nil)
+            video.delegate = self
+            viewController.present(video, animated: true, completion: nil)
         }
         let actionCancel = UIAlertAction(title: Messager.shareInstance.cancel, style: .cancel, handler: nil)
         let actionController = UIAlertController(title: Messager.shareInstance.selectType, message: Messager.shareInstance.takePhotoOrSelectFromAlbum, preferredStyle: .actionSheet)
@@ -224,7 +226,20 @@ extension WarningReportViewController: UIImagePickerControllerDelegate, UINaviga
     internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-    
 }
-
+extension WarningReportViewController: JTVideoViewControllerDelegate {
+    func didFinishRecordingVideo(videoFileUrl: URL) {
+        let asset = AVAsset(url: videoFileUrl)
+        let generator = AVAssetImageGenerator(asset: asset)
+        generator.appliesPreferredTrackTransform = true
+        let time = CMTimeMakeWithSeconds(0, 30)
+        var actualTime = CMTimeMake(0, 0)
+        let imageRef = try? generator.copyCGImage(at: time, actualTime: &actualTime)
+        guard let iRef = imageRef else {
+            return
+        }
+        let image = UIImage(cgImage: iRef)
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+    }
+}
 

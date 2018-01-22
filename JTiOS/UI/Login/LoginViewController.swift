@@ -56,7 +56,7 @@ class LoginViewController: UIViewController {
                         }
                     } else {
                         if let s = self {
-                        Alert.shareInstance.AlertWithUIAlertAction(view: s, title: Messager.shareInstance.loginFailed, message: r.msg, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                        Alert.shareInstance.AlertWithUIAlertAction(viewController: s, title: Messager.shareInstance.loginFailed, message: r.msg, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
                         }
                     }
                 }

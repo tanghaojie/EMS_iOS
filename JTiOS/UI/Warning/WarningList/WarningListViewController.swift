@@ -105,7 +105,7 @@ extension WarningListViewController {
         c.getData() { [weak self] (vms: [WarningListTableViewCellVM]?, error: String?) in
             if let e = error, let s = self {
                 s.endRefreshing()
-                Alert.shareInstance.AlertWithUIAlertAction(view: s, title: Messager.shareInstance.error, message: e, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                Alert.shareInstance.AlertWithUIAlertAction(viewController: s, title: Messager.shareInstance.error, message: e, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
                 return
             }
             if let vms = vms {
