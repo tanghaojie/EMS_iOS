@@ -34,35 +34,4 @@ class SystemFile {
         url.appendPathComponent(filename)
         return url
     }
-    
-    func uploadFullDirectoryFiles(typenum: FileTypenum, frid: Int, handler: ((Bool, String?) -> Void)? = nil) {
-        let url = getDirectoryURL(typenum: typenum, frid: Int64(frid))
-        var isDir = ObjCBool(true)
-        guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir) else { return }
-        let contents = try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: FileManager.DirectoryEnumerationOptions.skipsHiddenFiles)
-        guard let c = contents else { return }
-        
-        var uploadFiles = [Object_FileUpload]()
-        for item in c {
-            let path = item.path
-            let filename = item.lastPathComponent
-            guard FileManager.default.fileExists(atPath: path) && FileManager.default.isWritableFile(atPath: path) else { continue }
-            let pathExtension = item.pathExtension.uppercased()
-            let mime: String
-            if pathExtension == "JPEG" {
-                mime = "image/jpeg"
-            } else if pathExtension == "JPG" {
-                mime = "image/jpg"
-            } else {
-                mime = ""
-            }
-            let data = FileManager.default.contents(atPath: path)
-            guard let d = data else { continue }
-            let upload = Object_FileUpload(data: d, name: "file", fileName: filename, mimeType: mime)
-            uploadFiles.append(upload)
-        }
-        let request = RequestObject_FileUpload(typenum: typenum, frid: frid, actualtime: Date(), files: uploadFiles)
-        WebFile.shareInstance.uploadFile(requestObject: request, handler: handler)
-    }
-    
 }

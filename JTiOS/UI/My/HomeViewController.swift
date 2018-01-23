@@ -214,7 +214,7 @@ extension HomeViewController: UIImagePickerControllerDelegate, UINavigationContr
         HUD.minShowTime = 1
         HUD.show(animated: true)
         c.uploadHeadPortrait(image: image) {
-            [weak self] success, msg in
+            [weak self] success, msg, _ in
             DispatchQueue.main.async {
                 HUD.hide(animated: true)
                 if success {

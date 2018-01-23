@@ -62,7 +62,7 @@ class JTMediaPicker: UIView {
         }
     }
     
-    private var datas: [AnyObject] = [AnyObject]()
+    private var datas: [JTMediaPickerData] = [JTMediaPickerData]()
     private var datasCount: Int {
         get { return datas.count }
     }
@@ -152,20 +152,28 @@ extension JTMediaPicker {
         view.tag = datasViewsindex
         addTapGestureRecognizer(view: view)
         addLongPressGestureRecognizer(view: view)
-        var anyObject: AnyObject? = nil
+        var jtMediaPickerData: JTMediaPickerData? = nil
         if addButtonAccessibilityIdentifier != view.accessibilityIdentifier {
-            anyObject = datas[datasViewsindex]
+            jtMediaPickerData = datas[datasViewsindex]
         }
-        showData(view: view, anyObject: anyObject)
+        showData(view: view, jtMediaPickerData: jtMediaPickerData)
     }
     
-    private func showData(view: UIView, anyObject: AnyObject?) {
-        if let image = anyObject as? UIImage {
-            showImageData(view: view, image: image)
+    private func showData(view: UIView, jtMediaPickerData: JTMediaPickerData?) {
+        guard let data = jtMediaPickerData else { return }
+        let type = data.type
+        let url = data.url
+        switch type {
+        case .Image:
+            showImageData(view: view, url: url)
+        case .Video:
+            showVideoData(view: view, url: url)
         }
     }
-    private func showImageData(view: UIView, image: UIImage) {
-        let imageView = UIImageView(image: image)
+    private func showImageData(view: UIView, url: URL) {
+        let image = UIImage(contentsOfFile: url.path)
+        guard let img = image else { return }
+        let imageView = UIImageView(image: img)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
         let left = NSLayoutConstraint(item: imageView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1, constant: 0)
@@ -174,7 +182,31 @@ extension JTMediaPicker {
         let bottom = NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         view.addConstraints([left, right, top, bottom])
     }
-    
+    private func showVideoData(view: UIView, url: URL) {
+        let cover = getVideoCover(url: url)
+        guard let img = cover else { return }
+        let imageView = UIImageView(image: img)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+        let left = NSLayoutConstraint(item: imageView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1, constant: 0)
+        let right = NSLayoutConstraint(item: imageView, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1, constant: 0)
+        let top = NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0)
+        let bottom = NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
+        view.addConstraints([left, right, top, bottom])
+    }
+    private func getVideoCover(url: URL, preferredTimescale: Int32 = 30) -> UIImage? {
+        let asset = AVAsset(url: url)
+        let generator = AVAssetImageGenerator(asset: asset)
+        generator.appliesPreferredTrackTransform = true
+        let time = CMTimeMakeWithSeconds(0, preferredTimescale)
+        var actualTime = CMTimeMake(0, 0)
+        let imageRef = try? generator.copyCGImage(at: time, actualTime: &actualTime)
+        guard let iRef = imageRef else {
+            return nil
+        }
+        let image = UIImage(cgImage: iRef)
+        return image
+    }
 }
 
 extension JTMediaPicker {
@@ -212,18 +244,19 @@ extension JTMediaPicker {
 }
 
 extension JTMediaPicker {
-    public func addData(anyObject: AnyObject) {
+    public func addData(jtMediaPickData: JTMediaPickerData) {
+        if !FileManager.default.fileExists(atPath: jtMediaPickData.url.path) { return }
         if full {
             datas.removeFirst()
         }
-        datas.append(anyObject)
+        datas.append(jtMediaPickData)
         reload()
     }
     public func removeData(at index: Int) {
         datas.remove(at: index)
         reload()
     }
-    public func getData() -> [AnyObject] {
+    public func getData() -> [JTMediaPickerData] {
         return datas
     }
     public func reload() {

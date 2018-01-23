@@ -7,7 +7,7 @@
 //
 import ObjectMapper
 class ResponseJson_FileUpload: ResponseJson_BaseList {
-    var data: [Object_ID]?
+    var data: [Object_FileUploadResponse]?
     required init?(map: Map) {
         super.init(map: map)
     }

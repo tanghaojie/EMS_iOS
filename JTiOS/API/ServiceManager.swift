@@ -14,6 +14,7 @@ class ServiceManager {
 
     let provider = MoyaProvider<Service>(manager: DefaultAlamofireManager.sharedManager)
     let provider_2s = MoyaProvider<Service>(manager: DefaultAlamofireManager_2.sharedManager)
+    let provider_300s = MoyaProvider<Service>(manager: DefaultAlamofireManager_300.sharedManager)
     
     func sync_Json_Post(url: String, data: Foundation.Data? = nil) -> (data: Foundation.Data?, response: URLResponse?, error: Error?) {
         var urlRequest = URLRequest(url: URL(string: url)!)
@@ -60,6 +61,15 @@ class ServiceManager {
             let configuration = URLSessionConfiguration.default
             configuration.httpAdditionalHeaders = Alamofire.SessionManager.defaultHTTPHeaders
             configuration.timeoutIntervalForRequest = 2
+            configuration.requestCachePolicy = .useProtocolCachePolicy
+            return DefaultAlamofireManager(configuration: configuration)
+        }()
+    }
+    private class DefaultAlamofireManager_300: Alamofire.SessionManager {
+        static let sharedManager: DefaultAlamofireManager = {
+            let configuration = URLSessionConfiguration.default
+            configuration.httpAdditionalHeaders = Alamofire.SessionManager.defaultHTTPHeaders
+            configuration.timeoutIntervalForRequest = 300
             configuration.requestCachePolicy = .useProtocolCachePolicy
             return DefaultAlamofireManager(configuration: configuration)
         }()

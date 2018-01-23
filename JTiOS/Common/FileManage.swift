@@ -58,6 +58,17 @@ class FileManage {
                 attributes: nil)
         }
     }
+    
+    func copyItem(from: URL, to: URL) -> Bool {
+        let f = FileManager.default
+        guard f.fileExists(atPath: from.path) && f.isReadableFile(atPath: from.path) else { return false }
+        do {
+            try f.copyItem(at: from, to: to)
+            return true
+        } catch {
+            return false
+        }
+    }
 
     func cacheDirectoryDownloadDestination(subPaths: [String]?) -> DownloadRequest.DownloadFileDestination {
         var path = cacheDir

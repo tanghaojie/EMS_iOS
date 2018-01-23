@@ -126,10 +126,10 @@ class HomeC {
             }
         }
     }
-    func uploadHeadPortrait(image: UIImage, handler: ((Bool, String?) -> Void)? = nil) {
+    func uploadHeadPortrait(image: UIImage, handler: ((Bool, String?, [Object_FileUploadResponse]?) -> Void)? = nil) {
         guard let id = global_SystemUser?.id else {
             if let h = handler {
-                h(false, Messager.shareInstance.notLogin)
+                h(false, Messager.shareInstance.notLogin, nil)
             }
             return
         }

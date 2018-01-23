@@ -21,8 +21,9 @@ class WarningReportViewController: UIViewController {
     @IBOutlet weak var selectView: UIView!
     @IBOutlet weak var selectViewHeight: NSLayoutConstraint!
     @IBOutlet weak var scrollViewHeight: NSLayoutConstraint!
-
     var jtMediaPicker: JTMediaPicker?
+    
+    private let tmpImageSaveDir = "JT_Image_Temp_Directory_123"
     
     private let vm = WarningReportVM()
     private let c = WarningReportC()
@@ -217,10 +218,40 @@ extension WarningReportViewController: UIImagePickerControllerDelegate, UINaviga
     }
     
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        picker.dismiss(animated: true, completion: nil)
+        
         guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
         guard let jt = jtMediaPicker else { return }
-        jt.addData(anyObject: image)
+        var data = UIImageJPEGRepresentation(image, 1)
+        var imageExtension = ".jpeg"
+        if data == nil {
+            imageExtension = ".png"
+            data = UIImagePNGRepresentation(image)
+        }
+        guard let d = data else { return }
+        let temp = FileManage.shareInstance.tmpDir
+        let dir = temp + "/\(tmpImageSaveDir)"
+        FileManage.shareInstance.createDirectory(path: dir)
+        let filename = "\(UUID().uuidString + imageExtension)"
+        let file = dir + "/\(filename)"
+        let url = URL(fileURLWithPath: file)
+        if FileManager.default.fileExists(atPath: url.path) {
+            try? FileManager.default.removeItem(at: url)
+        }
+        do {
+            try d.write(to: url)
+            let jtMediaPickerData = JTMediaPickerData(type: .Image, url: url)
+            jt.addData(jtMediaPickData: jtMediaPickerData)
+        } catch {
+            let HUD = MBProgressHUD.showAdded(to: view, animated: true)
+            HUD.bezelView.color = UIColor(red: 220, green: 220, blue: 220)
+            HUD.label.text = Messager.shareInstance.saveImageFailed
+            HUD.backgroundView.style = .solidColor
+            HUD.removeFromSuperViewOnHide = true
+            HUD.mode = .text
+            HUD.hide(animated: true, afterDelay: 1.5)
+        }
+        
+        picker.dismiss(animated: true, completion: nil)
     }
     
     internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -229,17 +260,9 @@ extension WarningReportViewController: UIImagePickerControllerDelegate, UINaviga
 }
 extension WarningReportViewController: JTVideoViewControllerDelegate {
     func didFinishRecordingVideo(videoFileUrl: URL) {
-        let asset = AVAsset(url: videoFileUrl)
-        let generator = AVAssetImageGenerator(asset: asset)
-        generator.appliesPreferredTrackTransform = true
-        let time = CMTimeMakeWithSeconds(0, 30)
-        var actualTime = CMTimeMake(0, 0)
-        let imageRef = try? generator.copyCGImage(at: time, actualTime: &actualTime)
-        guard let iRef = imageRef else {
-            return
-        }
-        let image = UIImage(cgImage: iRef)
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        guard let jt = jtMediaPicker else { return }
+        let jtMediaPickerData = JTMediaPickerData(type: .Video, url: videoFileUrl)
+        jt.addData(jtMediaPickData: jtMediaPickerData)
     }
 }
 

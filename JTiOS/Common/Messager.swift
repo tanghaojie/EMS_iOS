@@ -30,6 +30,7 @@ class Messager {
     let pleaseTakeVideo = "请录制视频"
     let videoFinish = "录制完成"
     let videoFailed = "录制失败"
+    let saveImageFailed = "保存图片失败"
     
     let ifDelete = "是否删除"
     

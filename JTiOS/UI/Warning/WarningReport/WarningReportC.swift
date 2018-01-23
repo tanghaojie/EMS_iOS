@@ -79,19 +79,7 @@ class WarningReportC {
                 if let h = handler {
                     h(true, nil, r.data?.id)
                     guard let media = vm.pictureAndVideos, media.count > 0, let eid = r.data?.id else { return }
-                    let count = media.count
-                    let typenum = FileTypenum.Event
-                    for index in 0 ..< count {
-                        let m = media[index]
-                        if let image = m as? UIImage {
-                            let data = UIImageJPEGRepresentation(image, 1)
-                            let fileUrl = SystemFile.shareInstance.getFileURL(typenum: typenum, frid: Int64(eid), filename: "\(index).jpeg")
-                            if let dd = data {
-                                let _ = FileManage.shareInstance.saveFile(url: fileUrl, data: dd)
-                            }
-                        }
-                    }
-                    SystemFile.shareInstance.uploadFullDirectoryFiles(typenum: typenum, frid: eid)
+                    WebFile.shareInstance.uploadJTMediaPickerData(media: media, typenum: FileTypenum.Event, frid: eid)
                 }
             case let .failure(error):
                 if let h = handler {
