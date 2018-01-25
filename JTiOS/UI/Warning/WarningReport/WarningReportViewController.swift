@@ -180,7 +180,8 @@ extension WarningReportViewController: UIImagePickerControllerDelegate, UINaviga
     private func showPictureAndVideoPicker(){
         var vc: UIViewController? = self.navigationController
         if vc == nil { vc = self }
-        let actionAlbum = UIAlertAction(title: Messager.shareInstance.album, style: .default){ [weak self] (action) -> Void in
+        let actionAlbum = UIAlertAction(title: Messager.shareInstance.album, style: .default) {
+            [weak self] (action) -> Void in
             let picker = UIImagePickerController()
             picker.delegate = self
             picker.sourceType = .savedPhotosAlbum
@@ -204,6 +205,7 @@ extension WarningReportViewController: UIImagePickerControllerDelegate, UINaviga
             let jtvideo = sb.instantiateViewController(withIdentifier: "JTVideo") as? JTVideoViewController
             guard let video = jtvideo else { return }
             guard let viewController = vc else { return }
+            video.compress = true
             video.delegate = self
             viewController.present(video, animated: true, completion: nil)
         }
@@ -219,8 +221,9 @@ extension WarningReportViewController: UIImagePickerControllerDelegate, UINaviga
     
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
-        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
+        guard var image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
         guard let jt = jtMediaPicker else { return }
+        image = Compress.shareInstance.image(image: image)
         var data = UIImageJPEGRepresentation(image, 1)
         var imageExtension = ".jpeg"
         if data == nil {
@@ -264,5 +267,6 @@ extension WarningReportViewController: JTVideoViewControllerDelegate {
         let jtMediaPickerData = JTMediaPickerData(type: .Video, url: videoFileUrl)
         jt.addData(jtMediaPickData: jtMediaPickerData)
     }
+    
 }
 

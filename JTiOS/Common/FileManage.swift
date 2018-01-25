@@ -69,6 +69,18 @@ class FileManage {
             return false
         }
     }
+    
+    func delete(url: URL) -> Bool {
+        let f = FileManager.default
+        if !f.fileExists(atPath: url.path) { return true }
+        if !f.isDeletableFile(atPath: url.path) { return false }
+        do {
+            try FileManager.default.removeItem(at: url)
+            return true
+        } catch {
+            return false
+        }
+    }
 
     func cacheDirectoryDownloadDestination(subPaths: [String]?) -> DownloadRequest.DownloadFileDestination {
         var path = cacheDir

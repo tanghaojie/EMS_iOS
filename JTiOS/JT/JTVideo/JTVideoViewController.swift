@@ -23,6 +23,7 @@ class JTVideoViewController: UIViewController {
     
     var delegate: JTVideoViewControllerDelegate?
     var saveToAlbum: Bool = false
+    var compress: Bool = true
 
     private let captureSession = AVCaptureSession()
     private let videoDevice = AVCaptureDevice.default(for: AVMediaType.video)
@@ -57,11 +58,19 @@ class JTVideoViewController: UIViewController {
         view.isUserInteractionEnabled = false
         if let url = saveUrl {
             if FileManager.default.fileExists(atPath: url.path) {
-                if saveToAlbum {
-                    UISaveVideoAtPathToSavedPhotosAlbum(url.path, nil, nil, nil)
+                if compress {
+                    Compressing(oldUrl: url) {
+                        [weak self] success, newUrl in
+                        if success {
+                            self?.finish(url: newUrl)
+                        } else {
+                            guard let s = self else { return }
+                            Alert.shareInstance.AlertWithUIAlertAction(viewController: s, title: Messager.shareInstance.warning, message: Messager.shareInstance.compressFailed, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                        }
+                    }
+                } else {
+                    finish(url: url)
                 }
-                delegate?.didFinishRecordingVideo(videoFileUrl: url)
-                backButtonAction()
             } else {
                 Alert.shareInstance.AlertWithUIAlertAction(viewController: self, title: Messager.shareInstance.warning, message: Messager.shareInstance.pleaseTakeVideo, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
             }
@@ -194,6 +203,40 @@ extension JTVideoViewController {
         HUD.removeFromSuperViewOnHide = true
         HUD.mode = .text
         HUD.hide(animated: true, afterDelay: 1.5)
+    }
+    private func Compressing(oldUrl: URL, handler: ((Bool, URL) -> Void)? = nil) {
+        var newUrl = oldUrl
+        let pathExtension = newUrl.pathExtension
+        newUrl.deleteLastPathComponent()
+        newUrl.appendPathComponent(UUID().uuidString + "." + pathExtension)
+        
+        let HUD = MBProgressHUD.showAdded(to: view, animated: true)
+        HUD.bezelView.color = UIColor.clear
+        HUD.label.text = Messager.shareInstance.compressing
+        HUD.backgroundView.style = .blur
+        HUD.removeFromSuperViewOnHide = false
+        HUD.minShowTime = 1
+        HUD.show(animated: true)
+        Compress.shareInstance.video(inUrl: oldUrl, outUrl: newUrl) {
+            status in
+            let _ = FileManage.shareInstance.delete(url: oldUrl)
+            DispatchQueue.main.async {
+                HUD.hide(animated: true)
+                switch status {
+                case .completed:
+                    if let h = handler { h(true, newUrl) }
+                default:
+                    if let h = handler { h(false, newUrl) }
+                }
+            }
+        }
+    }
+    private func finish(url: URL) {
+        if saveToAlbum {
+            UISaveVideoAtPathToSavedPhotosAlbum(url.path, nil, nil, nil)
+        }
+        delegate?.didFinishRecordingVideo(videoFileUrl: url)
+        backButtonAction()
     }
 }
 

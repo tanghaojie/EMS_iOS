@@ -42,6 +42,11 @@ class JTMediaPicker: UIView {
         
         return view
     }()
+    
+    private lazy var playImage: UIImage? = {
+        let image = UIImage(named: "play")
+        return image
+    }()
 
     private var datasViews: [UIView] = [UIView]()
     private var datasViewsCount: Int {
@@ -174,6 +179,8 @@ extension JTMediaPicker {
         let image = UIImage(contentsOfFile: url.path)
         guard let img = image else { return }
         let imageView = UIImageView(image: img)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
         let left = NSLayoutConstraint(item: imageView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1, constant: 0)
@@ -186,6 +193,8 @@ extension JTMediaPicker {
         let cover = getVideoCover(url: url)
         guard let img = cover else { return }
         let imageView = UIImageView(image: img)
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
         let left = NSLayoutConstraint(item: imageView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1, constant: 0)
@@ -193,6 +202,26 @@ extension JTMediaPicker {
         let top = NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1, constant: 0)
         let bottom = NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1, constant: 0)
         view.addConstraints([left, right, top, bottom])
+        
+        setVideoCoverPlayImage(imageView: imageView)
+    }
+    private func setVideoCoverPlayImage(imageView: UIImageView) {
+        let image = imageView.image
+        guard let img = image else { return }
+        let size = imageView.frame.width
+        if let playImage = playImage {
+            let w = img.size.width
+            let h = img.size.height
+            let len = size / 2
+            let x = (w - len) / 2
+            let y = (h - len) / 2
+            UIGraphicsBeginImageContext(CGSize(width: w, height: h))
+            img.draw(in: CGRect(x: 0, y: 0, width: w, height: h))
+            playImage.draw(in: CGRect(x: x, y: y, width: len, height: len))
+            let result = UIGraphicsGetImageFromCurrentImageContext()
+            if let x = result { imageView.image = x }
+            UIGraphicsEndImageContext()
+        }
     }
     private func getVideoCover(url: URL, preferredTimescale: Int32 = 30) -> UIImage? {
         let asset = AVAsset(url: url)
@@ -204,8 +233,7 @@ extension JTMediaPicker {
         guard let iRef = imageRef else {
             return nil
         }
-        let image = UIImage(cgImage: iRef)
-        return image
+        return UIImage(cgImage: iRef)
     }
 }
 
