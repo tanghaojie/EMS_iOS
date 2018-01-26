@@ -5,7 +5,6 @@
 //  Created by JT on 2018/1/9.
 //  Copyright © 2018年 JT. All rights reserved.
 //
-
 class TaskDetailListTableViewCellVM {
     init(data: Object_QueryProcessList?) {
         self.data = data
@@ -18,6 +17,7 @@ class TaskDetailListTableViewCellVM {
             address = d.address
             content = d.content
             remark = d.remark
+            files = d.files
         }
     }
     var topLabel: String?
@@ -28,5 +28,7 @@ class TaskDetailListTableViewCellVM {
     var address: String?
     var content: String?
     var remark: String?
+    var files: [Object_File]?
+    
     var data: Object_QueryProcessList?
 }

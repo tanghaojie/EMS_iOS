@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Alamofire
 class TaskDetailListTableViewCell: UITableViewCell {
     
     private var full: UIView?
@@ -87,12 +87,13 @@ class TaskDetailListTableViewCell: UITableViewCell {
     private static let content5Label2ToLabel1Constant: CGFloat = 8
     private static let content5Label2MinHeight: CGFloat = 21
     
-    private var content6Label1: UILabel?
-    private static let content6Label1Width: CGFloat = 70
-    private static let content6Label1Height: CGFloat = 21
-    private var content6Label2: UILabel?
-    private static let content6Label2ToLabel1Constant: CGFloat = 8
-    private static let content6Label2MinHeight: CGFloat = 21
+    private var content6JTMediaPreview: JTMediaPreview?
+//    private var content6Label1: UILabel?
+//    private static let content6Label1Width: CGFloat = 70
+//    private static let content6Label1Height: CGFloat = 21
+//    private var content6Label2: UILabel?
+//    private static let content6Label2ToLabel1Constant: CGFloat = 8
+//    private static let content6Label2MinHeight: CGFloat = 21
     
     private var bottom: UIView?
     private static let bottomMinHeight: CGFloat = 10
@@ -148,6 +149,7 @@ extension TaskDetailListTableViewCell {
         setupContent3Label1Label2()
         setupContent4Label1Label2()
         setupContent5Label1Label2()
+        setupContent6JTMediaPreview()
     }
     private func setupBottomView() {
         setupBottom()
@@ -368,8 +370,6 @@ extension TaskDetailListTableViewCell {
         c1.addConstraints([left2, right2, top2, bottom2])
         let height2 = NSLayoutConstraint(item: l2, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: TaskDetailListTableViewCell.content1Label2MinHeight)
         l2.addConstraint(height2)
-        
-        //content1Label2?.text = "asdfsafdsfsadfsdfadfas"
     }
     private func setupContent2Label1Label2() {
         guard let c2 = content2 else { return }
@@ -400,8 +400,6 @@ extension TaskDetailListTableViewCell {
         c2.addConstraints([left2, right2, top2, bottom2])
         let height2 = NSLayoutConstraint(item: l2, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: TaskDetailListTableViewCell.content2Label2MinHeight)
         l2.addConstraint(height2)
-        
-        //content2Label2?.text = "asdfsafdsfsadfsdfadfasdfsdafsdfasdfsfs"
     }
     private func setupContent3Label1Label2() {
         guard let c3 = content3 else { return }
@@ -432,8 +430,6 @@ extension TaskDetailListTableViewCell {
         c3.addConstraints([left2, right2, top2, bottom2])
         let height2 = NSLayoutConstraint(item: l2, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: TaskDetailListTableViewCell.content3Label2MinHeight)
         l2.addConstraint(height2)
-        
-        //content3Label2?.text = "asdfsafdsfsadfsdfadfasdfsdafsdfasdfsfs"
     }
     private func setupContent4Label1Label2() {
         guard let c4 = content4 else { return }
@@ -464,8 +460,6 @@ extension TaskDetailListTableViewCell {
         c4.addConstraints([left2, right2, top2, bottom2])
         let height2 = NSLayoutConstraint(item: l2, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: TaskDetailListTableViewCell.content4Label2MinHeight)
         l2.addConstraint(height2)
-        
-        //content4Label2?.text = "a123123sdfsfs"
     }
     private func setupContent5Label1Label2() {
         guard let c5 = content5 else { return }
@@ -496,15 +490,28 @@ extension TaskDetailListTableViewCell {
         c5.addConstraints([left2, right2, top2, bottom2])
         let height2 = NSLayoutConstraint(item: l2, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: TaskDetailListTableViewCell.content5Label2MinHeight)
         l2.addConstraint(height2)
+    }
+    
+    private func setupContent6JTMediaPreview() {
+        guard let c6 = content6 else { return }
+        content6JTMediaPreview = JTMediaPreview()
+        content6JTMediaPreview?.backgroundColor = .red
+        guard let jt = content6JTMediaPreview else { return }
+        jt.translatesAutoresizingMaskIntoConstraints = false
+        c6.addSubview(jt)
         
-        //content5Label2?.text = "a123123sdfsfs"
+        let left = NSLayoutConstraint(item: jt, attribute: .left, relatedBy: .equal, toItem: c6, attribute: .left, multiplier: 1, constant: 0)
+        let right = NSLayoutConstraint(item: jt, attribute: .right, relatedBy: .equal, toItem: c6, attribute: .right, multiplier: 1, constant: 0)
+        let topContraint = NSLayoutConstraint(item: jt, attribute: .top, relatedBy: .equal, toItem: c6, attribute: .top, multiplier: 1, constant: 0)
+        
+        let h = NSLayoutConstraint(item: c6, attribute: .height, relatedBy: .equal, toItem: jt, attribute: .height, multiplier: 1, constant: 0)
+        c6.addConstraints([left, right, topContraint, h])
     }
     
     private func setupBottom() {
         guard let fc = fullContent else { return }
         bottom = UIView()
         guard let v = bottom else { return }
-        //v.backgroundColor = UIColor.gray
         guard let m = main else { return }
         v.translatesAutoresizingMaskIntoConstraints = false
         fc.addSubview(v)
@@ -520,7 +527,6 @@ extension TaskDetailListTableViewCell {
         guard let b = bottom else { return }
         bottomContent = UIView()
         guard let v = bottomContent else { return }
-        //v.backgroundColor = UIColor(red: 97, green: 114, blue: 122)
         v.translatesAutoresizingMaskIntoConstraints = false
         b.addSubview(v)
         let left = NSLayoutConstraint(item: v, attribute: .left, relatedBy: .equal, toItem: b, attribute: .left, multiplier: 1, constant: TaskDetailListTableViewCell.bottomContentLeft)
@@ -535,7 +541,6 @@ extension TaskDetailListTableViewCell {
         bottomLabel1?.font = UIFont.systemFont(ofSize: 16)
         bottomLabel1?.textColor = UIColor(red: 155, green: 155, blue: 155)
         bottomLabel1?.text = " "
-        //bottomLabel1?.backgroundColor = UIColor.yellow
         guard let b = bottomLabel1 else { return }
         b.translatesAutoresizingMaskIntoConstraints = false
         bc.addSubview(b)
@@ -551,7 +556,6 @@ extension TaskDetailListTableViewCell {
         bottomLabel2?.font = UIFont.systemFont(ofSize: 16)
         bottomLabel2?.textColor = UIColor(red: 155, green: 155, blue: 155)
         bottomLabel2?.text = " "
-        //bottomLabel2?.backgroundColor = UIColor.purple
         bottomLabel2?.textAlignment = .right
         guard let b = bottomLabel2 else { return }
         b.translatesAutoresizingMaskIntoConstraints = false
@@ -569,35 +573,76 @@ extension TaskDetailListTableViewCell {
         topLabel?.text = vm.topLabel
         bottomLabel1?.text = vm.bottomLabel1
         bottomLabel2?.text = vm.bottomLabel2?.toJTFormateString
-        if let l = vm.leaderuids {
-            var s = ""
-            for x in l {
-                if let r = x.realname {
-                    if s.count > 0{
-                        s += "," + r
-                    } else {
-                        s += r
-                    }
-                }
-            }
-            content1Label2?.text = s
-        }
-        if let l = vm.personuids {
-            var s = ""
-            for x in l {
-                if let r = x.realname {
-                    if s.count > 0{
-                        s += "," + r
-                    } else {
-                        s += r
-                    }
-                }
-            }
-            content2Label2?.text = s
-        }
+        if let l = vm.leaderuids { content1Label2?.text = getUIDsNames(UIDs: l) }
+        if let l = vm.personuids { content2Label2?.text = getUIDsNames(UIDs: l) }
         content3Label2?.text = vm.address
         content4Label2?.text = vm.content
         content5Label2?.text = vm.remark
+        guard let files = vm.files else { return }
+        let count = files.count
+        guard count > 0 else { return }
+        guard let uid = global_SystemUser?.id else {
+            //do something
+            return
+        }
+        
+        let jtMediaPreviewDatas = [JTMediaPreviewData].init(repeating: JTMediaPreviewData(), count: count)
+        content6JTMediaPreview?.addData(dataRange: jtMediaPreviewDatas)
+        for index in 0 ..< count {
+            let file = files[index]
+            guard let contentType = file.contenttype, let filename = file.path else { continue }
+            if contentType.containsCaseInsensitive(other: "image") {
+                setImagePreview(index: index, uid: uid, filename: filename)
+            } else if contentType.containsCaseInsensitive(other: "video") {
+                
+            } else {
+                
+            }
+        }
     }
+    
+    private func setImagePreview(index: Int, uid: Int, filename: String) {
+        let fileTypenum = FileTypenum.Task
+        let imagePrefix = ImagePrefix.Minimum
+        let url = SystemFile.shareInstance.getFileURL(typenum: fileTypenum, frid: Int64(uid), filename: imagePrefix.rawValue + filename)
+        if FileManage.shareInstance.fileExist(atPath: url.path) {
+            addFileImageToJTMediaPreview(url: url, index: index)
+        } else {
+            let req = RequestObject_FileDownload(typenum: fileTypenum, frid: uid, filename: filename, prefix: imagePrefix, destination: { temporaryUrl, response in
+                return (url, DownloadRequest.DownloadOptions.removePreviousFile)
+            })
+            WebFile.shareInstance.saveFile(requestObject: req) {
+                [weak self] success, msg in
+                if success {
+                    self?.addFileImageToJTMediaPreview(url: url, index: index)
+                } else {
+                    
+                }
+            }
+        }
+    }
+    private func addFileImageToJTMediaPreview(url: URL, index: Int) {
+        let image = UIImage(contentsOfFile: url.path)
+        guard let img = image else {
+            //do something
+            return
+        }
+        content6JTMediaPreview?.setDataImage(at: index, image: img)
+    }
+    
+    private func getUIDsNames(UIDs: [Object_Uid]) -> String {
+        var s = ""
+        for uid in UIDs {
+            if let r = uid.realname {
+                if s.count > 0{
+                    s += "," + r
+                } else {
+                    s += r
+                }
+            }
+        }
+        return s
+    }
+    
 }
 

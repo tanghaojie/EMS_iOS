@@ -24,7 +24,7 @@ class Object_Task: Mappable {
     var remark: String?
     var finish: Bool?
     var statecode_alias: String?
-    var files: String?
+    var files: [Object_File]?
     required init?(map: Map) {}
     func mapping(map: Map) {
         id          <- map["id"]

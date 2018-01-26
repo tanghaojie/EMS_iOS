@@ -24,6 +24,7 @@ class Object_QueryProcessList: Mappable {
     var finish: Bool?
     var statecode_alias: String?
     var files: [Object_File]?
+    init() {}
     required init?(map: Map) { }
     func mapping(map: Map) {
         id         <- map["id"]

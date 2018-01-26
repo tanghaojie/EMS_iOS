@@ -154,8 +154,8 @@ extension TaskListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vm = cellVM[indexPath.row]
         let data = vm.data
-        if let id = data?.id {
-            let list = TaskDetailListViewController(id: id)
+        if let _ = data?.id {
+            let list = TaskDetailListViewController(object_Task: data!)
             navigationController?.pushViewController(list, animated: true)
         }
     }

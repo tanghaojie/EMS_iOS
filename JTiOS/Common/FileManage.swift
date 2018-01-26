@@ -10,12 +10,14 @@ class FileManage {
     static let shareInstance = FileManage()
     private init() {}
     
+    private let fileManager = FileManager.default
+    
     lazy var documentDir: String = {
         let x = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
         return x ?? ""
     }()
     lazy var documentFile: URL = {
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let urls = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
         return urls[urls.count - 1]
     }()
     lazy var cacheDir: String = {
@@ -42,8 +44,8 @@ class FileManage {
     
     func createDirectory(path: String) {
         var isDir = ObjCBool(true)
-        if !FileManager.default.fileExists(atPath: path, isDirectory: &isDir) {
-            try! FileManager.default.createDirectory(
+        if !fileManager.fileExists(atPath: path, isDirectory: &isDir) {
+            try! fileManager.createDirectory(
                 atPath: path,
                 withIntermediateDirectories: true,
                 attributes: nil)
@@ -51,8 +53,8 @@ class FileManage {
     }
     func createDirectory(url: URL){
         var isDir = ObjCBool(true)
-        if !FileManager.default.fileExists(atPath: url.path, isDirectory: &isDir) {
-            try! FileManager.default.createDirectory(
+        if !fileManager.fileExists(atPath: url.path, isDirectory: &isDir) {
+            try! fileManager.createDirectory(
                 at: url,
                 withIntermediateDirectories: true,
                 attributes: nil)
@@ -60,22 +62,24 @@ class FileManage {
     }
     
     func copyItem(from: URL, to: URL) -> Bool {
-        let f = FileManager.default
-        guard f.fileExists(atPath: from.path) && f.isReadableFile(atPath: from.path) else { return false }
+        guard fileManager.fileExists(atPath: from.path) && fileManager.isReadableFile(atPath: from.path) else { return false }
         do {
-            try f.copyItem(at: from, to: to)
+            try fileManager.copyItem(at: from, to: to)
             return true
         } catch {
             return false
         }
     }
     
+    func fileExist(atPath: String) -> Bool {
+        return fileManager.fileExists(atPath: atPath)
+    }
+    
     func delete(url: URL) -> Bool {
-        let f = FileManager.default
-        if !f.fileExists(atPath: url.path) { return true }
-        if !f.isDeletableFile(atPath: url.path) { return false }
+        if !fileManager.fileExists(atPath: url.path) { return true }
+        if !fileManager.isDeletableFile(atPath: url.path) { return false }
         do {
-            try FileManager.default.removeItem(at: url)
+            try fileManager.removeItem(at: url)
             return true
         } catch {
             return false
@@ -88,8 +92,8 @@ class FileManage {
             var isDir = ObjCBool(true)
             for subPath in subs {
                 path.append("/" + subPath)
-                if !FileManager.default.fileExists(atPath: path, isDirectory: &isDir) {
-                    try? FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
+                if !fileManager.fileExists(atPath: path, isDirectory: &isDir) {
+                    try? fileManager.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
                 }
             }
         }

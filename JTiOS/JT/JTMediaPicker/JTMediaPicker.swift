@@ -10,13 +10,14 @@ import UIKit
 
 class JTMediaPicker: UIView {
     
+    private let minHeight: CGFloat = 10
     private let topSpace: CGFloat = 16
     private let bottomSpace: CGFloat = 16
     private let leftSpace: CGFloat = 12
     private let rightSpace: CGFloat = 12
     
     private var maxCount: Int = 9
-    private var numberOfLine: Int = 3
+    private var numberOfLine: Int = 4
     
     private let upDownBetweenSpace: CGFloat = 8
     private let leftRightBetweenSpace: CGFloat = 8
@@ -106,7 +107,7 @@ class JTMediaPicker: UIView {
 extension JTMediaPicker {
     private func initDatasViews() {
         datasViews = [UIView]()
-        for index in 0...datasViewsCount - 1 {
+        for index in 0 ..< datasViewsCount {
             if index == datasCount && !full {
                 datasViews.append(addView)
             } else {
@@ -124,14 +125,21 @@ extension JTMediaPicker {
 extension JTMediaPicker {
     
     private func showSubviews() {
-        for rowNum in 0...datasViewsRowCount - 1 {
-            for columnNum in 0...datasViewsColumnCount - 1 {
+        for rowNum in 0 ..< datasViewsRowCount {
+            for columnNum in 0 ..< datasViewsColumnCount {
                 subView(rowNum: rowNum, columnNum: columnNum)
             }
         }
-        let lastView = datasViews[datasViews.count - 1]
-        let bottom = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: lastView, attribute: .bottom, multiplier: 1, constant: bottomSpace)
-        self.addConstraint(bottom)
+        
+        let index = datasViews.count - 1
+        if index >= 0 {
+            let lastView = datasViews[index]
+            let bottom = NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: lastView, attribute: .bottom, multiplier: 1, constant: bottomSpace)
+            self.addConstraint(bottom)
+        } else {
+            let minH = NSLayoutConstraint(item: self, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: minHeight)
+            self.addConstraint(minH)
+        }
     }
     private func subView(rowNum: Int, columnNum: Int) {
         let datasViewsindex = rowNum * datasViewsColumnCount + columnNum

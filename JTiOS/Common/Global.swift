@@ -23,6 +23,9 @@ extension String {
         dateFormatter.dateFormat = global_DateTimeFormate
         return dateFormatter.date(from: self)
     }
+    func containsCaseInsensitive(other: String) -> Bool {
+        return self.range(of: other, options: .caseInsensitive, range: nil, locale: nil) != nil
+    }
 }
 extension Date {
     var toJTFormateString: String {
@@ -116,8 +119,8 @@ enum FileTypenum: Int {
 }
 enum ImagePrefix: String {
     case Origin = ""
-    case Minimum = "m"
-    case HeadProtrait = "l"
+    case Minimum = "m"      // 80 * 80
+    case HeadProtrait = "l" //180 * 180
 }
 let global_DateTimeFormate = "yyyy-MM-dd HH:mm:ss"
 var global_SystemUser: Object_LoginResponseUser?

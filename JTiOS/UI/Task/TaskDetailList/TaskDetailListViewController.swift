@@ -15,13 +15,19 @@ class TaskDetailListViewController: UIViewController {
     private var tableViewHeader: MJRefreshNormalHeader!
     private let cellReuseIdentifier = "taskDetailListTableViewCell"
     
+    //private var defaultData: TaskDetailListTableViewCellVM?
     private var cellVM: [TaskDetailListTableViewCellVM] = [TaskDetailListTableViewCellVM]()
     private let c = TaskDetailListC()
-    private let taskId: Int
+    private let task: Object_Task
+    //private let taskId: Int
     private let navigationBarTitle: String = "任务详情"
     
-    init(id: Int) {
-        taskId = id
+//    init(id: Int) {
+//        taskId = id
+//        super.init(nibName: nil, bundle: nil)
+//    }
+    init(object_Task: Object_Task) {
+        task = object_Task
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -67,7 +73,7 @@ extension TaskDetailListViewController {
         tableView.backgroundColor = UIColor(red: 78, green: 128, blue: 152)
         tableView.allowsSelection = false
         tableView.separatorStyle = UITableViewCellSeparatorStyle.none
-        tableView.register(TaskDetailListTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+        //tableView.register(TaskDetailListTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         tableView.estimatedRowHeight = 50
         tableView.rowHeight = UITableViewAutomaticDimension
         view.addSubview(tableView)
@@ -96,10 +102,31 @@ extension TaskDetailListViewController {
 extension TaskDetailListViewController {
 
     private func renew() {
+        let obj = Object_QueryProcessList()
+        obj.address = task.address
+        obj.content = task.content
+        obj.endtime = task.endtime
+        //obj.files =
+        obj.finish = task.finish
+        obj.geometry = task.geometry
+        //obj.id
+        obj.leaderuids = task.leaderuids
+        obj.opuid = task.opuid
+        obj.personuids = task.personuids
+        obj.realname = task.realname
+        obj.remark = task.remark
+        obj.starttime = task.starttime
+        obj.statecode = task.statecode
+        obj.statecode_alias = task.statecode_alias
+        obj.summary = task.summary
+        obj.tid = task.id
+        let taskDetailListTableViewCellVM = TaskDetailListTableViewCellVM(data: obj)
         cellVM = [TaskDetailListTableViewCellVM]()
+        cellVM.append(taskDetailListTableViewCellVM)
     }
     
     private func loadData() {
+        guard let taskId = task.id else { return }
         c.getData(id: taskId) { [weak self] (vms: [TaskDetailListTableViewCellVM]?, error: String?) in
             if let e = error, let s = self {
                 s.endRefreshing()
@@ -108,8 +135,8 @@ extension TaskDetailListViewController {
             }
             if let vms = vms {
                 self?.cellVM.append(contentsOf: vms)
-                self?.tableView.reloadData()
             }
+            self?.tableView.reloadData()
             self?.endRefreshing()
         }
     }
@@ -123,6 +150,7 @@ extension TaskDetailListViewController {
         let sb = UIStoryboard(name: "TaskDeal", bundle: nil)
         let vc = sb.instantiateViewController(withIdentifier: "TaskDeal")
         if let v = vc as? TaskDealViewController {
+            guard let taskId = task.id else { return }
             v.setTaskId(taskId: taskId)
             navigationController?.pushViewController(v, animated: true)
         }
@@ -139,10 +167,16 @@ extension TaskDetailListViewController: UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! TaskDetailListTableViewCell
-        let vm = cellVM[indexPath.row]
-        cell.set(vm: vm)
-        cell.selectionStyle = .none
-        return cell
+        var cell = tableView.cellForRow(at: indexPath)
+        if cell == nil {
+            cell = TaskDetailListTableViewCell(style: .default, reuseIdentifier: cellReuseIdentifier)
+            if let mCell = cell as? TaskDetailListTableViewCell {
+                let vm = cellVM[indexPath.row]
+                mCell.set(vm: vm)
+            }
+            cell?.selectionStyle = .none
+        }
+        return cell!
     }
 }
+
