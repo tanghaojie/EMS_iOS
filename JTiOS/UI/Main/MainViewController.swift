@@ -7,23 +7,40 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class MainViewController: UIViewController {
     
     private var hasCheckLogin = false
     @IBOutlet weak var mapView: AGSMapView!
     @IBOutlet weak var bottomTabbar: UIView!
+    private var uploadLocationButton: UIButton?
+    fileprivate var timer1s: Timer?
+    fileprivate var timer10s: Timer?
+    private var isUploadPoints: Bool = false {
+        didSet {
+            if isUploadPoints {
+                let img = Assets.shareInstance.uploadingLocation()
+                uploadLocationButton?.setImage(img, for: .normal)
+                startUploadLocation()
+            } else {
+                let img = Assets.shareInstance.uploadLocation()
+                uploadLocationButton?.setImage(img, for: .normal)
+                stopUploadLocation()
+            }
+        }
+    }
+    private var uploadPoints = [Object_Point]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+        addLayer()
         JTLocationManager.shareInstance.startUpdatingLocation()
         JTLocationManager.shareInstance.startUpdatingHeading()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        setupUI()
-        addLayer()
-        
         if !hasCheckLogin {
             checkLogin()
             hasCheckLogin = true
@@ -38,6 +55,7 @@ extension MainViewController {
         setupTabbar()
         setupLocationButton(view: mapView)
         setupAddEventButton(view: mapView)
+        setupUploadPointButton(view: mapView)
     }
     
     private func setupMapView() {
@@ -79,8 +97,40 @@ extension MainViewController {
         view.addSubview(btn)
         view.bringSubview(toFront: btn)
     }
+    private func setupUploadPointButton(view: UIView) {
+        uploadLocationButton = UIButton(frame: CGRect(x: view.frame.width - 20 - 60, y: 180, width: 60, height: 60))
+        guard let btn = uploadLocationButton else { return }
+        btn.backgroundColor = .clear
+        btn.addTarget(self, action: #selector(uploadPointButtonTouchUpInside), for: .touchUpInside)
+        view.addSubview(btn)
+        view.bringSubview(toFront: btn)
+        isUploadPoints = false
+    }
     @objc private func addButtonTouchUpInside() {
         showWarningReport()
+    }
+    @objc private func uploadPointButtonTouchUpInside() {
+        let HUD = MBProgressHUD.showAdded(to: view, animated: true)
+        HUD.bezelView.color = UIColor.clear
+        HUD.backgroundView.style = .blur
+        HUD.removeFromSuperViewOnHide = false
+        HUD.minShowTime = 0.8
+        HUD.show(animated: true)
+        
+        if !isUploadPoints {
+            LoginC().hadLoggedinWithState(handler: {
+                [weak self] (isLogin, msg) in
+                HUD.hide(animated: true)
+                if isLogin {
+                    self?.isUploadPoints = true
+                } else {
+                    self?.showLogin()
+                }
+            })
+        } else {
+            HUD.hide(animated: true)
+            isUploadPoints = false
+        }
     }
     
     private func setupLocationButton(view : UIView) {
@@ -133,6 +183,12 @@ extension MainViewController {
         present(vc, animated: true, completion: nil)
     }
     
+    private func showLogin() {
+        let sb = UIStoryboard(name: "Login", bundle: nil)
+        let vc = sb.instantiateViewController(withIdentifier: "LoginNavigationController")
+        present(vc, animated: true, completion: nil)
+    }
+    
 }
 extension MainViewController: AGSMapViewLayerDelegate {
     
@@ -154,4 +210,76 @@ extension MainViewController: AGSMapViewLayerDelegate {
             mapView.addMapLayer(t)
         }
     }
+}
+extension MainViewController {
+    
+    private func startUploadLocation() {
+        uploadPoints.removeAll()
+        timer1s = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(timer1Fire), userInfo: nil, repeats: true)
+        timer10s = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(timer10Fire), userInfo: nil, repeats: true)
+    }
+    
+    private func stopUploadLocation() {
+        timer1s?.invalidate()
+        timer10s?.invalidate()
+    }
+    
+    private func getUploadPoints() -> [Object_Point] {
+        let count = uploadPoints.count
+        guard count > 0 else { return [Object_Point]() }
+        
+        var data = [Object_Point]()
+        for _ in 0 ..< count {
+            let first = uploadPoints.removeFirst()
+            data.append(first)
+        }
+        uploadPoints.removeAll()
+        return data
+    }
+    
+    @objc private func timer10Fire() {
+        let data = getUploadPoints()
+        guard let uid = global_SystemUser?.id else {
+            isUploadPoints = false
+            return
+        }
+        let r = RequestJson_UploadPoints(uid: uid, tnum: Date(), points: data)
+        ServiceManager.shareInstance.provider.request(.uploadPoints(object: r)) {
+            result in
+//            switch result {
+//            case let .success(moyaResponse):
+//                guard 200 == moyaResponse.statusCode else {
+//                    //h(false, Messager.shareInstance.failedHttpResponseStatusCode)
+//                    return
+//                }
+//                guard let json = String(data: moyaResponse.data, encoding: .utf8) else {
+//                    //h(false, Messager.shareInstance.unableParseData2String)
+//                    return
+//                }
+//                guard let r = ResponseJson_Login(JSONString: json) else {
+//                    //h(false, Messager.shareInstance.unableParseJsonString2JsonObject)
+//                    return
+//                }
+//                guard 0 == r.status else {
+//                    //h(false, r.msg)
+//                    return
+//                }
+//                //h(true, nil)
+//            case let .failure(_):
+//                //h(false, error.errorDescription)
+//                return
+//            }
+        }
+    }
+    
+    @objc private func timer1Fire() {
+        guard isUploadPoints, let l = JTLocationManager.shareInstance.location else { return }
+        guard let today = global_TodayStartDate else {
+            exit(0)
+        }
+        let t = Int64(Date().timeIntervalSince(today))
+        let point = Object_Point(x: l.coordinate.longitude, y: l.coordinate.latitude, t: t)
+        uploadPoints.append(point)
+    }
+    
 }

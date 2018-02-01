@@ -19,6 +19,8 @@ class APIUrl {
     
     static let queryEventList = "api/event/QueryEventList"
     
+    static let queryRelationEventList = "api/event/QueryRelationEventList"
+    
     static let getGroupConfig = "api/config/GetGroupConfig"
     
     static let createEvent = "api/event/CreateEvent"
@@ -37,5 +39,7 @@ class APIUrl {
     static let file = "api/file"
     
     static let fileUpload = "api/file/UploadFile"
+    
+    static let uploadPoints = "api/track/UploadPoints"
     
 }

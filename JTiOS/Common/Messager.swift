@@ -13,6 +13,7 @@ class Messager {
     let ok = "确定"
     let warning = "警告"
     let cancel = "取消"
+    let wait = "请稍后"
     
     let logining = "正在登录"
     let notOpen = "暂未开放"
@@ -28,6 +29,9 @@ class Messager {
     let uploading = "上传中"
     let compressing = "压缩中"
     let compressFailed = "压缩失败"
+    let uploadPointsFailedPleaseRestartApp = "上传点位失败，请重启App尝试"
+    
+    let clearCacheSuccess = "清除缓存成功"
     
     let pleaseTakeVideo = "请录制视频"
     let videoFinish = "录制完成"
@@ -37,7 +41,7 @@ class Messager {
     let ifDelete = "是否删除"
     
     let uploadFailed = "上传失败"
-    
+    let redirecting = "跳转中"
     let logouting = "正在退出"
     let networkError = "网络异常"
     let logoutFailed = "退出失败"

@@ -22,6 +22,8 @@ enum Service {
     case fileDownload(object: RequestObject_FileDownload)
     case file(object: RequestObject_File)
     case fileUpload(object: RequestObject_FileUpload)
+    case queryRelationEventList(object: RequestJson_QueryRelationEventList)
+    case uploadPoints(object: RequestJson_UploadPoints)
 }
 extension Service: TargetType {
     var baseURL: URL { return URL(string: APIUrl.baseUrl)! }
@@ -55,11 +57,15 @@ extension Service: TargetType {
             return APIUrl.file + "/" + String(describing: object.typenum.rawValue) + "/" + String(describing: object.frid)
         case .fileUpload:
             return APIUrl.fileUpload
+        case .queryRelationEventList:
+            return APIUrl.queryRelationEventList
+        case .uploadPoints:
+            return APIUrl.uploadPoints
         }
     }
     var method: Moya.Method {
         switch self {
-        case .login, .queryEventList, .getGroupConfig, .createEvent, .queryTaskList, .queryEventInfo, .queryProcessList, .createProcessExecute, .loginState, .logout, .queryFile, .fileUpload :
+        case .login, .queryEventList, .getGroupConfig, .createEvent, .queryTaskList, .queryEventInfo, .queryProcessList, .createProcessExecute, .loginState, .logout, .queryFile, .fileUpload, .queryRelationEventList, .uploadPoints :
             return .post
         case .fileDownload, .file:
             return .get
@@ -101,6 +107,10 @@ extension Service: TargetType {
             }
             let urlParameters: [String : Any] = ["frid": object.frid, "typenum": object.typenum.rawValue, "actualtime": object.actualtime]
             return Task.uploadCompositeMultipart(multipartDatas, urlParameters: urlParameters)
+        case .queryRelationEventList(let json):
+            return Task.requestData((json.toJSONString()?.utf8Encoded)!)
+        case .uploadPoints(let json):
+            return Task.requestData((json.toJSONString()?.utf8Encoded)!)
         }
     }
     
@@ -133,6 +143,10 @@ extension Service: TargetType {
         case .file:
             return "nil".utf8Encoded
         case .fileUpload:
+            return "nil".utf8Encoded
+        case .queryRelationEventList:
+            return "nil".utf8Encoded
+        case .uploadPoints:
             return "nil".utf8Encoded
         }
     }

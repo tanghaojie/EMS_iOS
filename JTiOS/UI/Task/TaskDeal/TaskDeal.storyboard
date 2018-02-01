@@ -109,14 +109,14 @@
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                     </textView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Iyy-mH-d2I">
-                                                        <rect key="frame" x="0.0" y="235" width="359" height="20"/>
-                                                        <color key="backgroundColor" red="0.53333333333333333" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <rect key="frame" x="0.0" y="235" width="359" height="10"/>
+                                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="20" id="af4-Rn-pqG"/>
+                                                            <constraint firstAttribute="height" constant="10" id="af4-Rn-pqG"/>
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CkO-qq-deS">
-                                                        <rect key="frame" x="8" y="263" width="343" height="30"/>
+                                                        <rect key="frame" x="8" y="253" width="343" height="30"/>
                                                         <color key="backgroundColor" red="0.0039215686269999999" green="0.36862745099999999" blue="0.58431372550000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="e9E-yc-FHK"/>
@@ -190,11 +190,13 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="actualScrollView" destination="0pZ-jU-SqY" id="Eiq-Wh-9fy"/>
                         <outlet property="address" destination="x46-Kt-tY6" id="QG9-Lt-VdD"/>
                         <outlet property="bottomView" destination="Iyy-mH-d2I" id="Xjb-aG-0Qy"/>
                         <outlet property="bottomViewHeight" destination="af4-Rn-pqG" id="cwo-gG-4cS"/>
                         <outlet property="commit" destination="CkO-qq-deS" id="Fpc-Gi-eon"/>
                         <outlet property="content" destination="lxH-NV-Uq6" id="xNJ-sP-8F3"/>
+                        <outlet property="scrollView" destination="Let-sz-82o" id="0GH-pq-w41"/>
                         <outlet property="scrollViewHeight" destination="n22-yE-Jh3" id="biG-1r-Lbz"/>
                         <outlet property="summary" destination="dUU-e5-0XR" id="WsD-0P-jiw"/>
                     </connections>

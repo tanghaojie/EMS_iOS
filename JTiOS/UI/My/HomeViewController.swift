@@ -164,7 +164,27 @@ extension HomeViewController {
     
     @objc private func clearCacheAction() {
         clearCacheActivityIndicator.startAnimating()
-        JTTemp_NotOpen()
+    
+        let cache = FileManage.shareInstance.cacheDir
+        let temp = FileManage.shareInstance.tmpDir
+        let dirs = [cache, temp]
+        for dir in dirs {
+            let subPaths = FileManager.default.subpaths(atPath: dir)
+            guard let subs = subPaths else { return }
+            for sub in subs {
+                let full = dir.appending("/\(sub)")
+                try? FileManager.default.removeItem(atPath: full)
+            }
+        }
+
+        let HUD = MBProgressHUD.showAdded(to: view, animated: true)
+        HUD.bezelView.color = UIColor(red: 120, green: 120, blue: 120)
+        HUD.label.text = Messager.shareInstance.clearCacheSuccess
+        HUD.backgroundView.style = .solidColor
+        HUD.removeFromSuperViewOnHide = false
+        HUD.mode = .text
+        HUD.hide(animated: true, afterDelay: 1)
+
         clearCacheActivityIndicator.stopAnimating()
     }
     @objc private func setHeadPortraitAction() {

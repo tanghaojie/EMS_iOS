@@ -288,14 +288,14 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QCf-zT-19p">
-                                                <rect key="frame" x="8" y="395" width="359" height="20"/>
-                                                <color key="backgroundColor" red="0.4919162326" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <rect key="frame" x="8" y="395" width="359" height="10"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="20" id="T5t-cC-I6r"/>
+                                                    <constraint firstAttribute="height" constant="10" id="T5t-cC-I6r"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="bw5-Zv-Cte" firstAttribute="top" secondItem="bRV-7L-gsM" secondAttribute="bottom" constant="8" id="00F-Uu-dev"/>
                                             <constraint firstItem="jS0-eY-nNZ" firstAttribute="leading" secondItem="GzV-Gj-ujg" secondAttribute="trailing" constant="8" id="0A5-fN-gpA"/>
@@ -371,6 +371,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="k6c-d3-MiW" secondAttribute="bottom" id="9eF-zg-CYp"/>
                                     <constraint firstItem="k6c-d3-MiW" firstAttribute="centerX" secondItem="Dwv-aH-ZDR" secondAttribute="centerX" id="EdW-Fw-YM0"/>
@@ -380,7 +381,7 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Dwv-aH-ZDR" firstAttribute="leading" secondItem="GKM-p2-CdW" secondAttribute="leading" id="hLf-gm-v0N"/>
                             <constraint firstItem="jtQ-H8-Ddr" firstAttribute="top" secondItem="Dwv-aH-ZDR" secondAttribute="bottom" id="iPl-Zz-8cN"/>
@@ -389,6 +390,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="actualScrollView" destination="k6c-d3-MiW" id="BTU-Oc-HxA"/>
                         <outlet property="address" destination="GiW-VA-2gC" id="1Tk-LP-7Ix"/>
                         <outlet property="bottomView" destination="QCf-zT-19p" id="1Bd-cE-akL"/>
                         <outlet property="bottomViewHeight" destination="T5t-cC-I6r" id="2GT-Tb-jCZ"/>
@@ -399,6 +401,7 @@
                         <outlet property="measure" destination="W81-F2-FD4" id="ZaQ-zg-ye7"/>
                         <outlet property="name" destination="0US-ao-XeB" id="960-5t-Rgt"/>
                         <outlet property="reason" destination="Svg-hu-ccN" id="9zI-bA-5Yf"/>
+                        <outlet property="scrollView" destination="Dwv-aH-ZDR" id="Xzs-s5-afA"/>
                         <outlet property="scrollViewHeight" destination="S5M-hn-77j" id="Sfd-d7-LgA"/>
                         <outlet property="startTime" destination="TKv-Z1-ip3" id="Ruh-4q-Scd"/>
                         <outlet property="status" destination="jS0-eY-nNZ" id="zzd-Ed-QxF"/>

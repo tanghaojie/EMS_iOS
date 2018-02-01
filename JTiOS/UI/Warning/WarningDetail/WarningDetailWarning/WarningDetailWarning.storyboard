@@ -142,10 +142,10 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ErS-ow-eoR">
-                                                <rect key="frame" x="8" y="192" width="359" height="20"/>
-                                                <color key="backgroundColor" red="0.4919162326" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <rect key="frame" x="8" y="192" width="359" height="1"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="20" id="we2-4M-wKg"/>
+                                                    <constraint firstAttribute="height" constant="1" id="we2-4M-wKg"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tvq-i1-e9c">
@@ -160,7 +160,7 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="Tvq-i1-e9c" firstAttribute="leading" secondItem="euW-cP-SC4" secondAttribute="trailing" id="120-68-Enz"/>
                                             <constraint firstItem="mrs-Rg-fpt" firstAttribute="leading" secondItem="RoJ-xf-q3e" secondAttribute="leading" constant="8" id="3nW-hW-hHc"/>
@@ -201,6 +201,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="RoJ-xf-q3e" firstAttribute="top" secondItem="8Jw-gO-eZf" secondAttribute="top" id="HKe-l2-hnG"/>
                                     <constraint firstAttribute="trailing" secondItem="RoJ-xf-q3e" secondAttribute="trailing" id="cP1-y4-rMa"/>
@@ -219,11 +220,13 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="actualScrollView" destination="RoJ-xf-q3e" id="A9p-L7-ckU"/>
                         <outlet property="address" destination="euW-cP-SC4" id="mGQ-lu-3hF"/>
                         <outlet property="bottomView" destination="ErS-ow-eoR" id="IYa-jp-pJ9"/>
                         <outlet property="bottomViewHeight" destination="we2-4M-wKg" id="dfm-08-HGY"/>
                         <outlet property="level" destination="O5X-T7-aU8" id="PWr-hc-pwb"/>
                         <outlet property="name" destination="fBN-mL-wXq" id="EID-Sa-2wx"/>
+                        <outlet property="scrollView" destination="8Jw-gO-eZf" id="2UH-EA-4Tc"/>
                         <outlet property="scrollViewHeight" destination="O9K-5U-p8L" id="d7h-JO-cCk"/>
                         <outlet property="status" destination="q6S-HM-yPf" id="Bba-pl-Md4"/>
                         <outlet property="time" destination="pd8-da-xBC" id="Y1Q-bZ-1Op"/>

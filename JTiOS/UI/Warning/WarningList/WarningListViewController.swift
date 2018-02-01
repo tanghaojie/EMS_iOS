@@ -8,6 +8,7 @@
 
 import UIKit
 import MJRefresh
+import MBProgressHUD
 
 class WarningListViewController: UIViewController {
     
@@ -167,6 +168,31 @@ extension WarningListViewController: UITableViewDelegate, UITableViewDataSource 
             setWarning(data: data)
         }
     }
+    private func queryFiles(e: Object_Event?, handler: @escaping ([Object_File]?) -> Void) {
+        let view: UIView
+        if let navi = self.navigationController {
+            view = navi.view
+        } else {
+            view = self.view
+        }
+        let HUD = MBProgressHUD.showAdded(to: view, animated: true)
+        HUD.bezelView.color = UIColor.clear
+        HUD.backgroundView.style = .blur
+        HUD.removeFromSuperViewOnHide = false
+        HUD.minShowTime = 0.5
+        HUD.show(animated: true)
+        c.getFiles(e: e) {
+            [weak self] files, msg in
+            DispatchQueue.main.async {
+                HUD.hide(animated: true)
+                if let m = msg, let s = self {
+                    Alert.shareInstance.AlertWithUIAlertAction(viewController: s, title: Messager.shareInstance.networkError, message: m, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
+                    return
+                }
+                handler(files)
+            }
+        }
+    }
     private func setCommanding(data: Object_Event?) {
         let sb = UIStoryboard(name: "WarningDetailCommanding", bundle: nil)
         let vc = sb.instantiateViewController(withIdentifier: "WarningDetailCommanding")
@@ -185,8 +211,13 @@ extension WarningListViewController: UITableViewDelegate, UITableViewDataSource 
         vvm.time = data?.sbtime?.toJTFormateDate
         //vvm.trend =
         vvm.type = data?.typecode_alias
-        v.set(vm: vvm)
-        self.navigationController?.pushViewController(v, animated: true)
+        
+        queryFiles(e: data) {
+            [weak self] files in
+            vvm.files = files
+            v.set(vm: vvm)
+            self?.navigationController?.pushViewController(v, animated: true)
+        }
     }
     private func setCanceled(data: Object_Event?) {
         let sb = UIStoryboard(name: "WarningDetailCanceled", bundle: nil)
@@ -203,8 +234,13 @@ extension WarningListViewController: UITableViewDelegate, UITableViewDataSource 
         vvm.time = data?.sbtime?.toJTFormateDate
         //vvm.trend
         vvm.type = data?.typecode_alias
-        v.set(vm: vvm)
-        self.navigationController?.pushViewController(v, animated: true)
+        
+        queryFiles(e: data) {
+            [weak self] files in
+            vvm.files = files
+            v.set(vm: vvm)
+            self?.navigationController?.pushViewController(v, animated: true)
+        }
     }
     private func setEnded(data: Object_Event?) {
         let sb = UIStoryboard(name: "WarningDetailEnded", bundle: nil)
@@ -225,8 +261,13 @@ extension WarningListViewController: UITableViewDelegate, UITableViewDataSource 
         vvm.time = data?.createtime?.toJTFormateDate
         //vvm.trend =
         vvm.type = data?.typecode_alias
-        v.set(vm: vvm)
-        self.navigationController?.pushViewController(v, animated: true)
+        
+        queryFiles(e: data) {
+            [weak self] files in
+            vvm.files = files
+            v.set(vm: vvm)
+            self?.navigationController?.pushViewController(v, animated: true)
+        }
     }
     private func setWaitTodo(data: Object_Event?) {
         let sb = UIStoryboard(name: "WarningDetailWaitTodo", bundle: nil)
@@ -243,8 +284,13 @@ extension WarningListViewController: UITableViewDelegate, UITableViewDataSource 
         vvm.time = data?.createtime?.toJTFormateDate
         //vvm.trend =
         vvm.type = data?.typecode_alias
-        v.set(vm: vvm)
-        self.navigationController?.pushViewController(v, animated: true)
+        
+        queryFiles(e: data) {
+            [weak self] files in
+            vvm.files = files
+            v.set(vm: vvm)
+            self?.navigationController?.pushViewController(v, animated: true)
+        }
     }
     private func setWarning(data: Object_Event?) {
         let sb = UIStoryboard(name: "WarningDetailWarning", bundle: nil)
@@ -257,7 +303,12 @@ extension WarningListViewController: UITableViewDelegate, UITableViewDataSource 
         vvm.status = data?.statecode_alias
         vvm.time = data?.createtime?.toJTFormateDate
         vvm.type = data?.typecode_alias
-        v.set(vm: vvm)
-        self.navigationController?.pushViewController(v, animated: true)
+        
+        queryFiles(e: data) {
+            [weak self] files in
+            vvm.files = files
+            v.set(vm: vvm)
+            self?.navigationController?.pushViewController(v, animated: true)
+        }
     }
 }

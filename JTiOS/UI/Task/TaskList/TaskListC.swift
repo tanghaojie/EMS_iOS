@@ -61,9 +61,9 @@ class TaskListC {
                         vm.bottomLabel = x.starttime?.toJTFormateDate
                         vm.data = x
                         vm.mainContentText = x.content
-                        vm.mainContentTopLabel1 = x.event?.eventname
+                        vm.mainContentTopLabel1 = x.summary
                         vm.mainContentTopLabel3 = x.statecode_alias
-                        vm.topLabel = x.summary
+                        vm.topLabel = x.event?.eventname
                         vms.append(vm)
                     }
                     Handler(vms, nil)

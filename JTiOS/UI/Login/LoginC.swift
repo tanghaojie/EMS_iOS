@@ -26,6 +26,15 @@ class LoginC {
         return false
     }
     
+    func hadLoggedinWithState(handler: @escaping ((Bool, String?) -> Void)) {
+        if !hadLoggedin() {
+            global_SystemUser = nil
+            handler(false, nil)
+            return
+        }
+        HomeC().loginState(handler: handler)
+    }
+    
     func autoLogin(loginFailedHandler: (()->Void)?) {
         if hadLoggedin() { return }
         let dispatchQueue = DispatchQueue(label: "queue_autoLogin")

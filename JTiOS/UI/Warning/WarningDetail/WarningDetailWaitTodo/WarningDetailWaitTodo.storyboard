@@ -229,14 +229,14 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l9J-nn-QjT">
-                                                <rect key="frame" x="8" y="308" width="359" height="20"/>
-                                                <color key="backgroundColor" red="0.4919162326" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <rect key="frame" x="8" y="308" width="359" height="1"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="20" id="Kke-xd-nju"/>
+                                                    <constraint firstAttribute="height" constant="1" id="Kke-xd-nju"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="wdZ-lQ-HjO" firstAttribute="top" secondItem="D4R-J9-mcN" secondAttribute="top" id="38o-MT-lhQ"/>
                                             <constraint firstItem="TH5-2D-6IP" firstAttribute="top" secondItem="MiX-y3-daY" secondAttribute="top" id="3Np-NU-MOB"/>
@@ -297,6 +297,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="JzG-uH-KJO" firstAttribute="top" secondItem="2fd-dQ-N6H" secondAttribute="top" id="558-Ax-uXZ"/>
                                     <constraint firstItem="JzG-uH-KJO" firstAttribute="centerX" secondItem="2fd-dQ-N6H" secondAttribute="centerX" id="MuB-mo-kpe"/>
@@ -315,6 +316,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="actualScrollView" destination="JzG-uH-KJO" id="dgh-Od-pOh"/>
                         <outlet property="address" destination="Swa-ZK-g3m" id="z6I-f9-TDf"/>
                         <outlet property="bottomView" destination="l9J-nn-QjT" id="xTb-Me-Wwk"/>
                         <outlet property="bottomViewHeight" destination="Kke-xd-nju" id="XyW-PR-5Wm"/>
@@ -322,6 +324,7 @@
                         <outlet property="measure" destination="TH5-2D-6IP" id="qn9-ON-Atw"/>
                         <outlet property="name" destination="yAJ-m2-kmj" id="eRb-dp-V74"/>
                         <outlet property="reason" destination="s0V-yk-Qcb" id="Ivf-rT-b2c"/>
+                        <outlet property="scrollView" destination="2fd-dQ-N6H" id="lGG-gQ-3Mx"/>
                         <outlet property="scrollViewHeight" destination="8aX-jg-3U6" id="K5p-GQ-lcV"/>
                         <outlet property="startTime" destination="qHk-pt-Jxs" id="g4U-1j-ICi"/>
                         <outlet property="status" destination="48u-jR-2KT" id="84z-2b-ijL"/>

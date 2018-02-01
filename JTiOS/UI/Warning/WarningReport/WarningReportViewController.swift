@@ -23,7 +23,7 @@ class WarningReportViewController: UIViewController {
     @IBOutlet weak var scrollViewHeight: NSLayoutConstraint!
     var jtMediaPicker: JTMediaPicker?
     
-    private let tmpImageSaveDir = "JT_Image_Temp_Directory_123"
+
     
     private let vm = WarningReportVM()
     private let c = WarningReportC()
@@ -232,7 +232,7 @@ extension WarningReportViewController: UIImagePickerControllerDelegate, UINaviga
         }
         guard let d = data else { return }
         let temp = FileManage.shareInstance.tmpDir
-        let dir = temp + "/\(tmpImageSaveDir)"
+        let dir = temp + "/\(FileManage.shareInstance.tmpImageSaveDir)"
         FileManage.shareInstance.createDirectory(path: dir)
         let filename = "\(UUID().uuidString + imageExtension)"
         let file = dir + "/\(filename)"

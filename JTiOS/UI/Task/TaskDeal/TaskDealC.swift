@@ -72,6 +72,8 @@ class TaskDealC {
                 }
                 if let h = handler {
                     h(true, nil, r.data?.id)
+                    guard let media = vm.pictureAndVideos, media.count > 0, let rid = r.data?.id else { return }
+                    WebFile.shareInstance.uploadJTMediaPickerData(media: media, typenum: FileTypenum.Deal, frid: rid)
                 }
             case let .failure(error):
                 if let h = handler {

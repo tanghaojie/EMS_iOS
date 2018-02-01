@@ -11,10 +11,10 @@ import UIKit
 class JTMediaPreview: UIView {
     
     private let minHeight: CGFloat = 1
-    private let topSpace: CGFloat = 16
+    private let topSpace: CGFloat = 8
     private let bottomSpace: CGFloat = 16
-    private let leftSpace: CGFloat = 12
-    private let rightSpace: CGFloat = 12
+    private let leftSpace: CGFloat = 0
+    private let rightSpace: CGFloat = 0
     
     private var maxCount: Int = 9
     private var numberOfLine: Int = 4
@@ -120,7 +120,6 @@ extension JTMediaPreview {
             view.isHidden = true
             return
         }
-        view.backgroundColor = .green
         let data = datas[datasViewsindex]
         addTapGestureRecognizer(view: view)
         showData(view: view, data: data)

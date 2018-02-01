@@ -33,11 +33,17 @@ extension Date {
     }
 }
 extension DateFormatter {
+    
     static var JTDateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
-        //dateFormatter.timeZone = TimeZone(identifier: "UTC")
         dateFormatter.locale = Locale.current
         dateFormatter.dateFormat = global_DateTimeFormate
+        return dateFormatter
+    }()
+    static var JTDateFormatter2: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.dateFormat = global_DateFormate
         return dateFormatter
     }()
 }
@@ -122,7 +128,17 @@ enum ImagePrefix: String {
     case Minimum = "m"      // 80 * 80
     case HeadProtrait = "l" //180 * 180
 }
+var global_TodayStartDate: Date? = {
+    let date = Date()
+    let cal = Calendar.current
+    var dateComponents = cal.dateComponents([.year,.month,.day,.hour,.minute,.second], from: date)
+    dateComponents.hour = 0
+    dateComponents.minute = 0
+    dateComponents.second = 0
+    return cal.date(from: dateComponents)
+}()
 let global_DateTimeFormate = "yyyy-MM-dd HH:mm:ss"
+let global_DateFormate = "yyyyMMdd"
 var global_SystemUser: Object_LoginResponseUser?
 var global_SystemAllConfig: [Object_GetGroupConfig]?
 

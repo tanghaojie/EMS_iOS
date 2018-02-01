@@ -11,6 +11,7 @@ class FileManage {
     private init() {}
     
     private let fileManager = FileManager.default
+    let tmpImageSaveDir = "JT_Image_Temp_Directory_123"
     
     lazy var documentDir: String = {
         let x = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first

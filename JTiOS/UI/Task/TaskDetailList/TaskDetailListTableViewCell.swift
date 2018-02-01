@@ -188,7 +188,6 @@ extension TaskDetailListTableViewCell {
         guard let fc = fullContent else { return }
         top = UIView()
         guard let t = top else { return }
-        //t.backgroundColor = UIColor.green
         t.translatesAutoresizingMaskIntoConstraints = false
         fc.addSubview(t)
         let left = NSLayoutConstraint(item: t, attribute: .left, relatedBy: .equal, toItem: fc, attribute: .left, multiplier: 1, constant: 0)
@@ -202,7 +201,6 @@ extension TaskDetailListTableViewCell {
         guard let t = top else { return }
         topContent = UIView()
         guard let v = topContent else { return }
-        //v.backgroundColor = UIColor(red: 176, green: 231, blue: 198)
         v.translatesAutoresizingMaskIntoConstraints = false
         t.addSubview(v)
         let left = NSLayoutConstraint(item: v, attribute: .left, relatedBy: .equal, toItem: t, attribute: .left, multiplier: 1, constant: TaskDetailListTableViewCell.topContentLeft)
@@ -231,7 +229,6 @@ extension TaskDetailListTableViewCell {
         guard let fc = fullContent else { return }
         main = UIView()
         guard let v = main else { return }
-        //v.backgroundColor = UIColor.blue
         guard let t = top else { return }
         v.translatesAutoresizingMaskIntoConstraints = false
         fc.addSubview(v)
@@ -246,7 +243,6 @@ extension TaskDetailListTableViewCell {
         guard let m = main else { return }
         mainContent = UIView()
         guard let v = mainContent else { return }
-        //v.backgroundColor = UIColor(red: 57, green: 186, blue: 232)
         v.translatesAutoresizingMaskIntoConstraints = false
         m.addSubview(v)
         let left = NSLayoutConstraint(item: v, attribute: .left, relatedBy: .equal, toItem: m, attribute: .left, multiplier: 1, constant: TaskDetailListTableViewCell.mainContentLeft)
@@ -327,7 +323,7 @@ extension TaskDetailListTableViewCell {
     private func setupContent6() {
         guard let mc = mainContent else { return }
         content6 = UIView()
-        content6?.backgroundColor = UIColor(red: 136, green: 255, blue: 255)
+        //content6?.backgroundColor = UIColor(red: 136, green: 255, blue: 255)
         guard let c = content6 else { return }
         guard let c5 = content5 else { return }
         c.translatesAutoresizingMaskIntoConstraints = false
@@ -495,7 +491,7 @@ extension TaskDetailListTableViewCell {
     private func setupContent6JTMediaPreview() {
         guard let c6 = content6 else { return }
         content6JTMediaPreview = JTMediaPreview()
-        content6JTMediaPreview?.backgroundColor = .red
+        //content6JTMediaPreview?.backgroundColor = .red
         guard let jt = content6JTMediaPreview else { return }
         jt.translatesAutoresizingMaskIntoConstraints = false
         c6.addSubview(jt)
@@ -578,56 +574,29 @@ extension TaskDetailListTableViewCell {
         content3Label2?.text = vm.address
         content4Label2?.text = vm.content
         content5Label2?.text = vm.remark
+        
         guard let files = vm.files else { return }
         let count = files.count
         guard count > 0 else { return }
-        guard let uid = global_SystemUser?.id else {
-            //do something
-            return
+
+        var ss = [JTMediaPreviewData]()
+        for _ in 0 ..< count {
+            ss.append(JTMediaPreviewData())
         }
-        
-        let jtMediaPreviewDatas = [JTMediaPreviewData].init(repeating: JTMediaPreviewData(), count: count)
-        content6JTMediaPreview?.addData(dataRange: jtMediaPreviewDatas)
+        content6JTMediaPreview?.addData(dataRange: ss)
         for index in 0 ..< count {
             let file = files[index]
-            guard let contentType = file.contenttype, let filename = file.path else { continue }
+            guard let contentType = file.contenttype else { continue }
             if contentType.containsCaseInsensitive(other: "image") {
-                setImagePreview(index: index, uid: uid, filename: filename)
+                content6JTMediaPreview?.setImagePreview(index: index, file: file)
             } else if contentType.containsCaseInsensitive(other: "video") {
-                
+                content6JTMediaPreview?.setVideoPrevew(index: index)
             } else {
-                
-            }
-        }
-    }
-    
-    private func setImagePreview(index: Int, uid: Int, filename: String) {
-        let fileTypenum = FileTypenum.Task
-        let imagePrefix = ImagePrefix.Minimum
-        let url = SystemFile.shareInstance.getFileURL(typenum: fileTypenum, frid: Int64(uid), filename: imagePrefix.rawValue + filename)
-        if FileManage.shareInstance.fileExist(atPath: url.path) {
-            addFileImageToJTMediaPreview(url: url, index: index)
-        } else {
-            let req = RequestObject_FileDownload(typenum: fileTypenum, frid: uid, filename: filename, prefix: imagePrefix, destination: { temporaryUrl, response in
-                return (url, DownloadRequest.DownloadOptions.removePreviousFile)
-            })
-            WebFile.shareInstance.saveFile(requestObject: req) {
-                [weak self] success, msg in
-                if success {
-                    self?.addFileImageToJTMediaPreview(url: url, index: index)
-                } else {
-                    
+                if let unknown = Assets.shareInstance.unknownFile() {
+                    content6JTMediaPreview?.setDataImage(at: index, image: unknown)
                 }
             }
         }
-    }
-    private func addFileImageToJTMediaPreview(url: URL, index: Int) {
-        let image = UIImage(contentsOfFile: url.path)
-        guard let img = image else {
-            //do something
-            return
-        }
-        content6JTMediaPreview?.setDataImage(at: index, image: img)
     }
     
     private func getUIDsNames(UIDs: [Object_Uid]) -> String {

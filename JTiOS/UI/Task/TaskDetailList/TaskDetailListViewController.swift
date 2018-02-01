@@ -70,7 +70,7 @@ extension TaskDetailListViewController {
         tableView.alwaysBounceHorizontal = false
         tableView.scrollsToTop = true
         tableView.keyboardDismissMode = .onDrag
-        tableView.backgroundColor = UIColor(red: 78, green: 128, blue: 152)
+        //tableView.backgroundColor = UIColor(red: 78, green: 128, blue: 152)
         tableView.allowsSelection = false
         tableView.separatorStyle = UITableViewCellSeparatorStyle.none
         //tableView.register(TaskDetailListTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
@@ -106,7 +106,7 @@ extension TaskDetailListViewController {
         obj.address = task.address
         obj.content = task.content
         obj.endtime = task.endtime
-        //obj.files =
+        obj.files = task.files
         obj.finish = task.finish
         obj.geometry = task.geometry
         //obj.id

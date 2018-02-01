@@ -17,4 +17,5 @@ class WarningDetailWaitTodoVM {
     var reason: String?
     var measure: String?
     var startTime: Date?
+    var files: [Object_File]?
 }

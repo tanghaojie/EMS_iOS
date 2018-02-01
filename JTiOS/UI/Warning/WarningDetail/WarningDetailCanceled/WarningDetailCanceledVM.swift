@@ -17,4 +17,5 @@ class WarningDetailCanceledVM {
     var reason: String?
     var measure: String?
     var cancelTime: Date?
+    var files: [Object_File]?
 }

@@ -20,4 +20,5 @@ class WarningDetailEndedVM {
     var startTime: Date?
     var commandTime: Date?
     var endTime: Date?
+    var files: [Object_File]?
 }
