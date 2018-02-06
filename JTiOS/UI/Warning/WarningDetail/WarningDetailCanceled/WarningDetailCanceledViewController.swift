@@ -82,7 +82,7 @@ extension WarningDetailCanceledViewController {
         reason.text = vm.reason
         measure.text = vm.measure
         cancelTime.text = vm.cancelTime?.toJTFormateString
-        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files, jtMediaPreview: jtMediaPreview)
+        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files)
     }
     
 }

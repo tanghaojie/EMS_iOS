@@ -76,7 +76,7 @@ extension WarningDetailWarningViewController {
         level.text = vm.level
         time.text = vm.time?.toJTFormateString
         address.text = vm.address
-        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files, jtMediaPreview: jtMediaPreview)
+        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files)
     }
     
 }

@@ -82,7 +82,7 @@ extension WarningDetailWaitTodoViewController {
         reason.text = vm.reason
         measure.text = vm.measure
         startTime.text = vm.startTime?.toJTFormateString
-        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files, jtMediaPreview: jtMediaPreview)
+        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files)
     }
     
 }

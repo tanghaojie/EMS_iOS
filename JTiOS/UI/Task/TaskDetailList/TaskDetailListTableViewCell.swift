@@ -10,6 +10,8 @@ import UIKit
 import Alamofire
 class TaskDetailListTableViewCell: UITableViewCell {
     
+    private var jtMediaCollectionViewCellDatas: [JTMediaCollectionViewCellDatas]?
+    
     private var full: UIView?
     private static let fullMinHeight: CGFloat = 10
     
@@ -575,27 +577,10 @@ extension TaskDetailListTableViewCell {
         content4Label2?.text = vm.content
         content5Label2?.text = vm.remark
         
-        guard let files = vm.files else { return }
-        let count = files.count
-        guard count > 0 else { return }
-
-        var ss = [JTMediaPreviewData]()
-        for _ in 0 ..< count {
-            ss.append(JTMediaPreviewData())
-        }
-        content6JTMediaPreview?.addData(dataRange: ss)
-        for index in 0 ..< count {
-            let file = files[index]
-            guard let contentType = file.contenttype else { continue }
-            if contentType.containsCaseInsensitive(other: "image") {
-                content6JTMediaPreview?.setImagePreview(index: index, file: file)
-            } else if contentType.containsCaseInsensitive(other: "video") {
-                content6JTMediaPreview?.setVideoPrevew(index: index)
-            } else {
-                if let unknown = Assets.shareInstance.unknownFile() {
-                    content6JTMediaPreview?.setDataImage(at: index, image: unknown)
-                }
-            }
+        content6JTMediaPreview?.setFilesToJTMediaPreview(datas: vm.files) {
+            [weak self] jtMediaCollectionViewCellDatas in
+            self?.jtMediaCollectionViewCellDatas = jtMediaCollectionViewCellDatas
+            self?.content6JTMediaPreview?.delegate = self
         }
     }
     
@@ -612,6 +597,12 @@ extension TaskDetailListTableViewCell {
         }
         return s
     }
-    
+}
+extension TaskDetailListTableViewCell: JTMediaPreviewDelegate {
+    func previewTapAction(index: Int, jtMediaPreview: JTMediaPreview) {
+        guard let datas = self.jtMediaCollectionViewCellDatas else { return }
+        let vc = JTMediaViewController(index: index, cellDatas: datas)
+        
+    }
 }
 

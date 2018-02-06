@@ -96,7 +96,7 @@ extension WarningDetailCommandingViewController {
         //implementationPlan.setTitle(vm.implementationPlan, for: .normal)
         startTime.text = vm.startTime?.toJTFormateString
         commandTime.text = vm.commandTime?.toJTFormateString
-        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files, jtMediaPreview: jtMediaPreview)
+        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files)
     }
     
 }

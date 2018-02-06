@@ -99,7 +99,7 @@ extension WarningDetailEndedViewController {
         startTime.text = vm.startTime?.toJTFormateString
         commandTime.text = vm.commandTime?.toJTFormateString
         endTime.text = vm.endTime?.toJTFormateString
-        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files, jtMediaPreview: jtMediaPreview)
+        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files)
     }
     
 }

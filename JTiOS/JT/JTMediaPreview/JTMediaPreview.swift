@@ -151,8 +151,7 @@ extension JTMediaPreview {
         guard let v = view else { return }
         guard let d = delegate else { return }
         let tag = v.tag
-        let data = datas[tag]
-        d.previewTapAction(data: data)
+        d.previewTapAction(index: tag, jtMediaPreview: self)
     }
 }
 
@@ -194,6 +193,6 @@ extension JTMediaPreview {
 }
 
 protocol JTMediaPreviewDelegate {
-    func previewTapAction(data: JTMediaPreviewData)
+    func previewTapAction(index: Int, jtMediaPreview: JTMediaPreview)
 }
 
