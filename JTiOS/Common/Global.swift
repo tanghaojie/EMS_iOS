@@ -50,8 +50,17 @@ extension DateFormatter {
 extension UIViewController {
     internal func setupBackButton() {
         let img = UIImage(named: "leftArrow")?.withRenderingMode(.alwaysOriginal)
-        let leftBtn = UIBarButtonItem(image: img, style: UIBarButtonItemStyle.plain, target: self, action: #selector(backButtonAction))
-        navigationItem.leftBarButtonItem = leftBtn;
+        if let _ = navigationController {
+            let leftBtn = UIBarButtonItem(image: img, style: UIBarButtonItemStyle.plain, target: self, action: #selector(backButtonAction))
+            navigationItem.leftBarButtonItem = leftBtn;
+        } else {
+            let backBtn = UIButton(frame: CGRect(x: 15, y: 25, width: 80, height: 80))
+            backBtn.setImage(img, for: .normal)
+            backBtn.contentVerticalAlignment = .top
+            backBtn.contentHorizontalAlignment = .left
+            backBtn.addTarget(self, action: #selector(backButtonAction), for: UIControlEvents.touchUpInside)
+            view.addSubview(backBtn)
+        }
     }
     @objc internal func backButtonAction() {
         if let navi = navigationController {

@@ -34,4 +34,13 @@ class Assets {
     func uploadingLocation() -> UIImage? {
         return UIImage(named: "uploadingLocation")
     }
+    func point() -> UIImage? {
+        return UIImage(named: "point")
+    }
+    func point2() -> UIImage? {
+        return UIImage(named: "point2")
+    }
+    func location() -> UIImage? {
+        return UIImage(named: "location")
+    }
 }

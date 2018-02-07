@@ -32,6 +32,7 @@ class WarningDetailCommandingViewController: UIViewController {
     var jtMediaPreview: JTMediaPreview?
     private var vm: WarningDetailCommandingVM?
     private let navigationBarTitle = "预警详情"
+    private var jtMediaCollectionViewCellDatas: [JTMediaCollectionViewCellDatas]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +41,11 @@ class WarningDetailCommandingViewController: UIViewController {
     }
     
     @IBAction func pointTouchUpInside(_ sender: Any) {
-        JTTemp_NotOpen()
+        //JTTemp_NotOpen()
+        if let p = vm?.point {
+            let vc = JTShowLocationViewController(p)
+            self.present(vc, animated: true, completion: nil)
+        }
     }
     @IBAction func emergencyPlanTouchUpInside(_ sender: Any) {
         JTTemp_NotOpen()
@@ -65,6 +70,7 @@ extension WarningDetailCommandingViewController {
     private func setupJTMediaPreview() {
         jtMediaPreview = JTMediaPreview()
         guard let jt = jtMediaPreview else { return }
+        jt.delegate = self
         jt.translatesAutoresizingMaskIntoConstraints = false
         bottomView.addSubview(jt)
         
@@ -76,6 +82,15 @@ extension WarningDetailCommandingViewController {
         bottomView.removeConstraint(bottomViewHeight)
         bottomView.addConstraints([left, right, topContraint, h])
     }
+}
+extension WarningDetailCommandingViewController: JTMediaPreviewDelegate {
+    
+    func previewTapAction(index: Int, jtMediaPreview: JTMediaPreview) {
+        guard let datas = jtMediaCollectionViewCellDatas else { return }
+        let v = JTMediaViewController(index: index, cellDatas: datas)
+        self.present(v, animated: true, completion: nil)
+    }
+
 }
 extension WarningDetailCommandingViewController {
     func set(vm: WarningDetailCommandingVM) {
@@ -96,7 +111,10 @@ extension WarningDetailCommandingViewController {
         //implementationPlan.setTitle(vm.implementationPlan, for: .normal)
         startTime.text = vm.startTime?.toJTFormateString
         commandTime.text = vm.commandTime?.toJTFormateString
-        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files)
+        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files) {
+            [weak self] jtMediaCollectionViewCellDatas in
+            self?.jtMediaCollectionViewCellDatas = jtMediaCollectionViewCellDatas
+        }
     }
     
 }

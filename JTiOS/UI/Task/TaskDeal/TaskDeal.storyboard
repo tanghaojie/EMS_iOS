@@ -84,7 +84,7 @@
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="8GN-aN-hdG"/>
                                                         </constraints>
-                                                        <state key="normal" title="Button"/>
+                                                        <state key="normal" title="当前位置"/>
                                                         <connections>
                                                             <action selector="locationTouchUpInside:" destination="gkE-z1-HdN" eventType="touchUpInside" id="6ns-4a-Unu"/>
                                                         </connections>
@@ -196,6 +196,7 @@
                         <outlet property="bottomViewHeight" destination="af4-Rn-pqG" id="cwo-gG-4cS"/>
                         <outlet property="commit" destination="CkO-qq-deS" id="Fpc-Gi-eon"/>
                         <outlet property="content" destination="lxH-NV-Uq6" id="xNJ-sP-8F3"/>
+                        <outlet property="locationButton" destination="W2u-8i-zce" id="FUl-wz-5ru"/>
                         <outlet property="scrollView" destination="Let-sz-82o" id="0GH-pq-w41"/>
                         <outlet property="scrollViewHeight" destination="n22-yE-Jh3" id="biG-1r-Lbz"/>
                         <outlet property="summary" destination="dUU-e5-0XR" id="WsD-0P-jiw"/>

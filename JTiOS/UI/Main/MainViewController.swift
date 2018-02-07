@@ -245,30 +245,7 @@ extension MainViewController {
         }
         let r = RequestJson_UploadPoints(uid: uid, tnum: Date(), points: data)
         ServiceManager.shareInstance.provider.request(.uploadPoints(object: r)) {
-            result in
-//            switch result {
-//            case let .success(moyaResponse):
-//                guard 200 == moyaResponse.statusCode else {
-//                    //h(false, Messager.shareInstance.failedHttpResponseStatusCode)
-//                    return
-//                }
-//                guard let json = String(data: moyaResponse.data, encoding: .utf8) else {
-//                    //h(false, Messager.shareInstance.unableParseData2String)
-//                    return
-//                }
-//                guard let r = ResponseJson_Login(JSONString: json) else {
-//                    //h(false, Messager.shareInstance.unableParseJsonString2JsonObject)
-//                    return
-//                }
-//                guard 0 == r.status else {
-//                    //h(false, r.msg)
-//                    return
-//                }
-//                //h(true, nil)
-//            case let .failure(_):
-//                //h(false, error.errorDescription)
-//                return
-//            }
+            _ in
         }
     }
     

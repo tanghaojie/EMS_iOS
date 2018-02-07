@@ -10,5 +10,6 @@ class TaskDealVM {
     var address: String?
     var summary: String?
     var content: String?
+    var location: Object_Geometry?
     var pictureAndVideos: [JTMediaPickerData]?
 }

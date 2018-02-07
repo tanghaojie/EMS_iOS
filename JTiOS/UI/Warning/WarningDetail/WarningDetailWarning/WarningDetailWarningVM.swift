@@ -13,5 +13,6 @@ class WarningDetailWarningVM {
     var level: String?
     var time: Date?
     var address: String?
+    var point: AGSPoint?
     var files: [Object_File]?
 }

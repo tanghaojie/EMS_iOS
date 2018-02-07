@@ -211,7 +211,17 @@ extension WarningListViewController: UITableViewDelegate, UITableViewDataSource 
         vvm.time = data?.sbtime?.toJTFormateDate
         //vvm.trend =
         vvm.type = data?.typecode_alias
-        
+        if let geo = data?.geometry {
+            if let t = geo.type, t.uppercased() == "POINT", let p = geo.coordinates {
+                if let x = p as? [Double] {
+                    if x.count == 2 {
+                        let lo = CLLocation(latitude: x[1], longitude: x[0])
+                        vvm.point = AGSPoint(location: lo)
+                    }
+                }
+            }
+        }
+
         queryFiles(e: data) {
             [weak self] files in
             vvm.files = files
@@ -234,6 +244,16 @@ extension WarningListViewController: UITableViewDelegate, UITableViewDataSource 
         vvm.time = data?.sbtime?.toJTFormateDate
         //vvm.trend
         vvm.type = data?.typecode_alias
+        if let geo = data?.geometry {
+            if let t = geo.type, t.uppercased() == "POINT", let p = geo.coordinates {
+                if let x = p as? [Double] {
+                    if x.count == 2 {
+                        let lo = CLLocation(latitude: x[1], longitude: x[0])
+                        vvm.point = AGSPoint(location: lo)
+                    }
+                }
+            }
+        }
         
         queryFiles(e: data) {
             [weak self] files in
@@ -261,6 +281,16 @@ extension WarningListViewController: UITableViewDelegate, UITableViewDataSource 
         vvm.time = data?.createtime?.toJTFormateDate
         //vvm.trend =
         vvm.type = data?.typecode_alias
+        if let geo = data?.geometry {
+            if let t = geo.type, t.uppercased() == "POINT", let p = geo.coordinates {
+                if let x = p as? [Double] {
+                    if x.count == 2 {
+                        let lo = CLLocation(latitude: x[1], longitude: x[0])
+                        vvm.point = AGSPoint(location: lo)
+                    }
+                }
+            }
+        }
         
         queryFiles(e: data) {
             [weak self] files in
@@ -284,6 +314,16 @@ extension WarningListViewController: UITableViewDelegate, UITableViewDataSource 
         vvm.time = data?.createtime?.toJTFormateDate
         //vvm.trend =
         vvm.type = data?.typecode_alias
+        if let geo = data?.geometry {
+            if let t = geo.type, t.uppercased() == "POINT", let p = geo.coordinates {
+                if let x = p as? [Double] {
+                    if x.count == 2 {
+                        let lo = CLLocation(latitude: x[1], longitude: x[0])
+                        vvm.point = AGSPoint(location: lo)
+                    }
+                }
+            }
+        }
         
         queryFiles(e: data) {
             [weak self] files in
@@ -303,6 +343,16 @@ extension WarningListViewController: UITableViewDelegate, UITableViewDataSource 
         vvm.status = data?.statecode_alias
         vvm.time = data?.createtime?.toJTFormateDate
         vvm.type = data?.typecode_alias
+        if let geo = data?.geometry {
+            if let t = geo.type, t.uppercased() == "POINT", let p = geo.coordinates {
+                if let x = p as? [Double] {
+                    if x.count == 2 {
+                        let lo = CLLocation(latitude: x[1], longitude: x[0])
+                        vvm.point = AGSPoint(location: lo)
+                    }
+                }
+            }
+        }
         
         queryFiles(e: data) {
             [weak self] files in

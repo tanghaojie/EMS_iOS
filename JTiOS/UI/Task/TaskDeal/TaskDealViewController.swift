@@ -10,6 +10,7 @@ import UIKit
 import MBProgressHUD
 class TaskDealViewController: UIViewController {
 
+    @IBOutlet weak var locationButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var actualScrollView: UIView!
     @IBOutlet weak var scrollViewHeight: NSLayoutConstraint!
@@ -23,6 +24,7 @@ class TaskDealViewController: UIViewController {
     var jtMediaPicker: JTMediaPicker?
     private let navigationBarTitle: String = "任务处理"
     private let c = TaskDealC()
+    private let vm  = TaskDealVM()
     private var taskId: Int = -1
     
     override func viewDidLoad() {
@@ -31,7 +33,16 @@ class TaskDealViewController: UIViewController {
     }
     
     @IBAction func locationTouchUpInside(_ sender: Any) {
-        JTTemp_NotOpen()
+        let vc = JTSelectLocationViewController() {
+            [weak self] latitude, longitude in
+            let geo = Object_Geometry()
+            geo.type = "Point"
+            let x: [Double] = [longitude, latitude]
+            geo.coordinates = x as AnyObject
+            self?.vm.location = geo
+            self?.locationButton.setTitle("已选择位置", for: .normal)
+        }
+        self.present(vc, animated: true, completion: nil)
     }
     @IBAction func commitTouchUpInside(_ sender: Any) {
         let vm = get()
@@ -110,21 +121,20 @@ extension TaskDealViewController {
 }
 extension TaskDealViewController {
     func get() -> TaskDealVM {
-        let vm  = TaskDealVM()
         vm.address = address.text
         vm.content = content.text
         vm.summary = summary.text
         vm.pictureAndVideos = jtMediaPicker?.getData()
-//        if nil == self.vm.location {
-//            if let l = JTLocationManager.shareInstance.location {
-//                let c = l.coordinate
-//                let geo = Object_Geometry()
-//                geo.type = "Point"
-//                let x: [Double] = [c.longitude,c.latitude]
-//                geo.coordinates = x as AnyObject
-//                self.vm.location = geo
-//            }
-//        }
+        if nil == vm.location {
+            if let l = JTLocationManager.shareInstance.location {
+                let c = l.coordinate
+                let geo = Object_Geometry()
+                geo.type = "Point"
+                let x: [Double] = [c.longitude,c.latitude]
+                geo.coordinates = x as AnyObject
+                self.vm.location = geo
+            }
+        }
         return vm
     }
 }

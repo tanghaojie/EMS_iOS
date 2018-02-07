@@ -82,7 +82,16 @@ class WarningReportViewController: UIViewController {
         }
     }
     @IBAction func locationTouchUpInside(_ sender: Any) {
-        JTTemp_NotOpen()
+        let vc = JTSelectLocationViewController() {
+            [weak self] latitude, longitude in
+            let geo = Object_Geometry()
+            geo.type = "Point"
+            let x: [Double] = [longitude, latitude]
+            geo.coordinates = x as AnyObject
+            self?.vm.location = geo
+            self?.locationButton.setTitle("已选择位置", for: .normal)
+        }
+        self.present(vc, animated: true, completion: nil)
     }
     @IBAction func nowTouchUpInside(_ sender: Any) {
         datePicker.maximumDate = Date()
@@ -170,7 +179,7 @@ extension WarningReportViewController {
                 geo.type = "Point"
                 let x: [Double] = [c.longitude,c.latitude]
                 geo.coordinates = x as AnyObject
-                self.vm.location = geo
+                vm.location = geo
             }
         }
         vm.address = addressTextField.text

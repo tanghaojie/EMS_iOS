@@ -20,5 +20,6 @@ class WarningDetailCommandingVM {
     var implementationPlan: AnyObject?
     var startTime: Date?
     var commandTime: Date?
+    var point: AGSPoint?
     var files: [Object_File]?
 }

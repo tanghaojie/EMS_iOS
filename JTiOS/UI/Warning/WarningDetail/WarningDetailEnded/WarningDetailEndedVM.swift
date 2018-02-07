@@ -20,5 +20,6 @@ class WarningDetailEndedVM {
     var startTime: Date?
     var commandTime: Date?
     var endTime: Date?
+    var point: AGSPoint?
     var files: [Object_File]?
 }

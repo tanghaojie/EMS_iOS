@@ -28,6 +28,7 @@ class WarningDetailWaitTodoViewController: UIViewController {
     var jtMediaPreview: JTMediaPreview?
     private var vm: WarningDetailWaitTodoVM?
     private let navigationBarTitle = "预警详情"
+    private var jtMediaCollectionViewCellDatas: [JTMediaCollectionViewCellDatas]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +36,11 @@ class WarningDetailWaitTodoViewController: UIViewController {
         setVM()
     }
     @IBAction func pointTouchUpInside(_ sender: Any) {
-        JTTemp_NotOpen()
+        //JTTemp_NotOpen()
+        if let p = vm?.point {
+            let vc = JTShowLocationViewController(p)
+            self.present(vc, animated: true, completion: nil)
+        }
     }
 }
 extension WarningDetailWaitTodoViewController {
@@ -54,6 +59,7 @@ extension WarningDetailWaitTodoViewController {
     private func setupJTMediaPreview() {
         jtMediaPreview = JTMediaPreview()
         guard let jt = jtMediaPreview else { return }
+        jt.delegate = self
         jt.translatesAutoresizingMaskIntoConstraints = false
         bottomView.addSubview(jt)
         
@@ -65,6 +71,15 @@ extension WarningDetailWaitTodoViewController {
         bottomView.removeConstraint(bottomViewHeight)
         bottomView.addConstraints([left, right, topContraint, h])
     }
+}
+extension WarningDetailWaitTodoViewController: JTMediaPreviewDelegate {
+    
+    func previewTapAction(index: Int, jtMediaPreview: JTMediaPreview) {
+        guard let datas = jtMediaCollectionViewCellDatas else { return }
+        let v = JTMediaViewController(index: index, cellDatas: datas)
+        self.present(v, animated: true, completion: nil)
+    }
+    
 }
 extension WarningDetailWaitTodoViewController {
     func set(vm: WarningDetailWaitTodoVM) {
@@ -82,7 +97,10 @@ extension WarningDetailWaitTodoViewController {
         reason.text = vm.reason
         measure.text = vm.measure
         startTime.text = vm.startTime?.toJTFormateString
-        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files)
+        jtMediaPreview?.setFilesToJTMediaPreview(datas: vm.files) {
+            [weak self] jtMediaCollectionViewCellDatas in
+            self?.jtMediaCollectionViewCellDatas = jtMediaCollectionViewCellDatas
+        }
     }
     
 }
