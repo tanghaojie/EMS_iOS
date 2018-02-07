@@ -15,17 +15,11 @@ class TaskDetailListViewController: UIViewController {
     private var tableViewHeader: MJRefreshNormalHeader!
     private let cellReuseIdentifier = "taskDetailListTableViewCell"
     
-    //private var defaultData: TaskDetailListTableViewCellVM?
     private var cellVM: [TaskDetailListTableViewCellVM] = [TaskDetailListTableViewCellVM]()
     private let c = TaskDetailListC()
     private let task: Object_Task
-    //private let taskId: Int
     private let navigationBarTitle: String = "任务详情"
-    
-//    init(id: Int) {
-//        taskId = id
-//        super.init(nibName: nil, bundle: nil)
-//    }
+
     init(object_Task: Object_Task) {
         task = object_Task
         super.init(nibName: nil, bundle: nil)
@@ -127,7 +121,8 @@ extension TaskDetailListViewController {
     
     private func loadData() {
         guard let taskId = task.id else { return }
-        c.getData(id: taskId) { [weak self] (vms: [TaskDetailListTableViewCellVM]?, error: String?) in
+        c.getData(id: taskId) {
+            [weak self] (vms: [TaskDetailListTableViewCellVM]?, error: String?) in
             if let e = error, let s = self {
                 s.endRefreshing()
                 Alert.shareInstance.AlertWithUIAlertAction(viewController: s, title: Messager.shareInstance.error, message: e, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])

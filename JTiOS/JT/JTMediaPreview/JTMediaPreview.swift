@@ -49,7 +49,7 @@ class JTMediaPreview: UIView {
             }
         }
     }
-    var delegate: JTMediaPreviewDelegate?
+    weak var delegate: JTMediaPreviewDelegate?
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         reload()
@@ -192,7 +192,7 @@ extension JTMediaPreview {
     }
 }
 
-protocol JTMediaPreviewDelegate {
+protocol JTMediaPreviewDelegate: NSObjectProtocol {
     func previewTapAction(index: Int, jtMediaPreview: JTMediaPreview)
 }
 

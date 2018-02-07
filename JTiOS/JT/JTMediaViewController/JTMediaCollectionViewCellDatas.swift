@@ -18,18 +18,19 @@ class JTMediaCollectionViewCellDatas {
     }
     
     class JTMediaCollectionViewCellData {
-        var url: URL
-        var type: ImagePreviewCollectionViewCellDataType
+        var url: URL?
+        var type: JTMediaCollectionViewCellDatasType
         
-        init(url: URL, type: ImagePreviewCollectionViewCellDataType) {
+        init(url: URL?, type: JTMediaCollectionViewCellDatasType) {
             self.url = url
             self.type = type
         }
     }
     
-    enum ImagePreviewCollectionViewCellDataType {
+    enum JTMediaCollectionViewCellDatasType {
         case Image
         case Video
         case Unknown
+        case VideoCover
     }
 }

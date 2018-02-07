@@ -8,23 +8,30 @@
 
 import UIKit
 
-protocol JTMediaCollectionViewCellDelegate {
+protocol JTMediaCollectionViewCellDelegate: NSObjectProtocol {
     func tap()
 }
 class JTMediaCollectionViewCell: UICollectionViewCell {
     
-    var delegate: JTMediaCollectionViewCellDelegate?
+    weak var delegate: JTMediaCollectionViewCellDelegate?
     var scrollView: UIScrollView?
     var imageView: UIImageView?
     var player: AVPlayer?
+    var btn: UIButton?
     
-    init() {
-        super.init(frame: CGRect.zero)
+    var tapSingle: UITapGestureRecognizer?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupUI()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    deinit {
+        print("--------JTMediaCollectionViewCell-----------")
     }
 }
 extension JTMediaCollectionViewCell {
@@ -32,15 +39,13 @@ extension JTMediaCollectionViewCell {
         setupTap()
     }
     private func setupTap() {
-        let tapSingle = UITapGestureRecognizer(target: self, action: #selector(tapSingle(_:)))
-        tapSingle.numberOfTapsRequired = 1
-        tapSingle.numberOfTouchesRequired = 1
-        contentView.addGestureRecognizer(tapSingle)
+        tapSingle = UITapGestureRecognizer(target: self, action: #selector(tapSingle(_:)))
+        guard let t = tapSingle else { return }
+        t.numberOfTapsRequired = 1
+        t.numberOfTouchesRequired = 1
+        contentView.addGestureRecognizer(t)
     }
     @objc private func tapSingle(_ ges:UITapGestureRecognizer){
-        //        if let nav = self.responderViewController()?.navigationController {
-        //            nav.setNavigationBarHidden(!nav.isNavigationBarHidden, animated: true)
-        //        }
         delegate?.tap()
     }
 }
@@ -71,12 +76,10 @@ extension JTMediaCollectionViewCell {
         let tapDouble = UITapGestureRecognizer(target: self, action: #selector(tapDouble(_:)))
         tapDouble.numberOfTapsRequired = 2
         tapDouble.numberOfTouchesRequired = 1
+        tapSingle?.require(toFail: tapDouble)
         imageView?.addGestureRecognizer(tapDouble)
     }
     @objc private func tapDouble(_ ges:UITapGestureRecognizer){
-        //        if let nav = self.responderViewController()?.navigationController {
-        //            nav.setNavigationBarHidden(true, animated: true)
-        //        }
         UIView.animate(withDuration: 0.5, animations: {
             [weak self] in
             guard let s = self else { return }
@@ -88,16 +91,6 @@ extension JTMediaCollectionViewCell {
             }
         })
     }
-    //    private func responderViewController() -> UIViewController? {
-    //        for view in sequence(first: superview, next: { $0?.superview }) {
-    //            if let responder = view?.next {
-    //                if responder.isKind(of: UIViewController.self) {
-    //                    return responder as? UIViewController
-    //                }
-    //            }
-    //        }
-    //        return nil
-    //    }
 }
 extension JTMediaCollectionViewCell: UIScrollViewDelegate {
     internal func viewForZooming(in scrollView: UIScrollView) -> UIView? {
@@ -128,15 +121,30 @@ extension JTMediaCollectionViewCell {
         let frame = contentView.frame
         let x = (frame.width - w) / 2
         let y = (frame.height - h) / 2
-        let btn = UIButton(frame: CGRect(x: x, y: y, width: w, height: h))
-        let btnImage = UIImage(named: "play")
-        btn.setImage(btnImage, for: .normal)
-        contentView.addSubview(btn)
-        contentView.bringSubview(toFront: btn)
-        btn.addTarget(self, action: #selector(playButtonTouchUpInside), for: .touchUpInside)
+        btn = UIButton(frame: CGRect(x: x, y: y, width: w, height: h))
+        guard let b = btn else { return }
+        let btnImage = Assets.shareInstance.play()
+        b.setImage(btnImage, for: .normal)
+        contentView.addSubview(b)
+        contentView.bringSubview(toFront: b)
+        b.addTarget(self, action: #selector(playButtonTouchUpInside), for: .touchUpInside)
     }
     @objc private func playButtonTouchUpInside() {
+        if let rate = player?.rate, rate == 0 {
+            play()
+        } else {
+            pause()
+        }
+    }
+    private func play() {
         player?.play()
+        let btnImage = Assets.shareInstance.pause()
+        btn?.setImage(btnImage, for: .normal)
+    }
+    private func pause() {
+        player?.pause()
+        let btnImage = Assets.shareInstance.play()
+        btn?.setImage(btnImage, for: .normal)
     }
 }
 extension JTMediaCollectionViewCell {
@@ -144,10 +152,12 @@ extension JTMediaCollectionViewCell {
         switch data.type {
         case .Image:
             setDataImage(url: data.url)
-        case .Unknown:
-            setDataVideo(url: data.url)
         case .Video:
+            setDataVideo(url: data.url)
+        case .Unknown:
             setDataUnknown()
+        case .VideoCover:
+            setDataVideoCover()
         }
     }
     private func removeAll() {
@@ -156,22 +166,39 @@ extension JTMediaCollectionViewCell {
         }
         contentView.layer.sublayers?.removeAll()
     }
-    private func setDataImage(url: URL) {
+    private func setDataImage(url: URL?) {
+        guard let url = url else { return }
         guard let data = try? Foundation.Data.init(contentsOf: url) else { return }
         guard let image = UIImage(data: data) else { return }
+        removeAll()
         setupUI_Image()
         guard let iv = imageView else { return }
         iv.image = image
     }
-    private func setDataVideo(url: URL) {
-        let item = AVPlayerItem(url: url)
+    private func setDataVideo(url: URL?) {
+        guard let url = url else { return }
+        let playItem = AVPlayerItem(url: url)
+        NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidReachEnd), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playItem)
+        removeAll()
         setupUI_Video()
         guard let p = player else { return }
-        p.replaceCurrentItem(with: item)
-        p.play()
+        p.replaceCurrentItem(with: playItem)
+    }
+    @objc func playerItemDidReachEnd(notification: Notification){
+        player?.seek(to: kCMTimeZero, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+        let btnImage = Assets.shareInstance.play()
+        btn?.setImage(btnImage, for: .normal)
     }
     private func setDataUnknown() {
-        guard let image = UIImage(named: "unknownFile") else { return }
+        guard let image = Assets.shareInstance.unknownFile() else { return }
+        removeAll()
+        setupUI_Image()
+        guard let iv = imageView else { return }
+        iv.image = image
+    }
+    private func setDataVideoCover() {
+        guard let image = Assets.shareInstance.play3() else { return }
+        removeAll()
         setupUI_Image()
         guard let iv = imageView else { return }
         iv.image = image
@@ -179,7 +206,6 @@ extension JTMediaCollectionViewCell {
 }
 extension JTMediaCollectionViewCell {
     public func setDatas(data: JTMediaCollectionViewCellDatas) {
-        removeAll()
         if let d = data.data {
             setData(data: d)
             return

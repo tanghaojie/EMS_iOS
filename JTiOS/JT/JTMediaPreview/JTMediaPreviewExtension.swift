@@ -101,7 +101,7 @@ extension JTMediaPreview {
                         self?.getOriginFile(index: index, file: objFile) {
                             url in
                             if let u = url {
-                                let r = JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellData(url: u, type: JTMediaCollectionViewCellDatas.ImagePreviewCollectionViewCellDataType.Image)
+                                let r = JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellData(url: u, type: JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellDatasType.Image)
                                 success(r)
                             }
                         }
@@ -109,9 +109,23 @@ extension JTMediaPreview {
                 }
             } else if contentType.containsCaseInsensitive(other: "video") {
                 setVideoPrevew(index: index)
+                let p = JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellData(url: nil, type: .VideoCover)
+                datas[index].previewData = p
+                datas[index].needData = {
+                    [weak self] success in
+                    self?.getOriginFile(index: index, file: file) {
+                        url in
+                        if let u = url {
+                            let r = JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellData(url: u, type: JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellDatasType.Video)
+                            success(r)
+                        }
+                    }
+                }
             } else {
                 if let unknown = Assets.shareInstance.unknownFile() {
                     setDataImage(at: index, image: unknown)
+                    let p = JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellData(url: nil, type: .Unknown)
+                    datas[index].data = p
                 }
             }
         }

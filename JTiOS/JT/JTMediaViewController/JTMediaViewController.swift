@@ -14,6 +14,8 @@ class JTMediaViewController: UIViewController {
     var pageControl: UIPageControl?
     var index: Int
     var cellDatas: [JTMediaCollectionViewCellDatas]
+    
+    private let CellWithReuseIdentifier = "JT"
 
     init(index: Int = 0, cellDatas: [JTMediaCollectionViewCellDatas]) {
         self.index = index
@@ -32,6 +34,9 @@ class JTMediaViewController: UIViewController {
         setupUI()
     }
 
+    deinit {
+        print("--------JTMediaViewController-----------")
+    }
 }
 extension JTMediaViewController {
     private func setupUI() {
@@ -51,6 +56,7 @@ extension JTMediaViewController {
         layout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         guard let cv = collectionView else { return }
+        cv.register(JTMediaCollectionViewCell.self, forCellWithReuseIdentifier: CellWithReuseIdentifier)
         cv.backgroundColor = .black
         cv.delegate = self
         cv.dataSource = self
@@ -62,7 +68,7 @@ extension JTMediaViewController {
     private func setupPageControl() {
         pageControl = UIPageControl()
         guard let pc = pageControl else { return }
-        pc.center = CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height - 20)
+        pc.center = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height - 20)
         pc.numberOfPages = cellDatas.count
         pc.isUserInteractionEnabled = false
         pc.currentPage = index
@@ -70,29 +76,30 @@ extension JTMediaViewController {
     }
 }
 
-extension JTMediaViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+extension JTMediaViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var cell = collectionView.cellForItem(at: indexPath)
-        if cell == nil {
-            cell = JTMediaCollectionViewCell()
-            if let c = cell as? JTMediaCollectionViewCell {
-                let i = indexPath.row
-                pageControl?.currentPage = i
-                c.setDatas(data: cellDatas[i])
-            }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellWithReuseIdentifier, for: indexPath)
+        if let c = cell as? JTMediaCollectionViewCell {
+            let i = indexPath.row
+            c.setDatas(data: cellDatas[i])
+            c.delegate = self
         }
-        return cell!
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return cellDatas.count
     }
     
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if let cell = cell as? ImagePreviewCollectionViewCell{
-//            cell.resetSize()
-//            self.pageControl.currentPage = indexPath.item
-//        }
-//    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let i = indexPath.row
+        pageControl?.currentPage = i
+    }
+
+}
+extension JTMediaViewController: JTMediaCollectionViewCellDelegate {
+    internal func tap() {
+        self.dismiss(animated: true, completion: nil)
+    }
 }

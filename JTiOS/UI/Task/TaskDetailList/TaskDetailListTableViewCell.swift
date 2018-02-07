@@ -114,7 +114,8 @@ class TaskDetailListTableViewCell: UITableViewCell {
         setupUI()
     }
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
+        setupUI()
     }
     deinit {
         print("--------TaskDetailListTableViewCell-----------")
@@ -214,10 +215,10 @@ extension TaskDetailListTableViewCell {
     private func setupTopLabel() {
         guard let tc = topContent else { return }
         topLabel = UILabel()
-        topLabel?.numberOfLines = 1
-        topLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        topLabel?.text = " "
         guard let t = topLabel else { return }
+        t.numberOfLines = 1
+        t.font = UIFont.boldSystemFont(ofSize: 20)
+        t.text = " "
         t.translatesAutoresizingMaskIntoConstraints = false
         tc.addSubview(t)
         let left = NSLayoutConstraint(item: t, attribute: .left, relatedBy: .equal, toItem: tc, attribute: .left, multiplier: 1, constant: 0)
@@ -495,13 +496,14 @@ extension TaskDetailListTableViewCell {
         content6JTMediaPreview = JTMediaPreview()
         //content6JTMediaPreview?.backgroundColor = .red
         guard let jt = content6JTMediaPreview else { return }
+        jt.delegate = self
         jt.translatesAutoresizingMaskIntoConstraints = false
         c6.addSubview(jt)
-        
+
         let left = NSLayoutConstraint(item: jt, attribute: .left, relatedBy: .equal, toItem: c6, attribute: .left, multiplier: 1, constant: 0)
         let right = NSLayoutConstraint(item: jt, attribute: .right, relatedBy: .equal, toItem: c6, attribute: .right, multiplier: 1, constant: 0)
         let topContraint = NSLayoutConstraint(item: jt, attribute: .top, relatedBy: .equal, toItem: c6, attribute: .top, multiplier: 1, constant: 0)
-        
+
         let h = NSLayoutConstraint(item: c6, attribute: .height, relatedBy: .equal, toItem: jt, attribute: .height, multiplier: 1, constant: 0)
         c6.addConstraints([left, right, topContraint, h])
     }
@@ -567,6 +569,7 @@ extension TaskDetailListTableViewCell {
     
 }
 extension TaskDetailListTableViewCell {
+    
     func set(vm: TaskDetailListTableViewCellVM) {
         topLabel?.text = vm.topLabel
         bottomLabel1?.text = vm.bottomLabel1
@@ -576,11 +579,9 @@ extension TaskDetailListTableViewCell {
         content3Label2?.text = vm.address
         content4Label2?.text = vm.content
         content5Label2?.text = vm.remark
-        
         content6JTMediaPreview?.setFilesToJTMediaPreview(datas: vm.files) {
             [weak self] jtMediaCollectionViewCellDatas in
             self?.jtMediaCollectionViewCellDatas = jtMediaCollectionViewCellDatas
-            self?.content6JTMediaPreview?.delegate = self
         }
     }
     
@@ -599,10 +600,24 @@ extension TaskDetailListTableViewCell {
     }
 }
 extension TaskDetailListTableViewCell: JTMediaPreviewDelegate {
+
     func previewTapAction(index: Int, jtMediaPreview: JTMediaPreview) {
-        guard let datas = self.jtMediaCollectionViewCellDatas else { return }
-        let vc = JTMediaViewController(index: index, cellDatas: datas)
-        
+        guard let datas = jtMediaCollectionViewCellDatas else { return }
+        guard let vc = getResponder() else { return }
+        let v = JTMediaViewController(index: index, cellDatas: datas)
+        vc.present(v, animated: true, completion: nil)
     }
+
+    private func getResponder() -> UIViewController? {
+        for view in sequence(first: self.superview, next: { $0?.superview }) {
+            if let responder = view?.next {
+                if responder.isKind(of: UIViewController.self) {
+                    return responder as? UIViewController
+                }
+            }
+        }
+        return nil
+    }
+
 }
 

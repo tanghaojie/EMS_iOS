@@ -22,9 +22,7 @@ class WarningReportViewController: UIViewController {
     @IBOutlet weak var selectViewHeight: NSLayoutConstraint!
     @IBOutlet weak var scrollViewHeight: NSLayoutConstraint!
     var jtMediaPicker: JTMediaPicker?
-    
 
-    
     private let vm = WarningReportVM()
     private let c = WarningReportC()
 
@@ -48,7 +46,8 @@ class WarningReportViewController: UIViewController {
                 m.value = l
                 member.append(m)
             }
-            jtvc.setup(member: member){ [weak self] (member: DisplayValueObject) in
+            jtvc.setup(member: member){
+                [weak self] (member: DisplayValueObject) in
                 if let x = member.value as? Object_GetGroupConfig {
                     self?.vm.type = x
                     self?.typeButton.setTitle(x.alias, for: .normal)
@@ -72,7 +71,8 @@ class WarningReportViewController: UIViewController {
                 m.value = l
                 member.append(m)
             }
-            jtvc.setup(member: member){ [weak self] (member: DisplayValueObject) in
+            jtvc.setup(member: member){
+                [weak self] (member: DisplayValueObject) in
                 if let x = member.value as? Object_GetGroupConfig {
                     self?.vm.level = x
                     self?.levelButton.setTitle(x.alias, for: .normal)
@@ -91,7 +91,8 @@ class WarningReportViewController: UIViewController {
     @IBAction func commitTouchUpInside(_ sender: Any) {
         get()
         let HUD = showProgressHUD(msg: Messager.shareInstance.eventCreating)
-        c.createEvent(vm: vm) { [weak self] (success, msg, id) in
+        c.createEvent(vm: vm) {
+            [weak self] (success, msg, id) in
             HUD.hide(animated: true)
             if success {
                 self?.backButtonAction()
@@ -116,13 +117,16 @@ extension WarningReportViewController {
         jtMediaPicker = JTMediaPicker(
             maxCount: 9,
             numberOfLine: 3,
-            addAction: { [weak self] in
+            addAction: {
+                [weak self] in
                 self?.showPictureAndVideoPicker()
             },
             tapAction: nil,
-            deleteAction: { [weak self] index in
+            deleteAction: {
+                [weak self] index in
                 let actionController = UIAlertController(title: Messager.shareInstance.warning, message: Messager.shareInstance.ifDelete, preferredStyle: .alert)
-                let actionDel = UIAlertAction(title: Messager.shareInstance.delete, style: .default){ action in
+                let actionDel = UIAlertAction(title: Messager.shareInstance.delete, style: .default){
+                    action in
                     guard let jt = self?.jtMediaPicker else { return }
                     jt.removeData(at: index)
                 }
@@ -156,7 +160,7 @@ extension WarningReportViewController {
 }
 extension WarningReportViewController {
     func get() {
-        self.vm.name = nameTextField.text
+        vm.name = nameTextField.text
         //self.vm.type
         //self.vm.level
         if nil == self.vm.location {
@@ -169,10 +173,10 @@ extension WarningReportViewController {
                 self.vm.location = geo
             }
         }
-        self.vm.address = addressTextField.text
-        self.vm.date = datePicker.date
-        self.vm.detail = detailTextView.text
-        self.vm.pictureAndVideos = jtMediaPicker?.getData()
+        vm.address = addressTextField.text
+        vm.date = datePicker.date
+        vm.detail = detailTextView.text
+        vm.pictureAndVideos = jtMediaPicker?.getData()
     }
 }
 extension WarningReportViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -188,7 +192,8 @@ extension WarningReportViewController: UIImagePickerControllerDelegate, UINaviga
             guard let viewController = vc else { return }
             viewController.present(picker, animated: true, completion: nil)
         }
-        let actionCamera = UIAlertAction(title: Messager.shareInstance.camera, style: .default){ [weak self] (action) -> Void in
+        let actionCamera = UIAlertAction(title: Messager.shareInstance.camera, style: .default){
+            [weak self] (action) -> Void in
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
                 let picker = UIImagePickerController()
                 picker.delegate = self
@@ -200,7 +205,8 @@ extension WarningReportViewController: UIImagePickerControllerDelegate, UINaviga
                 Alert.shareInstance.AlertWithUIAlertAction(viewController: xself, title: Messager.shareInstance.warning, message: Messager.shareInstance.cannotUseCamera, uiAlertAction: [UIAlertAction(title: Messager.shareInstance.ok, style: UIAlertActionStyle.default, handler: nil)])
             }
         }
-        let actionVideo = UIAlertAction(title: Messager.shareInstance.video, style: .default){ action in
+        let actionVideo = UIAlertAction(title: Messager.shareInstance.video, style: .default){
+            [weak self] action in
             let sb = UIStoryboard(name: "JTVideo", bundle: nil)
             let jtvideo = sb.instantiateViewController(withIdentifier: "JTVideo") as? JTVideoViewController
             guard let video = jtvideo else { return }

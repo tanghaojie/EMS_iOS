@@ -18,6 +18,12 @@ class Assets {
     func noImage2() -> UIImage? {
         return UIImage(named: "noImage2")
     }
+    func pause() -> UIImage? {
+        return UIImage(named: "pause")
+    }
+    func play() -> UIImage? {
+        return UIImage(named: "play")
+    }
     func play3() -> UIImage? {
         return UIImage(named: "play3")
     }

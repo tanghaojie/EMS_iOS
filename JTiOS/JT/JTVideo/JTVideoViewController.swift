@@ -21,7 +21,7 @@ class JTVideoViewController: UIViewController {
     @IBOutlet weak var save: UIButton!
     private var timer: Timer?
     
-    var delegate: JTVideoViewControllerDelegate?
+    weak var delegate: JTVideoViewControllerDelegate?
     var saveToAlbum: Bool = false
     var compress: Bool = true
 
@@ -240,6 +240,6 @@ extension JTVideoViewController {
     }
 }
 
-public protocol JTVideoViewControllerDelegate {
+public protocol JTVideoViewControllerDelegate: NSObjectProtocol {
     func didFinishRecordingVideo(videoFileUrl: URL)
 }

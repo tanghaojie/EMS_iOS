@@ -10,7 +10,7 @@ class WebFile {
     private init() {}
     
     func saveFile(requestObject: RequestObject_FileDownload, handler: ((Bool, String?) -> Void)? = nil) {
-        ServiceManager.shareInstance.provider.request(.fileDownload(object: requestObject)) {
+        ServiceManager.shareInstance.provider_300s.request(.fileDownload(object: requestObject)) {
             result in
             switch result {
             case let .success(moyaResponse):

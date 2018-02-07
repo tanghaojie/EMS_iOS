@@ -7,4 +7,5 @@ target ‘JTiOS’ do
 	pod 'MBProgressHUD'
 	pod 'Moya’
 	pod 'ObjectMapper'
+	pod 'MLeaksFinder'
 end
