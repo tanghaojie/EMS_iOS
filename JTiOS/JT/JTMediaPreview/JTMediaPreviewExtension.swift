@@ -6,6 +6,7 @@
 //  Copyright © 2018年 JT. All rights reserved.
 //
 import Alamofire
+import Moya
 extension JTMediaPreview {
     
     private func setNoImage(index: Int) {
@@ -37,7 +38,7 @@ extension JTMediaPreview {
             let req = RequestObject_FileDownload(typenum: fileType, frid: fridInt, filename: filename, prefix: imagePrefix, destination: { temporaryUrl, response in
                 return (url, DownloadRequest.DownloadOptions.removePreviousFile)
             })
-            WebFile.shareInstance.saveFile(requestObject: req) {
+            let _ = WebFile.shareInstance.saveFile(requestObject: req) {
                 [weak self] success, msg in
                 if success, let image = UIImage(contentsOfFile: url.path)  {
                     self?.setDataImage(at: index, image: image)
@@ -50,21 +51,21 @@ extension JTMediaPreview {
         }
     }
     
-    private func getOriginFile(index: Int, file: Object_File, handler: ((URL?) -> ())? = nil) {
-        guard let typenumInt = file.typenum else { return }
+    private func getOriginFile(index: Int, file: Object_File, progress: ProgressBlock? = nil, handler: ((URL?) -> ())? = nil) -> Cancellable? {
+        guard let typenumInt = file.typenum else { return nil }
         let fileTypenum = FileTypenum(rawValue: typenumInt)
-        guard let fileType = fileTypenum else { return }
-        guard let fridInt = file.frid else { return }
-        guard let filename = file.path else { return }
+        guard let fileType = fileTypenum else { return nil }
+        guard let fridInt = file.frid else { return nil }
+        guard let filename = file.path else { return nil }
         let url = SystemFile.shareInstance.getFileURL(typenum: fileType, frid: Int64(fridInt), filename: filename)
         if FileManage.shareInstance.fileExist(atPath: url.path) {
-            guard let h = handler else { return }
+            guard let h = handler else { return nil }
             h(url)
         } else {
             let req = RequestObject_FileDownload(typenum: fileType, frid: fridInt, filename: filename, prefix: ImagePrefix.Origin, destination: { temporaryUrl, response in
                 return (url, DownloadRequest.DownloadOptions.removePreviousFile)
             })
-            WebFile.shareInstance.saveFile(requestObject: req) {
+            return WebFile.shareInstance.saveFile(requestObject: req, progress: progress) {
                 success, _ in
                 if success {
                     guard let h = handler else { return }
@@ -75,9 +76,10 @@ extension JTMediaPreview {
                 }
             }
         }
+        return nil
     }
     
-    func setFilesToJTMediaPreview(datas: [Object_File]?, handler: (([JTMediaCollectionViewCellDatas])->())? = nil) {
+    func setFilesToJTMediaPreview(datas: [Object_File]?, progress: ProgressBlock? = nil, handler: (([JTMediaCollectionViewCellDatas])->())? = nil) {
         guard let files = datas else { return }
         let count = files.count
         guard count > 0 else { return }
@@ -97,12 +99,12 @@ extension JTMediaPreview {
                     let p = JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellData(url: url, type: .Image)
                     datas[index].previewData = p
                     datas[index].needData = {
-                        success in
-                        self?.getOriginFile(index: index, file: objFile) {
+                        progress, handler in
+                        self?.getOriginFile(index: index, file: objFile, progress: progress) {
                             url in
                             if let u = url {
                                 let r = JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellData(url: u, type: JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellDatasType.Image)
-                                success(r)
+                                handler(r)
                             }
                         }
                     }
@@ -112,12 +114,12 @@ extension JTMediaPreview {
                 let p = JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellData(url: nil, type: .VideoCover)
                 datas[index].previewData = p
                 datas[index].needData = {
-                    [weak self] success in
-                    self?.getOriginFile(index: index, file: file) {
+                    [weak self] progress, handler in
+                    self?.getOriginFile(index: index, file: file, progress: progress) {
                         url in
                         if let u = url {
                             let r = JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellData(url: u, type: JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellDatasType.Video)
-                            success(r)
+                            handler(r)
                         }
                     }
                 }

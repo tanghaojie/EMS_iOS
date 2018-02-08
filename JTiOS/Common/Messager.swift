@@ -14,6 +14,7 @@ class Messager {
     let warning = "警告"
     let cancel = "取消"
     let wait = "请稍后"
+    let loading = "加载中"
     
     let logining = "正在登录"
     let notOpen = "暂未开放"

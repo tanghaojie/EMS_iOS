@@ -5,12 +5,13 @@
 //  Created by JT on 2018/1/16.
 //  Copyright © 2018年 JT. All rights reserved.
 //
+import Moya
 class WebFile {
     static let shareInstance = WebFile()
     private init() {}
     
-    func saveFile(requestObject: RequestObject_FileDownload, handler: ((Bool, String?) -> Void)? = nil) {
-        ServiceManager.shareInstance.provider_300s.request(.fileDownload(object: requestObject)) {
+    func saveFile(requestObject: RequestObject_FileDownload, progress: ProgressBlock? = nil, handler: ((Bool, String?) -> Void)? = nil) -> Cancellable {
+        return ServiceManager.shareInstance.provider_300s.request(.fileDownload(object: requestObject), progress: progress) {
             result in
             switch result {
             case let .success(moyaResponse):

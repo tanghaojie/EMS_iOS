@@ -78,7 +78,7 @@ extension JTMediaViewController {
 
 extension JTMediaViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    internal func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellWithReuseIdentifier, for: indexPath)
         if let c = cell as? JTMediaCollectionViewCell {
             let i = indexPath.row
@@ -88,18 +88,31 @@ extension JTMediaViewController: UICollectionViewDelegate, UICollectionViewDataS
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    internal func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return cellDatas.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    internal func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let i = indexPath.row
         pageControl?.currentPage = i
+        guard let c = cell as? JTMediaCollectionViewCell else { return }
+        c.reshowData()
+    }
+    
+    internal func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let c = cell as? JTMediaCollectionViewCell else { return }
+        c.cancell()
     }
 
 }
 extension JTMediaViewController: JTMediaCollectionViewCellDelegate {
     internal func tap() {
-        self.dismiss(animated: true, completion: nil)
+        if let cv = collectionView {
+            for cell in cv.visibleCells {
+                guard let c = cell as? JTMediaCollectionViewCell else { continue }
+                c.cancell()
+            }
+        }
+        dismiss(animated: true, completion: nil)
     }
 }

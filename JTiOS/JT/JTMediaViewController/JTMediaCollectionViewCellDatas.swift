@@ -5,13 +5,14 @@
 //  Created by JT on 2018/2/5.
 //  Copyright © 2018年 JT. All rights reserved.
 //
+import Moya
 class JTMediaCollectionViewCellDatas {
     var previewData: JTMediaCollectionViewCellData?
     var data: JTMediaCollectionViewCellData?
-    var needData: ((@escaping needDataSuccess) -> ())?
+    var needData: ((ProgressBlock?, @escaping needDataSuccess) -> Cancellable?)?
     typealias needDataSuccess = (JTMediaCollectionViewCellData) -> ()
     
-    init(previewData: JTMediaCollectionViewCellData?, data: JTMediaCollectionViewCellData? = nil, needData: ((needDataSuccess) -> ())? = nil) {
+    init(previewData: JTMediaCollectionViewCellData?, data: JTMediaCollectionViewCellData? = nil, needData: ((ProgressBlock?, @escaping needDataSuccess) -> Cancellable?)? = nil) {
         self.previewData = previewData
         self.data = data
         self.needData = needData

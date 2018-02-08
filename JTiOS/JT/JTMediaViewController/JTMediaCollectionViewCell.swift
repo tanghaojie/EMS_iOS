@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import MBProgressHUD
+import Moya
 
 protocol JTMediaCollectionViewCellDelegate: NSObjectProtocol {
     func tap()
@@ -14,19 +16,37 @@ protocol JTMediaCollectionViewCellDelegate: NSObjectProtocol {
 class JTMediaCollectionViewCell: UICollectionViewCell {
     
     weak var delegate: JTMediaCollectionViewCellDelegate?
-    var scrollView: UIScrollView?
-    var imageView: UIImageView?
-    var player: AVPlayer?
-    var btn: UIButton?
+    private var scrollView: UIScrollView?
+    private var imageView: UIImageView?
+    private var player: AVPlayer?
+    private var btn: UIButton?
+    private var HUD: MBProgressHUD?
+    private var cancellable: Cancellable?
+    private var data: JTMediaCollectionViewCellDatas?
+    private var isShowedData: Bool?
     
+    var progress: Double {
+        didSet {
+            guard let hud = HUD else { return }
+            if progress >= 1 || progress <= 0 {
+                hud.isHidden = true
+            } else {
+                hud.isHidden = false
+                hud.progress = Float(progress)
+            }
+        }
+    }
+
     var tapSingle: UITapGestureRecognizer?
     
     override init(frame: CGRect) {
+        progress = 1
         super.init(frame: frame)
         setupUI()
     }
 
     required init?(coder aDecoder: NSCoder) {
+        progress = 1
         super.init(coder: aDecoder)
     }
     
@@ -48,12 +68,14 @@ extension JTMediaCollectionViewCell {
     @objc private func tapSingle(_ ges:UITapGestureRecognizer){
         delegate?.tap()
     }
+    
 }
 extension JTMediaCollectionViewCell {
     private func setupUI_Image() {
         setupScrollView()
         setupImageView()
         setupDoubleTap()
+        setupHud()
     }
     private func setupScrollView() {
         scrollView = UIScrollView(frame: contentView.bounds)
@@ -90,6 +112,13 @@ extension JTMediaCollectionViewCell {
                 sv.zoomScale = 1.0
             }
         })
+    }
+    private func setupHud() {
+        HUD = MBProgressHUD.showAdded(to: contentView, animated: true)
+        guard let hud = HUD else { return }
+        hud.mode = .annularDeterminate
+        hud.isHidden = true
+        hud.show(animated: true)
     }
 }
 extension JTMediaCollectionViewCell: UIScrollViewDelegate {
@@ -184,7 +213,7 @@ extension JTMediaCollectionViewCell {
         guard let p = player else { return }
         p.replaceCurrentItem(with: playItem)
     }
-    @objc func playerItemDidReachEnd(notification: Notification){
+    @objc private func playerItemDidReachEnd(notification: Notification){
         player?.seek(to: kCMTimeZero, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
         let btnImage = Assets.shareInstance.play()
         btn?.setImage(btnImage, for: .normal)
@@ -205,21 +234,42 @@ extension JTMediaCollectionViewCell {
     }
 }
 extension JTMediaCollectionViewCell {
-    public func setDatas(data: JTMediaCollectionViewCellDatas) {
+    
+    private func showData() {
+        guard let data = self.data else { return }
         if let d = data.data {
             setData(data: d)
+            isShowedData = true
             return
         }
         if let d = data.previewData {
             setData(data: d)
+            isShowedData = false
             if let nd = data.needData {
-                nd({
-                    [weak self] r in
-                    data.data = r
-                    self?.setData(data: r)
+                cancellable = nd({
+                    [weak self] p in
+                    self?.progress = p.progress
+                    }, {
+                        [weak self] r in
+                        data.data = r
+                        self?.setData(data: r)
                 })
             }
         }
+    }
+    
+    public func reshowData() {
+        if let s = isShowedData, s { return }
+        showData()
+    }
+    
+    public func setDatas(data: JTMediaCollectionViewCellDatas) {
+        self.data = data
+    }
+
+    public func cancell() {
+        cancellable?.cancel()
+        progress = 0
     }
     
 }
