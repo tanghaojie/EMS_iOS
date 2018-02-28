@@ -11,11 +11,11 @@ import UIKit
 class JTSelectLocationViewController: UIViewController {
 
     private var mapView: AGSMapView!
-    private var completeFunc: ((Double,Double) -> Void)?
+    private var completeFunc: ((Double, Double) -> Void)?
     private let minScale: Double = 5300
     private let maxScale: Double = 2900
     
-    init(_ complete: ((Double,Double) -> Void)? = nil){
+    init(_ complete: ((Double, Double) -> Void)? = nil){
         self.completeFunc = complete
         super.init(nibName: nil, bundle: nil)
     }
@@ -57,7 +57,7 @@ extension JTSelectLocationViewController {
         addTilemapServerLayer(url: Mapservers.shareInstance.scgisTiledMap_DLG)
         view.addSubview(mapView)
     }
-    private func addTilemapServerLayer(url:String) {
+    private func addTilemapServerLayer(url: String) {
         let tilemap = SCGISTilemapServerLayer(serviceUrlStr: url, token: nil, cacheType: SCGISTilemapCacheTypeSqliteDB)
         if let t = tilemap {
             mapView.addMapLayer(t)

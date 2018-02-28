@@ -24,7 +24,7 @@ class JTMediaPicker: UIView {
     
     private let addButtonAccessibilityIdentifier = "addButtonAccessibilityIdentifier"
     private var addAction: (() -> Void)?
-    private var tapAction: (() -> Void)?
+    private var tapAction: ((Int) -> Void)?
     private var deleteAction: ((Int) -> Void)?
 
     private lazy var addView: UIView = {
@@ -90,7 +90,7 @@ class JTMediaPicker: UIView {
         super.init(coder: aDecoder)
         reload()
     }
-    init(maxCount: Int?, numberOfLine: Int?, addAction: (() -> Void)? = nil, tapAction: (() -> Void)? = nil, deleteAction: ((Int) -> Void)? = nil) {
+    init(maxCount: Int?, numberOfLine: Int?, addAction: (() -> Void)? = nil, tapAction: ((Int) -> Void)? = nil, deleteAction: ((Int) -> Void)? = nil) {
         if let mc = maxCount, mc > 0 {
             self.maxCount = mc
         }
@@ -259,7 +259,11 @@ extension JTMediaPicker {
             action()
         } else {
             guard let action = tapAction else { return }
-            action()
+            var tag = v.tag
+            if tag < 0 || tag >= datasCount {
+                tag = 0
+            }
+            action(tag)
         }
     }
     private func addLongPressGestureRecognizer(view: UIView) {

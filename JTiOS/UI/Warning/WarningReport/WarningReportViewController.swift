@@ -130,7 +130,27 @@ extension WarningReportViewController {
                 [weak self] in
                 self?.showPictureAndVideoPicker()
             },
-            tapAction: nil,
+            tapAction: {
+                [weak self] index in
+                guard let picker = self?.jtMediaPicker else { return }
+                let datas = picker.getData()
+                guard datas.count > 0 else { return }
+                var jtMediaCollectionViewCellDatas = [JTMediaCollectionViewCellDatas]()
+                for data in datas {
+                    var t = JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellDatasType.Unknown
+                    switch data.type {
+                    case .Image:
+                        t = .Image
+                    case .Video:
+                        t = .Video
+                    }
+                    let x = JTMediaCollectionViewCellDatas.JTMediaCollectionViewCellData(url: data.url, type: t)
+                    let d = JTMediaCollectionViewCellDatas(previewData: nil, data: x, needData: nil)
+                    jtMediaCollectionViewCellDatas.append(d)
+                }
+                let v = JTMediaViewController(index: index, cellDatas: jtMediaCollectionViewCellDatas)
+                self?.present(v, animated: true, completion: nil)
+            },
             deleteAction: {
                 [weak self] index in
                 let actionController = UIAlertController(title: Messager.shareInstance.warning, message: Messager.shareInstance.ifDelete, preferredStyle: .alert)
