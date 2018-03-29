@@ -150,5 +150,16 @@ let global_DateTimeFormate = "yyyy-MM-dd HH:mm:ss"
 let global_DateFormate = "yyyyMMdd"
 var global_SystemUser: Object_LoginResponseUser?
 var global_SystemAllConfig: [Object_GetGroupConfig]?
+var global_TestAPISuccess: Bool = false {
+    didSet {
+        if !global_TestAPISuccess {
+            global_SystemUser = nil
+            guard let cookies = HTTPCookieStorage.shared.cookies else { return }
+            for cookie in cookies {
+                HTTPCookieStorage.shared.deleteCookie(cookie)
+            }
+        }
+    }
+}
 
 

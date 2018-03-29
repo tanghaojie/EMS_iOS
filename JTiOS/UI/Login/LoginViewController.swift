@@ -63,6 +63,13 @@ class LoginViewController: UIViewController {
             }
         }
     }
+    
+    @IBAction func settingsTouch(_ sender: Any) {
+        let sb = UIStoryboard(name: "Settings", bundle: nil)
+        let vc = sb.instantiateViewController(withIdentifier: "SettingsNavigationController")
+        present(vc, animated: true, completion: nil)
+    }
+    
 
 }
 

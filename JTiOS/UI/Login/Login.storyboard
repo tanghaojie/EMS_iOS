@@ -110,7 +110,11 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="登录" id="qoD-1R-LrB">
-                        <barButtonItem key="backBarButtonItem" title="qwe" id="07Z-lL-ykk"/>
+                        <barButtonItem key="rightBarButtonItem" image="settings" id="GwQ-dN-MtA">
+                            <connections>
+                                <action selector="settingsTouch:" destination="DWY-RY-s3P" id="oLz-I1-SIp"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -123,4 +127,8 @@
             <point key="canvasLocation" x="-79.200000000000003" y="-19.340329835082461"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="settings" width="40" height="40"/>
+    </resources>
+    <color key="tintColor" red="0.0039215686269999999" green="0.36862745099999999" blue="0.58431372550000005" alpha="1" colorSpace="calibratedRGB"/>
 </document>

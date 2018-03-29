@@ -86,7 +86,10 @@ extension TaskDealViewController {
             addAction: { [weak self] in
                 self?.showPictureAndVideoPicker()
             },
-            tapAction: nil,
+            tapAction: {
+                index in
+                
+            },
             deleteAction: { [weak self] index in
                 let actionController = UIAlertController(title: Messager.shareInstance.warning, message: Messager.shareInstance.ifDelete, preferredStyle: .alert)
                 let actionDel = UIAlertAction(title: Messager.shareInstance.delete, style: .default){ action in

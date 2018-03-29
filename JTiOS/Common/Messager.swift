@@ -62,4 +62,8 @@ class Messager {
     let selectType = "选择类型"
     let selectHeadPortrait = "选择头像"
     let takePhotoOrSelectFromAlbum = "拍照或从相册选择"
+    
+    let inputServerUrl = "请输入服务器地址"
+    let settingSuccess = "设置成功"
+    let settingFailed = "设置失败"
 }

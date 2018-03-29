@@ -38,12 +38,23 @@ class MainViewController: UIViewController {
         addLayer()
         JTLocationManager.shareInstance.startUpdatingLocation()
         JTLocationManager.shareInstance.startUpdatingHeading()
+        
+        APIUrl.getBaseUrl()
+        APIUrl.checkAPIStatus() {
+            [weak self] result in
+            global_TestAPISuccess = result
+            if global_TestAPISuccess {
+                guard let this = self else { return }
+                if this.isAppear() {
+                    this.autoLoginOrShowLoginPage()
+                }
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if !hasCheckLogin {
-            checkLogin()
-            hasCheckLogin = true
+        if global_TestAPISuccess {
+            autoLoginOrShowLoginPage()
         }
     }
     
@@ -161,10 +172,6 @@ extension MainViewController {
         let sb = UIStoryboard(name: "WarningReport", bundle: nil)
         let vc = sb.instantiateViewController(withIdentifier: "WarningReportNavigationController")
         JTCheckLoginPresent(vc: vc)
-        
-//        let sb = UIStoryboard(name: "test", bundle: nil)
-//        let vc = sb.instantiateViewController(withIdentifier: "test")
-//        self.present(vc, animated: true, completion: nil)
     }
     
     private func showWarning() {
@@ -260,3 +267,15 @@ extension MainViewController {
     }
     
 }
+extension MainViewController {
+    private func isAppear() -> Bool {
+        return self.isViewLoaded && (self.view.window != nil)
+    }
+    private func autoLoginOrShowLoginPage() {
+        if !hasCheckLogin {
+            hasCheckLogin = true
+            checkLogin()
+        }
+    }
+}
+

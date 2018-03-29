@@ -176,6 +176,8 @@ extension HomeViewController {
                 try? FileManager.default.removeItem(atPath: full)
             }
         }
+        
+        Data.shareInstance.ClearData_Login()
 
         let HUD = MBProgressHUD.showAdded(to: view, animated: true)
         HUD.bezelView.color = UIColor(red: 120, green: 120, blue: 120)

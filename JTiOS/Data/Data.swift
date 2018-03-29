@@ -20,6 +20,9 @@ class Data {
     private let data_Login_Username = "username"
     private let data_Login_Password = "password"
     
+    private let data_SettingsName = "Data_Settings"
+    private let data_Settings_apiBaseUrl = "apiBaseUrl"
+    
     func saveContext() {
         if #available(iOS 10.0, *) {
             saveContext10()
@@ -107,4 +110,36 @@ extension Data {
         return nil
     }
 
+}
+
+extension Data {
+    func SaveData_Settings(apiBaseUrl: String?){
+        let dataSettings = NSEntityDescription.insertNewObject(forEntityName: data_SettingsName, into: manageObjectContext) as? Data_Settings
+        guard let d = dataSettings else { return }
+        d.apiBaseUrl = apiBaseUrl
+        try? manageObjectContext.save()
+    }
+    
+    func ClearData_Settings(){
+        let fetchRequest = NSFetchRequest<Data_Settings>(entityName: data_SettingsName)
+        let sr = try? manageObjectContext.fetch(fetchRequest)
+        guard let srs = sr, srs.count > 0 else {
+            return
+        }
+        for x in srs {
+            manageObjectContext.delete(x as NSManagedObject)
+        }
+        try? manageObjectContext.save()
+    }
+    
+    func GetData_Settings() -> Data_Settings? {
+        let fetchRequest = NSFetchRequest<Data_Settings>(entityName: data_SettingsName)
+        let searchResults = try? manageObjectContext.fetch(fetchRequest)
+        if let sr = searchResults, sr.count > 0 {
+            let dataLogin = sr[0] as Data_Settings
+            return dataLogin
+        }
+        return nil
+    }
+    
 }

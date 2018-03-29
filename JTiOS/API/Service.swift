@@ -24,6 +24,7 @@ enum Service {
     case fileUpload(object: RequestObject_FileUpload)
     case queryRelationEventList(object: RequestJson_QueryRelationEventList)
     case uploadPoints(object: RequestJson_UploadPoints)
+    case test
 }
 extension Service: TargetType {
     var baseURL: URL { return URL(string: APIUrl.baseUrl)! }
@@ -61,13 +62,15 @@ extension Service: TargetType {
             return APIUrl.queryRelationEventList
         case .uploadPoints:
             return APIUrl.uploadPoints
+        case .test:
+            return APIUrl.test
         }
     }
     var method: Moya.Method {
         switch self {
         case .login, .queryEventList, .getGroupConfig, .createEvent, .queryTaskList, .queryEventInfo, .queryProcessList, .createProcessExecute, .loginState, .logout, .queryFile, .fileUpload, .queryRelationEventList, .uploadPoints :
             return .post
-        case .fileDownload, .file:
+        case .fileDownload, .file, .test:
             return .get
         }
     }
@@ -111,6 +114,8 @@ extension Service: TargetType {
             return Task.requestData((json.toJSONString()?.utf8Encoded)!)
         case .uploadPoints(let json):
             return Task.requestData((json.toJSONString()?.utf8Encoded)!)
+        case .test:
+            return Task.requestPlain
         }
     }
     
@@ -147,6 +152,8 @@ extension Service: TargetType {
         case .queryRelationEventList:
             return "nil".utf8Encoded
         case .uploadPoints:
+            return "nil".utf8Encoded
+        case .test:
             return "nil".utf8Encoded
         }
     }
